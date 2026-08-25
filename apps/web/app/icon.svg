@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <rect width="128" height="128" rx="26" fill="#ede9fe" />
+  <text
+    x="50%"
+    y="50%"
+    text-anchor="middle"
+    dominant-baseline="central"
+    font-family="'Plus Jakarta Sans', 'Manrope', sans-serif"
+    font-size="82"
+    font-weight="800"
+    letter-spacing="-0.04em"
+    fill="#6d44c5"
+  >
+    V
+  </text>
+</svg>

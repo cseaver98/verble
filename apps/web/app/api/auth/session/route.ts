@@ -1,0 +1,33 @@
+import { createSupabaseServerClient } from "@/lib/supabase-auth/server";
+import { getProfile } from "@/lib/account-profile";
+import { getSubscriptionAccess } from "@/lib/subscriptions";
+import { NextResponse } from "next/server";
+
+export async function GET() {
+  const supabase = await createSupabaseServerClient();
+  const { data: { user }, error } = await supabase.auth.getUser();
+
+  if (error || !user) {
+    return NextResponse.json({ user: null });
+  }
+
+  const profile = await getProfile(user.id);
+  const subscription = await getSubscriptionAccess(user.id);
+
+  return NextResponse.json({
+    user: {
+      id: user.id,
+      email: user.email ?? null,
+      displayName: profile?.displayName ?? null,
+      needsDisplayName: !profile?.displayName,
+      avatarUrl: profile?.avatarUrl ?? user.user_metadata?.avatar_url ?? null,
+      marketingEmailOptIn: profile?.marketingEmailOptIn ?? false,
+      dailyReminderOptIn: profile?.dailyReminderOptIn ?? false,
+      subscription: {
+        isSubscriber: subscription.isSubscriber,
+        status: subscription.status,
+        tier: subscription.tier,
+      },
+    },
+  });
+}

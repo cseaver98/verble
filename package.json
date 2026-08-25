@@ -1,0 +1,20 @@
+{
+  "name": "verble-monorepo",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:web": "npm run dev -w @verble/web -- --port 3200",
+    "dev:admin": "npm run dev -w @verble/admin -- --port 3201",
+    "dev": "concurrently -n web,admin -c magenta,cyan \"npm run dev:web\" \"npm run dev:admin\"",
+    "sync:dictionary": "node scripts/sync-prod-dictionary.mjs",
+    "build": "npm run build --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
