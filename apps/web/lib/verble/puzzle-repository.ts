@@ -164,9 +164,66 @@ const getPuzzleByScheduleDate = async (date: string): Promise<VerblePuzzle | nul
   return mapPuzzle(scheduleRow, phraseRow);
 };
 
+const autoScheduleApprovedPhraseForDate = async (date: string): Promise<VerblePuzzle | null> => {
+  const supabase = getVerbleSupabaseAdmin();
+
+  const { data: approvedRows, error: approvedError } = await supabase
+    .from("phrases")
+    .select("id,phrase_text,normalized_phrase,source_note,status,created_at")
+    .eq("status", "approved")
+    .order("reviewed_at", { ascending: true })
+    .order("created_at", { ascending: true })
+    .limit(5000);
+
+  if (approvedError) {
+    throw new Error(`Failed to load approved verble phrases: ${approvedError.message}`);
+  }
+
+  const candidates = (Array.isArray(approvedRows) ? approvedRows : []) as PhraseRow[];
+  for (const candidate of candidates) {
+    const { data: alreadyScheduled, error: scheduleLookupError } = await supabase
+      .from("daily_schedule")
+      .select("puzzle_date")
+      .eq("phrase_id", candidate.id)
+      .maybeSingle<{ puzzle_date: string }>();
+
+    if (scheduleLookupError) {
+      throw new Error(`Failed to check verble schedule usage: ${scheduleLookupError.message}`);
+    }
+
+    if (alreadyScheduled) {
+      continue;
+    }
+
+    const { error: insertError } = await supabase.from("daily_schedule").insert({
+      puzzle_date: date,
+      phrase_id: candidate.id,
+    });
+
+    if (insertError) {
+      if (insertError.code === "23505") {
+        const existing = await getPuzzleByScheduleDate(date);
+        if (existing) {
+          return existing;
+        }
+        continue;
+      }
+      throw new Error(`Failed to auto-schedule verble puzzle: ${insertError.message}`);
+    }
+
+    return mapPuzzle({ puzzle_date: date, phrase_id: candidate.id }, candidate);
+  }
+
+  return null;
+};
+
 export const getTodayVerblePuzzle = async (): Promise<VerblePuzzle | null> => {
   const today = getDateInTimeZone(DEFAULT_TIMEZONE);
-  return getPuzzleByScheduleDate(today);
+  const scheduled = await getPuzzleByScheduleDate(today);
+  if (scheduled) {
+    return scheduled;
+  }
+  return autoScheduleApprovedPhraseForDate(today);
 };
 
 export const getVerblePuzzleByDate = async (date: string): Promise<VerblePuzzle | null> => {
