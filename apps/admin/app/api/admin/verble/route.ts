@@ -79,6 +79,48 @@ const normalizePhrase = (value: string): string =>
     .replace(/\s+/g, " ")
     .trim();
 
+const autoScheduleApprovedPhraseForDate = async (date: string) => {
+  const supabase = getVerbleSupabaseAdmin();
+  const [{ data: approvedRows, error: approvedError }, { data: scheduleRows, error: scheduleError }] =
+    await Promise.all([
+      supabase
+        .from("phrases")
+        .select("id")
+        .eq("status", "approved")
+        .order("reviewed_at", { ascending: true })
+        .order("created_at", { ascending: true })
+        .limit(5000),
+      supabase.from("daily_schedule").select("phrase_id"),
+    ]);
+
+  if (approvedError) {
+    throw new Error(`Failed to load approved Verble phrases: ${approvedError.message}`);
+  }
+  if (scheduleError) {
+    throw new Error(`Failed to load Verble schedule usage: ${scheduleError.message}`);
+  }
+
+  const scheduledPhraseIds = new Set(
+    ((scheduleRows as Array<{ phrase_id: string }> | null) ?? []).map((row) => row.phrase_id),
+  );
+  const nextPhrase = ((approvedRows as Array<{ id: string }> | null) ?? []).find(
+    (row) => !scheduledPhraseIds.has(row.id),
+  );
+
+  if (!nextPhrase) {
+    return;
+  }
+
+  const { error: insertError } = await supabase.from("daily_schedule").insert({
+    puzzle_date: date,
+    phrase_id: nextPhrase.id,
+  });
+
+  if (insertError && insertError.code !== "23505") {
+    throw new Error(`Failed to auto-schedule replacement Verble puzzle: ${insertError.message}`);
+  }
+};
+
 export async function GET(request: Request) {
   try {
     const requestUrl = new URL(request.url);
@@ -342,9 +384,25 @@ export async function DELETE(request: Request) {
     }
 
     const supabase = getVerbleSupabaseAdmin();
+    const today = getToday();
+    const { data: todaySchedule, error: scheduleLookupError } = await supabase
+      .from("daily_schedule")
+      .select("phrase_id")
+      .eq("phrase_id", id)
+      .eq("puzzle_date", today)
+      .maybeSingle<{ phrase_id: string }>();
+
+    if (scheduleLookupError) {
+      throw new Error(`Failed to check today's Verble schedule: ${scheduleLookupError.message}`);
+    }
+
     const { error } = await supabase.from("phrases").delete().eq("id", id);
     if (error) {
       throw new Error(`Failed to delete phrase: ${error.message}`);
+    }
+
+    if (todaySchedule) {
+      await autoScheduleApprovedPhraseForDate(today);
     }
 
     return NextResponse.json({ ok: true });
