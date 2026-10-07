@@ -1480,7 +1480,6 @@ export default function VerbleGameClient({
           </div>
 
           <div className="arcade-board">
-            <div className="arcade-board-label"><span aria-hidden="true">✦</span> Phrase Mode</div>
           <div className="phrase-layout">
             {puzzle.slots.map((slot) => {
               const solved = solvedWords[slot.index];

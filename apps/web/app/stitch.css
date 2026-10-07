@@ -123,9 +123,7 @@ body {
 .verble-shell .guess-progress-bars > span { height: .45rem; background: #e9e5ff; }
 .verble-shell .guess-progress-bars > span.is-remaining { background: #5a4ff3; box-shadow: 0 2px 5px rgb(90 79 243 / 25%); }
 
-.arcade-board { position: relative; min-height: 13.25rem; display: flex; flex-direction: column; justify-content: space-between; background: #fff; border-radius: 1.5rem; padding: 2.35rem 1rem .8rem; box-shadow: 0 4px 20px rgb(24 20 69 / 4%); }
-.arcade-board-label { position: absolute; top: .85rem; right: 1rem; font-weight: 700; font-size: .75rem; color: #888695; }
-.arcade-board-label span { font-size: 1rem; }
+.arcade-board { position: relative; min-height: 12.25rem; display: flex; flex-direction: column; justify-content: space-between; background: #fff; border-radius: 1.5rem; padding: 1.15rem 1rem .8rem; box-shadow: 0 4px 20px rgb(24 20 69 / 4%); }
 .verble-shell .phrase-layout { justify-content: center; align-content: center; align-items: flex-end; gap: 1rem .56rem; margin: .1rem 0 .65rem; min-height: 6.9rem; }
 .verble-shell .slot-word-button { padding: .16rem; border-radius: .9rem; }
 .verble-shell .slot-word-button.selected { background: #e9e5ff; box-shadow: 0 0 0 2px #5a4ff3, 0 4px 14px rgb(90 79 243 / 20%); }
