@@ -59,6 +59,18 @@ body {
 .dd-brand { position: absolute; left: 50%; transform: translateX(-50%); }
 .dd-brand-word { font-family: var(--font-outfit), sans-serif; color: var(--arcade-violet); font-size: clamp(1.7rem, 5vw, 2rem); letter-spacing: -.055em; }
 .dd-brand-dot { color: #75b7a0; }
+.dd-brand-fun {
+  display: inline-block;
+  color: #4267ec;
+  background: linear-gradient(90deg, #e03c5d 0%, #1faf83 33%, #4267ec 67%, #e03c5d 100%) repeat-x;
+  background-size: 200% 100%;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: dd-brand-rgb-wave 5s linear infinite;
+}
+@keyframes dd-brand-rgb-wave {
+  to { background-position-x: 200%; }
+}
 .verble-shell .dd-nav-label { display: none; }
 .arcade-nav-icon { width: 2.65rem; height: 2.65rem; display: grid; place-items: center; color: #464555; border-radius: .75rem; }
 .arcade-nav-icon:hover, .arcade-nav-icon:focus-visible { background: #efebff; color: var(--arcade-violet); }
@@ -315,5 +327,6 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .dd-brand-fun { animation: none; }
   .arcade-action-row button:active:not(:disabled), .verble-shell .key:active:not(:disabled), .verble-shell .archive-tile:hover { transform: none; }
 }

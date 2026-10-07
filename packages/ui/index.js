@@ -29,13 +29,13 @@ export function VerbleNav({
           { className: "dd-brand" },
           React.createElement(
             "a",
-            { className: "dd-brand-link", href: homeHref },
+            { className: "dd-brand-link", href: homeHref, "aria-label": "Verble.fun" },
             React.createElement(
               "span",
               { className: "dd-brand-word" },
               React.createElement("span", null, "Verble"),
               React.createElement("span", { className: "dd-brand-dot" }, "."),
-              React.createElement("span", null, "fun"),
+              React.createElement("span", { className: "dd-brand-fun" }, "fun"),
               React.createElement("span", { className: "dd-brand-plus", "aria-hidden": "true" }, "+"),
             ),
           ),
