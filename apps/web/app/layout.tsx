@@ -37,8 +37,8 @@ try {
 const isStagingEnvironment = (): boolean => process.env.NEXT_PUBLIC_APP_ENV === "staging";
 const twitterImageUrl = "/opengraph-image";
 const siteUrl = "https://verble.fun";
-const siteName = "Verble";
-const siteTitle = "Verble: The Daily Phrase Game";
+const siteName = "Verble.fun";
+const siteTitle = "Verble.fun: The Daily Phrase Game";
 const siteDescription =
   "Play Verble, a free daily phrase game where you reveal a familiar saying one word at a time.";
 

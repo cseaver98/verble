@@ -164,7 +164,7 @@ export default function AuthDialog({
         ) : null}
 
         <div className={`mb-6 ${dismissible ? "pr-8" : ""}`}>
-          <p className="dd-brand-word mb-2 inline-block !text-xl">Verble</p>
+          <p className="dd-brand-word mb-2 inline-block !text-xl">Verble<span className="dd-brand-dot">.</span>fun</p>
           <h2 id="auth-dialog-title" className="font-headline text-3xl font-extrabold leading-tight text-[#2c2f31]">
             {title}
           </h2>

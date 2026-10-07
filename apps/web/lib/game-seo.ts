@@ -7,7 +7,7 @@ export const gameSeo = {
   verble: {
     name: "Verble",
     path: "/",
-    title: "Verble: Free Daily Phrase Guessing Game",
+    title: "Verble.fun: Free Daily Phrase Guessing Game",
     heading: "Verble: a free daily phrase guessing game",
     description:
       "Play Verble free every day. Guess one word at a time to reveal a familiar phrase, with six guesses and one risky shot at the full answer.",
@@ -35,7 +35,7 @@ export const buildGameMetadata = (slug: GameSeoSlug): Metadata => {
       title: game.title,
       description: game.description,
       url: game.path,
-      siteName: "Verble",
+      siteName: "Verble.fun",
       type: "website",
     },
     twitter: {

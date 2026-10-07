@@ -34,6 +34,8 @@ export function VerbleNav({
               "span",
               { className: "dd-brand-word" },
               React.createElement("span", null, "Verble"),
+              React.createElement("span", { className: "dd-brand-dot" }, "."),
+              React.createElement("span", null, "fun"),
               React.createElement("span", { className: "dd-brand-plus", "aria-hidden": "true" }, "+"),
             ),
           ),

@@ -72,7 +72,7 @@ export default function DisplayNameDialog({ isOpen, onComplete }: DisplayNameDia
         aria-labelledby="display-name-dialog-title"
       >
         <div className="relative">
-          <p className="dd-brand-word mb-4 inline-block !text-2xl">Verble</p>
+          <p className="dd-brand-word mb-4 inline-block !text-2xl">Verble<span className="dd-brand-dot">.</span>fun</p>
           <p className="font-headline text-sm font-extrabold uppercase tracking-[0.16em] text-[#2f672d]">Welcome</p>
           <h2 id="display-name-dialog-title" className="font-headline mt-3 text-4xl font-extrabold leading-tight text-[#2c2f31]">
             Choose your display name

@@ -58,7 +58,7 @@ body {
 .verble-shell .dd-brand { position: absolute; left: 50%; transform: translateX(-50%); }
 .dd-brand { position: absolute; left: 50%; transform: translateX(-50%); }
 .dd-brand-word { font-family: var(--font-outfit), sans-serif; color: var(--arcade-violet); font-size: clamp(1.7rem, 5vw, 2rem); letter-spacing: -.055em; }
-.dd-brand-word::after { content: ""; position: absolute; right: -.42rem; top: .12rem; width: .37rem; height: .37rem; border-radius: 50%; background: #75b7a0; }
+.dd-brand-dot { color: #75b7a0; }
 .verble-shell .dd-nav-label { display: none; }
 .arcade-nav-icon { width: 2.65rem; height: 2.65rem; display: grid; place-items: center; color: #464555; border-radius: .75rem; }
 .arcade-nav-icon:hover, .arcade-nav-icon:focus-visible { background: #efebff; color: var(--arcade-violet); }
@@ -299,6 +299,9 @@ body {
 }
 
 @media (max-width: 430px) {
+  .dd-brand-word { font-size: 1.45rem; }
+  .verble-shell .arcade-nav-icon, .verble-shell .menu-toggle-btn { width: 2.35rem; height: 2.35rem; }
+  .verble-shell .dd-nav-left-content { gap: 0; }
   .verble-shell .game-meta-row { grid-template-columns: 1fr auto; }
   .verble-shell .guess-progress-chip { grid-column: 1 / -1; justify-self: end; }
   .verble-shell .game-meta-row { padding-bottom: 1.1rem; }
