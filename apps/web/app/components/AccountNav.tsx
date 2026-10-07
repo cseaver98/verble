@@ -7,6 +7,7 @@ import AuthDialog from "./AuthDialog";
 import LoadingLabel from "./LoadingLabel";
 import { createSupabaseBrowserClient } from "@/lib/supabase-auth/client";
 import { clearLocalGameState } from "@/lib/local-game-state";
+import ArcadeIcon from "./ArcadeIcon";
 
 type AccountUser = {
   id: string;
@@ -100,7 +101,7 @@ export default function AccountNav() {
 
   if (loading) {
     return (
-      <span className="font-headline inline-flex h-[36px] items-center justify-center rounded-full bg-[#eff1f4] px-5 text-sm font-bold text-[#75777a]">
+      <span className="arcade-account-trigger arcade-account-loading">
         <LoadingLabel text="Loading" />
       </span>
     );
@@ -112,9 +113,10 @@ export default function AccountNav() {
         <button
           type="button"
           onClick={() => setIsAuthOpen(true)}
-          className="font-headline inline-flex h-[36px] cursor-pointer items-center justify-center rounded-full bg-[#2f672d] px-5 text-sm font-bold text-[#d1ffc7] transition hover:opacity-90"
+          className="arcade-account-trigger"
+          aria-label="Log in"
         >
-          Log in
+          <ArcadeIcon name="profile" /><span className="sr-only">Log in</span>
         </button>
         <AuthDialog isOpen={isAuthOpen} onClose={() => setIsAuthOpen(false)} />
       </>
@@ -128,9 +130,10 @@ export default function AccountNav() {
       <button
         type="button"
         onClick={() => setIsMenuOpen((current) => !current)}
-        className="font-headline inline-flex h-[36px] max-w-[148px] items-center justify-center rounded-full bg-[#d1ffc7] px-4 text-sm font-bold text-[#225b22] transition hover:bg-[#b6f6ab] sm:max-w-[190px] sm:px-5"
+        className="arcade-account-trigger"
+        aria-label={`Account: ${label}`}
       >
-        <span className="block min-w-0 truncate">{label}</span>
+        <ArcadeIcon name="profile" /><span className="sr-only">{label}</span>
       </button>
 
       {isMenuOpen ? (

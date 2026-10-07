@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Manrope, Plus_Jakarta_Sans } from "next/font/google";
+import { Manrope, Outfit, Plus_Jakarta_Sans } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import "@verble/ui/nav.css";
@@ -10,6 +10,10 @@ import "./how-to-play.css";
 import "./desktop-game-layout.css";
 import AuthStateStorageBoundary from "./components/AuthStateStorageBoundary";
 import AnalyticsPageTracker from "./components/AnalyticsPageTracker";
+import BottomNav from "./components/BottomNav";
+import "./stitch.css";
+
+const outfit = Outfit({ variable: "--font-outfit", subsets: ["latin"] });
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   variable: "--font-plus-jakarta-sans",
@@ -125,11 +129,12 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData).replace(/</g, "\\u003c") }}
         />
       </head>
-      <body className={`${plusJakartaSans.variable} ${manrope.variable} antialiased`}>
+      <body className={`${plusJakartaSans.variable} ${manrope.variable} ${outfit.variable} antialiased`}>
         <script dangerouslySetInnerHTML={{ __html: subscriberBootScript }} />
         <AuthStateStorageBoundary />
         <AnalyticsPageTracker />
         {children}
+        <BottomNav />
         <Analytics />
         <SpeedInsights />
       </body>

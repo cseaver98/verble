@@ -49,6 +49,7 @@ export type AccountStats = {
     bestVerbleStreak: number;
     completedTodayCount: number;
     totalGamesToday: number;
+    guessDistribution: number[];
   };
   games: GameStats[];
   entitlements: {
@@ -141,6 +142,7 @@ export async function getAccountStats(userId: string): Promise<AccountStats> {
       bestVerbleStreak: calculateBestCompletionStreak(dailyRows.map((row) => row.puzzle_date), today),
       completedTodayCount,
       totalGamesToday: dailyGames.length,
+      guessDistribution: Array.from({ length: 6 }, (_, index) => dailyRows.filter((row) => row.is_win && row.guesses_used === index + 1).length),
     },
     games: gameStats,
     entitlements: {

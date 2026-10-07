@@ -8,7 +8,7 @@ export default function GuessProgressChip({ used, total }: GuessProgressChipProp
 
   return (
     <span className="chip guess-progress-chip">
-      <span>Guesses left: {guessesLeft}</span>
+      <span className="guess-progress-label">Tries <strong>{guessesLeft}</strong><span>/{total}</span></span>
       <span className="guess-progress-bars" aria-hidden="true">
         {Array.from({ length: total }, (_, index) => (
           <span

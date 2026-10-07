@@ -10,9 +10,9 @@ export default function AccountLoginPanel() {
 
   return (
     <>
-      <section className="mx-auto max-w-2xl rounded-[2rem] border border-[#d8dce2] bg-white p-8 text-center shadow-[0_20px_40px_rgba(44,47,49,0.06)] sm:p-10">
+      <section className="arcade-login-panel mx-auto max-w-2xl rounded-[2rem] border border-[#d8dce2] bg-white p-8 text-center shadow-[0_20px_40px_rgba(44,47,49,0.06)] sm:p-10">
         <p className="text-xs font-extrabold uppercase tracking-[0.18em]">
-          <VerbleWordmark className="text-[1.15em]" /> <span className="text-[#2f672d]">Account</span>
+          <VerbleWordmark className="text-[1.15em]" /> <span className="arcade-login-accent">Account</span>
         </p>
         <h1 className="font-headline mt-3 text-4xl font-extrabold leading-tight text-[#2c2f31] sm:text-5xl">
           Save your stats and streaks
@@ -23,7 +23,7 @@ export default function AccountLoginPanel() {
         <button
           type="button"
           onClick={() => setIsAuthOpen(true)}
-          className="font-headline mt-7 inline-flex h-12 w-full max-w-sm items-center justify-center rounded-full bg-[#2f672d] px-5 text-sm font-extrabold text-[#d1ffc7] transition hover:bg-[#225b22]"
+          className="arcade-login-button font-headline mt-7 inline-flex h-12 w-full max-w-sm items-center justify-center rounded-full px-5 text-sm font-extrabold transition"
         >
           Create or log in
         </button>
@@ -31,7 +31,7 @@ export default function AccountLoginPanel() {
           href="/"
           className="mt-4 block text-sm font-bold text-[#595c5e] underline decoration-[#abadb0] underline-offset-4 transition hover:text-[#2c2f31]"
         >
-          Back to games
+          Back to game
         </Link>
       </section>
       <AuthDialog isOpen={isAuthOpen} onClose={() => setIsAuthOpen(false)} />

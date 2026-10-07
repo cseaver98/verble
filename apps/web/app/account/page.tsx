@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { VerbleNav } from "@verble/ui";
-import AccountNav from "../components/AccountNav";
 import VerbleWordmark from "../components/VerbleWordmark";
-import SiteMenu from "../components/SiteMenu";
+import MainNav from "../verble/components/MainNav";
 import AccountLoginPanel from "./AccountLoginPanel";
 import ProfileForm from "./ProfileForm";
 import EmailPreferencesForm from "./EmailPreferencesForm";
@@ -40,8 +38,8 @@ export default async function AccountPage() {
   if (!user) {
     return (
       <>
-        <VerbleNav headerClassName="hub-nav" leftContent={<SiteMenu />} rightContent={<AccountNav />} />
-        <main className="min-h-screen bg-transparent px-5 pb-12 pt-10 text-[#2c2f31] sm:px-8">
+        <MainNav label="" />
+        <main className="arcade-account-main min-h-screen bg-transparent px-5 pb-12 pt-10 text-[#2c2f31] sm:px-8">
           <AccountLoginPanel />
         </main>
       </>
@@ -64,8 +62,8 @@ export default async function AccountPage() {
 
   return (
     <>
-      <VerbleNav headerClassName="hub-nav" leftContent={<SiteMenu />} rightContent={<AccountNav />} />
-      <main className="min-h-screen bg-transparent px-5 pb-12 pt-8 text-[#2c2f31] sm:px-8">
+      <MainNav label="" />
+      <main className="arcade-account-main min-h-screen bg-transparent px-5 pb-12 pt-8 text-[#2c2f31] sm:px-8">
         <section className="mx-auto max-w-4xl">
           <div className="relative overflow-hidden rounded-[2.25rem] bg-white p-7 shadow-[0_20px_40px_rgba(44,47,49,0.06)] sm:p-10">
             <div className="relative flex flex-col gap-6">
@@ -105,7 +103,7 @@ export default async function AccountPage() {
                   href="/"
                   className="font-headline inline-flex h-12 items-center justify-center rounded-full bg-[#eff1f4] px-6 text-sm font-extrabold text-[#2c2f31] transition hover:bg-[#e0e3e6]"
                 >
-                  Back to games
+                  Back to game
                 </Link>
               </div>
             </div>

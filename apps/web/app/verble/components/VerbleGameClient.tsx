@@ -55,6 +55,7 @@ type VerblePuzzle = {
 type LetterFeedback = "correct" | "present" | "absent";
 type KeyboardState = "unknown" | "absent" | "present" | "resolved";
 type GameState = "playing" | "won" | "lost";
+type ResultAccountStats = { overall: { played: number; winRate: number | null; currentVerbleStreak: number; bestVerbleStreak: number } };
 
 type WordAttempt = {
   slotIndex: number;
@@ -150,15 +151,15 @@ const buildVerbleCompletionSnapshot = ({
 
 const getFlipVisual = (feedback: LetterFeedback | "empty") => {
   if (feedback === "correct") {
-    return { bg: "#65b84d", border: "#5aa545", color: "#ffffff" };
+    return { bg: "#10b981", border: "#059669", color: "#ffffff" };
   }
   if (feedback === "present") {
-    return { bg: "#e4bc4d", border: "#c7a340", color: "#ffffff" };
+    return { bg: "#fbbf24", border: "#f59e0b", color: "#181445" };
   }
   if (feedback === "absent") {
-    return { bg: "#b5bbc5", border: "#a3a9b4", color: "#ffffff" };
+    return { bg: "#94a3b8", border: "#64748b", color: "#ffffff" };
   }
-  return { bg: "#ffffff", border: "#d8dce2", color: "#2c2f31" };
+  return { bg: "#ffffff", border: "#e2e8f0", color: "#181445" };
 };
 
 const buildDisplayedWordChars = (slot: Slot, letters: string[]): DisplayChar[] => {
@@ -195,12 +196,12 @@ const buildSurfaceWordGuess = (slot: Slot, letters: string[]): string => {
 
 const getPerformanceLabel = (didWin: boolean, attemptsUsed: number, maxGuesses: number) => {
   if (!didWin) return "Better luck next time.";
-  if (attemptsUsed <= 1) return "Amazing!";
-  if (attemptsUsed === 2) return "Nice!";
-  if (attemptsUsed === 3) return "Great!";
-  if (attemptsUsed === 4) return "Good!";
-  if (maxGuesses >= 6 && attemptsUsed === 5) return "Not bad!";
-  return "Phew, close!";
+  if (attemptsUsed <= 1) return "Perfect!";
+  if (attemptsUsed === 2) return "Amazing!";
+  if (attemptsUsed === 3) return "Brilliant!";
+  if (attemptsUsed === 4) return "Splendid!";
+  if (maxGuesses >= 6 && attemptsUsed === 5) return "Nicely done!";
+  return "Just in time!";
 };
 
 
@@ -228,6 +229,7 @@ export default function VerbleGameClient({
   const [guessesUsed, setGuessesUsed] = useState(0);
   const [copyStatus, setCopyStatus] = useState("");
   const [isResultOpen, setIsResultOpen] = useState(false);
+  const [resultAccountStats, setResultAccountStats] = useState<ResultAccountStats | null>(null);
   const { isHowToPlayOpen, openHowToPlay, closeHowToPlay } = useHowToPlayDialog("verble", Boolean(puzzle) && !loading);
   const [isPhraseConfirmOpen, setIsPhraseConfirmOpen] = useState(false);
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
@@ -271,6 +273,20 @@ export default function VerbleGameClient({
   const [isResolvingGuess, setIsResolvingGuess] = useState(false);
   const shouldShowNextGameCountdown = lockDailyCompletion && !isArchiveView && gameState !== "playing";
   const nextGameCountdown = useNextGameCountdown(shouldShowNextGameCountdown);
+
+  useEffect(() => {
+    if (!isResultOpen || gameState === "playing") return;
+    const controller = new AbortController();
+    const timeout = window.setTimeout(async () => {
+      try {
+        const response = await fetch("/api/account/stats", { cache: "no-store", signal: controller.signal });
+        if (response.ok) setResultAccountStats(await response.json() as ResultAccountStats);
+      } catch {
+        // Guest results remain useful without account stats.
+      }
+    }, 700);
+    return () => { controller.abort(); window.clearTimeout(timeout); };
+  }, [isResultOpen, gameState]);
 
   const createInitialSlotDrafts = (slots: Slot[]): SlotDrafts =>
     Object.fromEntries(slots.map((slot) => [slot.index, Array.from({ length: slot.length }, () => "")]));
@@ -1232,14 +1248,14 @@ export default function VerbleGameClient({
     setGuessesUsed(maxGuesses);
   };
 
-  const shareResult = async () => {
-    if (!puzzle || gameState === "playing") return;
+  const getShareText = () => {
+    if (!puzzle || gameState === "playing") return "";
     const shareBlocks = buildVerbleShareRow({
       slots: puzzle.slots,
       slotMarks,
       didWin: gameState === "won",
     });
-    const text = buildGameShareText({
+    return buildGameShareText({
       gameName: "Verble",
       isArchiveView,
       puzzleDate: puzzle.puzzleDate,
@@ -1249,10 +1265,26 @@ export default function VerbleGameClient({
       visualRows: shareBlocks ? [shareBlocks] : [],
       url: toPublicAppUrl("/"),
     });
+  };
+
+  const shareResult = async () => {
+    const text = getShareText();
+    if (!text) return;
     const result = await shareResultText("Verble", text);
     if (result === "shared") setCopyStatus("Shared");
     if (result === "copied") setCopyStatus("Copied to clipboard");
     if (result === "failed") setCopyStatus("Share failed");
+  };
+
+  const copyResult = async () => {
+    const text = getShareText();
+    if (!text) return;
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopyStatus("Copied to clipboard");
+    } catch {
+      setCopyStatus("Copy failed");
+    }
   };
 
   useEffect(() => {
@@ -1365,13 +1397,15 @@ export default function VerbleGameClient({
       <main className="container">
         <section className="card verble-card">
           <div className="game-meta-row">
-            <span className="chip">{statusChipLabel}</span>
-            <GuessProgressChip used={guessesUsed} total={maxGuesses} />
+            <span className="chip arcade-game-chip"><span className="arcade-live-dot" />{statusChipLabel}{!isArchiveView && puzzle.archiveGameNumber ? ` · #${puzzle.archiveGameNumber}` : ""}</span>
             <button className="how-to-play-btn" type="button" onClick={openHowToPlay}>
-              ? How to play
+              <span aria-hidden="true">ⓘ</span> How to play
             </button>
+            <GuessProgressChip used={guessesUsed} total={maxGuesses} />
           </div>
 
+          <div className="arcade-board">
+            <div className="arcade-board-label"><span aria-hidden="true">✦</span> Phrase Mode</div>
           <div className="phrase-layout">
             {puzzle.slots.map((slot) => {
               const solved = solvedWords[slot.index];
@@ -1408,6 +1442,7 @@ export default function VerbleGameClient({
                 <div key={slot.index} className="slot-cluster">
                   <button
                     type="button"
+                    aria-label={`Word ${slot.index + 1}, ${slot.length} letters${solved ? ", solved" : ""}`}
                     className={`slot-word-button ${solved ? "solved" : ""} ${isSelected ? "selected" : ""}`}
                     onClick={() => {
                       if (!isPlayable) {
@@ -1545,6 +1580,22 @@ export default function VerbleGameClient({
               );
             })}
           </div>
+          <div className="arcade-word-status">
+            <span className="arcade-status-dot" />
+            <strong>{selectedSlotMeta ? `Solving Word #${selectedSlotMeta.index + 1}:` : "Pick a word"}</strong>
+            <span>{selectedSlotMeta ? `${selectedSlotMeta.length} letters` : "Tap any word to start"}</span>
+            <span className="arcade-status-hint">Tap any word to switch</span>
+          </div>
+          </div>
+
+          {gameState === "playing" ? <div className="arcade-action-row">
+            <button type="button" className="arcade-clear-button" onClick={clearWordGuess} disabled={isResolvingGuess || !selectedSlotDraft.some((letter, index) => !selectedSlotLockState[index] && Boolean(letter))}>
+              <span aria-hidden="true">↻</span> Clear
+            </button>
+            <button type="button" className="arcade-phrase-button" onClick={() => setIsPhraseConfirmOpen(true)} disabled={!canOpenFullPhraseConfirm}>
+              <span aria-hidden="true">ϟ</span> Solve Full Phrase <small>High Stakes</small>
+            </button>
+          </div> : null}
 
           {gameState !== "playing" ? (
             <div className="phrase-submit-row">
@@ -1559,8 +1610,15 @@ export default function VerbleGameClient({
           ) : null}
 
           <div className="keyboard" aria-label="Global phrase keyboard">
-            {ALPHA_ROWS.map((row) => (
+            {ALPHA_ROWS.map((row, rowIndex) => (
               <div className="keyboard-row" key={row}>
+                {rowIndex === 2 ? <button type="button" className="key enter-key" onClick={() => {
+                  if (canOpenFullPhraseConfirm) {
+                    setIsPhraseConfirmOpen(true);
+                    return;
+                  }
+                  void submitWordGuess();
+                }} disabled={!canOpenFullPhraseConfirm && !canSubmitWordGuess}>Enter</button> : null}
                 {row.split("").map((letter) => {
                   const state = keyboardState[letter.toLowerCase()] || "unknown";
                   const isDisabled = gameState !== "playing"
@@ -1583,58 +1641,9 @@ export default function VerbleGameClient({
                     </button>
                   );
                 })}
+                {rowIndex === 2 ? <button type="button" className="key backspace-key" onClick={removeWordGuessChar} disabled={gameState !== "playing" || isResolvingGuess || !selectedSlotDraft.some((letter, index) => !selectedSlotLockState[index] && Boolean(letter))} aria-label="Backspace"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" className="verble-backspace-icon"><path d="M20 5H9L3 12l6 7h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2Z" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /><path d="m10 9 6 6m0-6-6 6" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg></button> : null}
               </div>
             ))}
-            <div className="keyboard-row controls">
-              <button
-                type="button"
-                className="key wide control-key"
-                onClick={clearWordGuess}
-                disabled={gameState !== "playing" || isResolvingGuess || !selectedSlotDraft.some((letter, index) => !selectedSlotLockState[index] && Boolean(letter))}
-              >
-                Clear
-              </button>
-              <button
-                type="button"
-                className="key wide control-key backspace-key"
-                onClick={removeWordGuessChar}
-                disabled={gameState !== "playing" || isResolvingGuess || !selectedSlotDraft.some((letter, index) => !selectedSlotLockState[index] && Boolean(letter))}
-                aria-label="Backspace"
-              >
-                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" className="verble-backspace-icon">
-                  <path
-                    d="M20 5H9L3 12l6 7h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2Z"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.8"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="m10 9 6 6m0-6-6 6"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.8"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </button>
-              <button
-                type="button"
-                className="key wide control-key"
-                onClick={() => {
-                  if (canOpenFullPhraseConfirm) {
-                    setIsPhraseConfirmOpen(true);
-                    return;
-                  }
-                  void submitWordGuess();
-                }}
-                disabled={!canOpenFullPhraseConfirm && !canSubmitWordGuess}
-              >
-                Enter
-              </button>
-            </div>
           </div>
 
           <p className="message" data-kind={gameState === "won" ? "won" : gameState === "lost" ? "lost" : globalRevealState ? "hint" : "playing"}>{playPrompt}</p>
@@ -1754,6 +1763,9 @@ export default function VerbleGameClient({
         <div className="result-modal-backdrop" onClick={() => setIsResultOpen(false)}>
           <section
             className="result-modal-panel result-outcome-panel"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="verble-result-title"
             data-outcome={gameState === "won" ? "win" : "loss"}
             onClick={(event) => event.stopPropagation()}
           >
@@ -1766,19 +1778,14 @@ export default function VerbleGameClient({
             >
               ×
             </button>
-            <h2 className="result-modal-title">
-              Result: <span className="result-modal-outcome-label" data-outcome={gameState === "won" ? "win" : "loss"}>{gameState === "won" ? "Won" : "Lost"}</span>
+            <div className="arcade-result-emblem" aria-hidden="true">{gameState === "won" ? "✦" : "↻"}</div>
+            <h2 className="result-modal-title" id="verble-result-title">
+              {resultLabel}
             </h2>
-            {lockDailyCompletion && !isArchiveView ? (
-              <p className="result-modal-timer">Next Verble in {nextGameCountdown || "--:--:--"}</p>
-            ) : null}
             <div className="result-modal-summary">
-              <p className="result-modal-copy result-modal-subtitle">{resultLabel}</p>
-              <p className="result-modal-copy result-modal-stat-line">
-                Guesses used:{" "}
-                <span className="result-modal-stat-value">{guessesUsed}/{maxGuesses}</span>
-              </p>
+              <p className="result-modal-copy result-modal-subtitle">{isArchiveView ? "Archive" : "Daily"} Verble #{puzzle.archiveGameNumber ?? "—"} · <strong>{guessesUsed}/{maxGuesses} attempts</strong></p>
             </div>
+            <p className="arcade-result-phrase-label">{gameState === "won" ? (isArchiveView ? "Solved phrase" : "Today's solved phrase") : "The phrase was"}</p>
             <div className="result-modal-phrase phrase-layout" aria-label="Final phrase board">
               {puzzle.slots.map((slot) => {
                 const letters = (puzzle.answerWords[slot.index] || "").split("");
@@ -1813,6 +1820,11 @@ export default function VerbleGameClient({
             </div>
             {puzzle.sourceNote ? (
               <p className="verble-source-note result-modal-source-note">- {puzzle.sourceNote}</p>
+            ) : null}
+            {resultAccountStats ? <div className="arcade-result-stats account"><div><strong>{resultAccountStats.overall.played}</strong><span>Played</span></div><div><strong>{resultAccountStats.overall.winRate === null ? "—" : `${Math.round(resultAccountStats.overall.winRate * 100)}%`}</strong><span>Win rate</span></div><div><strong>{resultAccountStats.overall.currentVerbleStreak}</strong><span>Streak</span></div><div><strong>{resultAccountStats.overall.bestVerbleStreak}</strong><span>Best</span></div></div> : <div className="arcade-result-stats"><div><strong>{guessesUsed}</strong><span>Attempts</span></div><div><strong>{Math.max(0, maxGuesses - guessesUsed)}</strong><span>Remaining</span></div><div><strong>{Object.keys(solvedWords).length}</strong><span>Words solved</span></div></div>}
+            <div className="arcade-share-card"><div><strong>Verble Grid Share</strong><button type="button" onClick={() => void copyResult()}>Copy ↗</button></div><p>{buildVerbleShareRow({ slots: puzzle.slots, slotMarks, didWin: gameState === "won" })}</p></div>
+            {lockDailyCompletion && !isArchiveView ? (
+              <p className="result-modal-timer">Next Verble in <strong>{nextGameCountdown || "--:--:--"}</strong></p>
             ) : null}
             <ResultDialogActions currentGameSlug="verble" onShare={shareResult} />
             {copyStatus ? <p className="result-modal-copy">{copyStatus}</p> : null}
