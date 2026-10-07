@@ -1470,7 +1470,7 @@ export default function VerbleGameClient({
           </div>
 
           <div className="arcade-board">
-          <div className="phrase-layout">
+          <div className={`phrase-layout ${selectedSlot !== null && gameState === "playing" ? "has-selected-word" : ""}`}>
             {puzzle.slots.map((slot) => {
               const solved = solvedWords[slot.index];
               const isSelected = selectedSlot === slot.index;
@@ -1503,10 +1503,11 @@ export default function VerbleGameClient({
                     });
               const displayChars = buildDisplayedWordChars(slot, tileLetters);
               return (
-                <div key={slot.index} className="slot-cluster">
+                <div key={slot.index} className={`slot-cluster ${isSelected ? "selected" : ""}`}>
                   <button
                     type="button"
                     aria-label={`Word ${slot.index + 1}, ${slot.length} letters${solved ? ", solved" : ""}`}
+                    aria-pressed={isPlayable ? isSelected : undefined}
                     className={`slot-word-button ${solved ? "solved" : ""} ${isSelected ? "selected" : ""}`}
                     onClick={() => {
                       if (!isPlayable) {
