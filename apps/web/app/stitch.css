@@ -161,6 +161,22 @@ body {
 .verble-shell .message { border-radius: .9rem; background: #efebff; color: #464555; padding: .75rem .9rem; font-family: var(--font-outfit), sans-serif; font-size: .82rem; font-weight: 600; }
 .verble-shell .message[data-kind="hint"] { color: #006c49; }
 
+.verble-shell .guess-history-wrap { border: 0; border-radius: 1.15rem; padding: .9rem; background: #fff; box-shadow: 0 4px 20px rgb(24 20 69 / 4%); gap: .7rem; }
+.verble-shell .guess-history-toggle { min-height: 2rem; border-radius: .65rem; }
+.verble-shell .guess-history-toggle:focus-visible { outline: 2px solid #5a4ff3; outline-offset: 3px; }
+.verble-shell .guess-history-toggle:disabled { cursor: default; }
+.verble-shell .guess-history-heading { display: inline-flex; align-items: center; gap: .5rem; }
+.verble-shell .guess-history-title { color: #181445; font: 800 1rem/1.2 var(--font-outfit), sans-serif; letter-spacing: -.02em; text-transform: none; }
+.verble-shell .guess-history-count { display: inline-grid; place-items: center; min-width: 1.45rem; height: 1.45rem; border-radius: 999px; padding: 0 .25rem; background: #e3dfff; color: #4030da; font: 800 .72rem/1 var(--font-outfit), sans-serif; }
+.verble-shell .guess-history-toggle-icon { display: grid; place-items: center; width: 1.9rem; height: 1.9rem; border-radius: .65rem; background: #efebff; color: #4030da; }
+.verble-shell .guess-history-latest, .verble-shell .guess-history-item { border-radius: .85rem; background: #f6f2ff; padding: .65rem .75rem; color: #181445; font-family: var(--font-outfit), sans-serif; }
+.verble-shell .guess-history-item { background: #fbfaff; }
+.verble-shell .guess-history-wrap .attempt-label { color: #5a4ff3; font-family: var(--font-outfit), sans-serif; letter-spacing: .02em; }
+.verble-shell .guess-history-wrap .attempt-cell { border-radius: .45rem; font-family: var(--font-outfit), sans-serif; }
+.verble-shell .guess-history-wrap .attempt-cell.correct { background: #10b981; border-color: #10b981; box-shadow: 0 2px 0 #059669; }
+.verble-shell .guess-history-wrap .attempt-cell.present { background: #fbbf24; border-color: #fbbf24; color: #181445; box-shadow: 0 2px 0 #f59e0b; }
+.verble-shell .guess-history-wrap .attempt-cell.absent { background: #94a3b8; border-color: #94a3b8; box-shadow: 0 2px 0 #64748b; }
+
 .verble-shell .result-modal-backdrop { background: rgb(24 20 69 / 32%); backdrop-filter: blur(8px); }
 .verble-shell .result-modal-panel { border: 0; border-radius: 1.7rem; padding: 1rem 1.3rem; gap: .4rem; box-shadow: 0 22px 42px rgb(24 20 69 / 18%); font-family: var(--font-outfit), sans-serif; }
 .verble-shell .result-modal-panel.result-outcome-panel[data-outcome] { background: #fff; background-image: none; border: 0; box-shadow: 0 22px 42px rgb(24 20 69 / 18%); }

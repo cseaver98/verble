@@ -1719,22 +1719,28 @@ export default function VerbleGameClient({
               <button
                 type="button"
                 className="guess-history-toggle"
-                aria-expanded={isHistoryOpen}
-                aria-controls="verble-guess-history-panel"
+                aria-expanded={earlierAttempts.length > 0 ? isHistoryOpen : undefined}
+                aria-controls={earlierAttempts.length > 0 ? "verble-guess-history-panel" : undefined}
+                disabled={earlierAttempts.length === 0}
                 onClick={() => setIsHistoryOpen((value) => !value)}
               >
-                <span className="guess-history-title">Guess History</span>
-                <span className="guess-history-toggle-icon" aria-hidden="true">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                    <path
-                      d="M6 14 12 8l6 6"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
+                <span className="guess-history-heading">
+                  <span className="guess-history-title">Your guesses</span>
+                  <span className="guess-history-count" aria-hidden="true">{wordAttempts.length}</span>
                 </span>
+                {earlierAttempts.length > 0 ? (
+                  <span className="guess-history-toggle-icon" aria-hidden="true">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                      <path
+                        d="M6 14 12 8l6 6"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </span>
+                ) : null}
               </button>
               {latestAttempt ? (
                 <div className="guess-history-latest">
