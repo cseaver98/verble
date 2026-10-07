@@ -35,6 +35,7 @@ export async function POST(req: NextRequest) {
       isWin?: boolean;
       guessesUsed?: number;
       maxGuesses?: number;
+      solveDurationSeconds?: number | null;
       resultPayload?: Record<string, unknown>;
       metadata?: Record<string, unknown>;
     };
@@ -66,6 +67,7 @@ export async function POST(req: NextRequest) {
         isWin: body.isWin,
         guessesUsed: Number(body.guessesUsed),
         maxGuesses: Number(body.maxGuesses),
+        solveDurationSeconds: body.solveDurationSeconds,
         resultPayload: body.resultPayload ?? body.metadata ?? {},
         userId: user?.id ?? null,
         playerId,

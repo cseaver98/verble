@@ -5,6 +5,7 @@ import AccountLoginPanel from "../AccountLoginPanel";
 import ArcadeIcon, { type ArcadeIconName } from "../../components/ArcadeIcon";
 import { getAccountStats } from "@/lib/account-stats";
 import { createSupabaseServerClient } from "@/lib/supabase-auth/server";
+import { formatSolveTime } from "@/lib/solve-metrics";
 
 export const metadata: Metadata = {
   title: "Verble Stats",
@@ -42,6 +43,11 @@ export default async function AccountStatsPage() {
       </section>
 
       <section className="arcade-stats-panel"><div className="arcade-panel-heading"><div><h2>Your Verble breakdown</h2><p>How you play across daily and past puzzles</p></div></div><div className="arcade-breakdown-grid"><div><span>Daily played</span><strong>{stats.overall.dailyPlayed}</strong></div><div><span>Archive played</span><strong>{stats.overall.archivePlayed}</strong></div><div><span>Average guesses</span><strong>{formatAverage(stats.overall.averageGuesses)}</strong></div><div><span>Best solve</span><strong>{gameStats?.bestGuesses ?? "—"}</strong></div></div></section>
+
+      <section className="arcade-stats-panel"><div className="arcade-panel-heading"><div><h2>Solving pace</h2><p>Timed daily wins, measured from your first letter to your final guess</p></div><span className="arcade-panel-pill">{stats.overall.timedWins} timed</span></div>
+        <div className="arcade-breakdown-grid"><div><span>Average time</span><strong>{formatSolveTime(stats.overall.averageSolveSeconds)}</strong></div><div><span>Record time</span><strong>{formatSolveTime(stats.overall.recordSolveSeconds)}</strong></div><div><span>Latest standing</span><strong>{stats.overall.latestDailyStanding?.topPercent ? `Top ${stats.overall.latestDailyStanding.topPercent}%` : "—"}</strong></div><div><span>Players compared</span><strong>{stats.overall.latestDailyStanding?.cohortSize ?? "—"}</strong></div></div>
+        <p className="arcade-metric-note">{stats.overall.latestDailyStanding ? `Latest standing: ${stats.overall.latestDailyStanding.puzzleDate}. ` : ""}Standing compares timed wins on the same daily puzzle. Fewer guesses rank first; solve time breaks ties. Percentiles appear once five players qualify. Earlier results have no time.</p>
+      </section>
 
       <div className="arcade-stats-actions"><Link href="/" className="arcade-primary-link"><ArcadeIcon name="ticket" />{stats.overall.completedTodayCount ? "Review today's Verble" : "Play today's Verble"}</Link><Link href="/archive" className="arcade-secondary-link"><ArcadeIcon name="calendar" /> Past Days</Link></div>
     </main>

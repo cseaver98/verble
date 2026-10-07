@@ -15,6 +15,7 @@ type GameResultInput = {
   guessesUsed: number;
   maxGuesses: number;
   resultPayload?: Record<string, unknown>;
+  solveDurationSeconds?: number | null;
   userId?: string | null;
   playerId?: string | null;
   completedAt?: string;
@@ -33,6 +34,7 @@ type GameResultRow = {
   max_guesses: number;
   completed_at: string;
   result_payload: Record<string, unknown>;
+  solve_duration_seconds: number | null;
 };
 
 type Supabase = SupabaseClient;
@@ -56,6 +58,9 @@ const assertValidResultInput = (input: GameResultInput) => {
   }
   if (!Number.isInteger(input.maxGuesses) || input.maxGuesses <= 0) {
     throw new Error("Invalid maxGuesses");
+  }
+  if (input.solveDurationSeconds != null && (!Number.isInteger(input.solveDurationSeconds) || input.solveDurationSeconds < 1 || input.solveDurationSeconds > 86400)) {
+    throw new Error("Invalid solveDurationSeconds");
   }
 };
 
@@ -169,6 +174,7 @@ export const recordGameResult = async (input: GameResultInput) => {
     max_guesses: input.maxGuesses,
     completed_at: completedAt,
     result_payload: input.resultPayload ?? {},
+    solve_duration_seconds: input.solveDurationSeconds ?? existing?.solve_duration_seconds ?? null,
     updated_at: new Date().toISOString(),
   };
 

@@ -10,6 +10,7 @@ export type StoredGameResult = {
   maxGuesses: number;
   resultPayload: Record<string, unknown>;
   completedAt: string;
+  solveDurationSeconds: number | null;
 };
 
 export const fetchStoredGameResult = async ({

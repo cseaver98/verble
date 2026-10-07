@@ -8,6 +8,7 @@ export type RecordGameCompletionInput = {
   isWin: boolean;
   guessesUsed: number;
   maxGuesses: number;
+  solveDurationSeconds?: number | null;
   resultPayload?: Record<string, unknown>;
 };
 

@@ -2,6 +2,7 @@ import { dailyGames } from "@/lib/games";
 import { getTodayPuzzleDate } from "@/lib/puzzle-date";
 import { getSubscriptionAccess } from "@/lib/subscriptions";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
+import { getDailyStanding, type DailyStanding } from "@/lib/daily-standing";
 import {
   calculateBestCompletionStreak,
   calculateCurrentCompletionStreak,
@@ -10,6 +11,7 @@ import {
 
 type GameResultRow = {
   id: string;
+  puzzle_id: string;
   game_slug: string;
   puzzle_date: string;
   is_archive: boolean;
@@ -17,6 +19,7 @@ type GameResultRow = {
   guesses_used: number;
   max_guesses: number;
   completed_at: string;
+  solve_duration_seconds: number | null;
 };
 
 export type GameStats = {
@@ -50,6 +53,10 @@ export type AccountStats = {
     completedTodayCount: number;
     totalGamesToday: number;
     guessDistribution: number[];
+    averageSolveSeconds: number | null;
+    recordSolveSeconds: number | null;
+    timedWins: number;
+    latestDailyStanding: (DailyStanding & { puzzleDate: string }) | null;
   };
   games: GameStats[];
   entitlements: {
@@ -92,20 +99,23 @@ const summarizeGame = (gameSlug: string, gameName: string, rows: GameResultRow[]
 
 export async function getAccountStats(userId: string): Promise<AccountStats> {
   const subscriptionAccess = await getSubscriptionAccess(userId);
-  const { data, error } = await getSupabaseAdmin()
-    .schema("core")
-    .from("game_results")
-    .select("id,game_slug,puzzle_date,is_archive,is_win,guesses_used,max_guesses,completed_at")
-    .eq("user_id", userId)
-    .order("puzzle_date", { ascending: false })
-    .order("completed_at", { ascending: false })
-    .returns<GameResultRow[]>();
-
-  if (error) {
-    throw new Error(`Failed to load account stats: ${error.message}`);
+  const rows: GameResultRow[] = [];
+  const pageSize = 500;
+  for (let offset = 0; ; offset += pageSize) {
+    const { data, error } = await getSupabaseAdmin()
+      .schema("core")
+      .from("game_results")
+      .select("id,game_slug,puzzle_id,puzzle_date,is_archive,is_win,guesses_used,max_guesses,completed_at,solve_duration_seconds")
+      .eq("user_id", userId)
+      .order("puzzle_date", { ascending: false })
+      .order("completed_at", { ascending: false })
+      .order("id", { ascending: false })
+      .range(offset, offset + pageSize - 1)
+      .returns<GameResultRow[]>();
+    if (error) throw new Error(`Failed to load account stats: ${error.message}`);
+    rows.push(...(data ?? []));
+    if (!data || data.length < pageSize) break;
   }
-
-  const rows = data ?? [];
   const statsByGame = new Map<string, GameResultRow[]>();
   for (const row of rows) {
     const gameRows = statsByGame.get(row.game_slug) ?? [];
@@ -121,6 +131,12 @@ export async function getAccountStats(userId: string): Promise<AccountStats> {
   const wins = dailyRows.filter((row) => row.is_win).length;
   const dailyPlayed = dailyRows.length;
   const guesses = dailyRows.map((row) => row.guesses_used);
+  const timedWins = dailyRows.filter((row) => row.is_win && row.solve_duration_seconds !== null);
+  const timedSeconds = timedWins.map((row) => row.solve_duration_seconds!);
+  const latestTimedWin = timedWins[0];
+  const latestDailyStanding = latestTimedWin
+    ? { ...await getDailyStanding(latestTimedWin.puzzle_id, latestTimedWin.puzzle_date, latestTimedWin.guesses_used, latestTimedWin.solve_duration_seconds!), puzzleDate: latestTimedWin.puzzle_date }
+    : null;
   const completedTodayCount = new Set(
     rows
       .filter((row) => !row.is_archive && row.puzzle_date === today && dailyGames.some((game) => game.slug === row.game_slug))
@@ -143,6 +159,10 @@ export async function getAccountStats(userId: string): Promise<AccountStats> {
       completedTodayCount,
       totalGamesToday: dailyGames.length,
       guessDistribution: Array.from({ length: 6 }, (_, index) => dailyRows.filter((row) => row.is_win && row.guesses_used === index + 1).length),
+      averageSolveSeconds: timedSeconds.length ? Math.round(timedSeconds.reduce((sum, value) => sum + value, 0) / timedSeconds.length) : null,
+      recordSolveSeconds: timedSeconds.length ? Math.min(...timedSeconds) : null,
+      timedWins: timedSeconds.length,
+      latestDailyStanding,
     },
     games: gameStats,
     entitlements: {

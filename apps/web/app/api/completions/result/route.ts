@@ -14,6 +14,7 @@ type ResultRow = {
   max_guesses: number;
   result_payload: Record<string, unknown>;
   completed_at: string;
+  solve_duration_seconds: number | null;
 };
 
 export async function GET(request: NextRequest) {
@@ -35,7 +36,7 @@ export async function GET(request: NextRequest) {
     const query = supabase
       .schema("core")
       .from("game_results")
-      .select("game_slug,puzzle_id,puzzle_date,is_archive,is_win,guesses_used,max_guesses,result_payload,completed_at")
+      .select("game_slug,puzzle_id,puzzle_date,is_archive,is_win,guesses_used,max_guesses,result_payload,completed_at,solve_duration_seconds")
       .eq("game_slug", gameSlug)
       .eq("puzzle_id", puzzleId)
       .eq("puzzle_date", puzzleDate)
@@ -64,6 +65,7 @@ export async function GET(request: NextRequest) {
         maxGuesses: data.max_guesses,
         resultPayload: data.result_payload ?? {},
         completedAt: data.completed_at,
+        solveDurationSeconds: data.solve_duration_seconds,
       },
     });
   } catch (error) {
