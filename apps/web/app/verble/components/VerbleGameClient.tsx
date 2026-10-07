@@ -1456,16 +1456,6 @@ export default function VerbleGameClient({
   const statusChipLabel = shouldShowNextGameCountdown
     ? `Next Verble in ${nextGameCountdown || "--:--:--"}`
     : contextChipLabel;
-  const playPrompt = message || (
-    gameState !== "playing"
-      ? ""
-      : canOpenFullPhraseConfirm
-        ? "Full phrase filled. Press Enter to submit it."
-        : selectedSlotMeta
-          ? `Guess word #${selectedSlotMeta.index + 1}: ${selectedSlotMeta.length} letters.`
-          : "Tap any word to start guessing, or guess the full phrase if you know it."
-  );
-
   return (
     <div className="verble-shell">
       <MainNav label={navLabel} hideToday={hideToday} />
@@ -1720,7 +1710,7 @@ export default function VerbleGameClient({
             ))}
           </div>
 
-          <p className="message" data-kind={gameState === "won" ? "won" : gameState === "lost" ? "lost" : globalRevealState ? "hint" : "playing"}>{playPrompt}</p>
+          {message ? <p className="message" role="status" data-kind={gameState === "won" ? "won" : gameState === "lost" ? "lost" : globalRevealState ? "hint" : "playing"}>{message}</p> : null}
 
           {allSolved && gameState === "playing" ? <p className="message" data-kind="won">All words solved.</p> : null}
 
