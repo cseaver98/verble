@@ -277,10 +277,8 @@
 
 .verble-shell .slot-tile.reveal {
   --flip-start-bg: #fff;
-  --flip-start-border: #d8dce2;
   --flip-start-color: #2c2f31;
   --flip-end-bg: #fff;
-  --flip-end-border: #d8dce2;
   --flip-end-color: #2c2f31;
   animation: verble-tile-flip var(--flip-duration, 260ms) ease both;
   animation-delay: var(--flip-delay, 0ms);
@@ -319,25 +317,21 @@
 0% {
     transform: rotateX(0deg);
     background: var(--flip-start-bg);
-    border-color: var(--flip-start-border);
     color: var(--flip-start-color);
   }
 49% {
     transform: rotateX(-90deg);
     background: var(--flip-start-bg);
-    border-color: var(--flip-start-border);
     color: var(--flip-start-color);
   }
 50% {
     transform: rotateX(-90deg);
     background: var(--flip-end-bg);
-    border-color: var(--flip-end-border);
     color: var(--flip-end-color);
   }
 100% {
     transform: rotateX(0deg);
     background: var(--flip-end-bg);
-    border-color: var(--flip-end-border);
     color: var(--flip-end-color);
   }
 }

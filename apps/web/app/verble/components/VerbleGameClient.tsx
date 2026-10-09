@@ -160,15 +160,15 @@ const buildVerbleCompletionSnapshot = ({
 
 const getFlipVisual = (feedback: LetterFeedback | "empty") => {
   if (feedback === "correct") {
-    return { bg: "#10b981", border: "#059669", color: "#ffffff" };
+    return { bg: "#10b981", color: "#ffffff" };
   }
   if (feedback === "present") {
-    return { bg: "#fbbf24", border: "#f59e0b", color: "#181445" };
+    return { bg: "#fbbf24", color: "#181445" };
   }
   if (feedback === "absent") {
-    return { bg: "#94a3b8", border: "#64748b", color: "#ffffff" };
+    return { bg: "#94a3b8", color: "#ffffff" };
   }
-  return { bg: "#ffffff", border: "#e2e8f0", color: "#181445" };
+  return { bg: "#ffffff", color: "#181445" };
 };
 
 const buildDisplayedWordChars = (slot: Slot, letters: string[]): DisplayChar[] => {
@@ -1577,10 +1577,8 @@ export default function VerbleGameClient({
                                   item.kind === "letter" && activeRevealIndex
                                     ? ({
                                         "--flip-start-bg": flipStartVisual.bg,
-                                        "--flip-start-border": flipStartVisual.border,
                                         "--flip-start-color": flipStartVisual.color,
                                         "--flip-end-bg": flipEndVisual.bg,
-                                        "--flip-end-border": flipEndVisual.border,
                                         "--flip-end-color": flipEndVisual.color,
                                         "--flip-delay": `${
                                           slotRevealIndex
