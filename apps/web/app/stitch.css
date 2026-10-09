@@ -208,6 +208,9 @@ body {
 .arcade-result-actions svg { width: 1rem; height: 1rem; }
 .arcade-result-actions > .arcade-result-share { grid-column: 1 / -1; background: #5a4ff3; color: #fff; box-shadow: 0 3px 0 #4030da; text-transform: uppercase; }
 .verble-shell .guess-submit-btn, .verble-shell .admin-btn-like.primary { border-radius: .8rem; background: #5a4ff3; box-shadow: 0 4px 0 #4030da; font-family: var(--font-outfit), sans-serif; }
+.verble-shell .guess-submit-btn.phrase-guess-secondary { border: 1px solid #d6d0fb; background: #efebff; color: #3124a6; box-shadow: 0 3px 0 #d8d2f6; }
+.verble-shell .guess-submit-btn.phrase-guess-secondary:not(:disabled):hover { border-color: #bdb4f8; background: #e5e0ff; color: #25188d; }
+.verble-shell .guess-submit-btn.phrase-guess-secondary:focus-visible { outline: 2px solid #5a4ff3; outline-offset: 3px; }
 .verble-shell .admin-btn-like { border-radius: .8rem; font-family: var(--font-outfit), sans-serif; }
 
 .verble-shell .archive-card { padding: 1.4rem; }
