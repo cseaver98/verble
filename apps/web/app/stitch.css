@@ -213,7 +213,7 @@ body {
 .verble-shell .arcade-result-heading .result-modal-title { padding-right: 0; font-size: clamp(.98rem, 4.4vw, 2.1rem); line-height: 1.1; white-space: nowrap; text-align: left; }
 .verble-shell .result-modal-summary { justify-content: center; text-align: center; }
 .verble-shell .result-modal-answer { color: var(--arcade-violet); }
-.verble-shell .result-modal-phrase { justify-content: center; gap: .45rem .4rem; padding: .7rem; border-radius: 1.2rem; background: #f6f2ff; }
+.verble-shell .result-modal-phrase { justify-content: center; gap: .8rem .42rem; padding: .7rem; border-radius: 1.2rem; background: #f6f2ff; }
 .verble-shell .result-modal-phrase .slot-tile { width: clamp(1.4rem, 4vw, 2rem); height: clamp(1.7rem, 4.5vw, 2.15rem); }
 .verble-shell .result-modal-phrase .slot-tile { background: #10b981; border-color: #10b981; color: #fff; box-shadow: 0 3px 0 #059669; }
 .verble-shell .result-modal-actions { border-top: 0; }
@@ -349,6 +349,8 @@ body {
   .arcade-month-switcher h2 { min-width: 7.5rem; font-size: .93rem; }
   .verble-shell .result-modal-backdrop { padding: var(--arcade-modal-top-pad) 1rem calc(var(--arcade-mobile-nav-height) + 1rem); }
   .verble-shell .result-modal-panel { max-height: calc(100dvh - var(--arcade-mobile-nav-height) - var(--arcade-modal-top-pad) - 1rem); }
+  /* Scale word gaps with the result tiles so they keep the board's proportions. */
+  .verble-shell .result-modal-phrase { gap: clamp(.7rem, calc(1.52rem - 2.8vw), .92rem) clamp(.26rem, calc(.6rem - 1.25vw), .35rem); }
   .verble-shell .result-modal-summary .result-modal-subtitle { font-size: clamp(.78rem, 4.5vw, .9rem); line-height: 1.25; white-space: nowrap; }
   .arcade-modal-backdrop { padding-top: var(--arcade-modal-top-pad); padding-bottom: calc(var(--arcade-mobile-nav-height) + 1rem); }
   .arcade-modal-backdrop .arcade-modal-panel { max-height: calc(100dvh - var(--arcade-mobile-nav-height) - var(--arcade-modal-top-pad) - 1rem); overflow-y: auto; overscroll-behavior: contain; }
