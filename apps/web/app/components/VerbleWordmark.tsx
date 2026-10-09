@@ -10,7 +10,7 @@ export default function VerbleWordmark({
   plusClassName = "",
 }: VerbleWordmarkProps) {
   return (
-    <span className={`font-headline inline-flex items-baseline whitespace-nowrap font-black tracking-[-0.04em] text-[#4030da] ${className}`.trim()}>
+    <span className={`font-headline inline-flex items-baseline whitespace-nowrap font-black normal-case tracking-[-0.055em] text-[#4030da] ${className}`.trim()}>
       <span>Verble</span><span className="text-[#75b7a0]">.</span><span>fun</span>
       {plus ? (
         <span
