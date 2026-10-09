@@ -341,6 +341,7 @@ body {
   .verble-shell .guess-progress-chip { grid-column: 1 / -1; justify-self: end; }
   .verble-shell .game-meta-row { padding-bottom: 1.1rem; }
   .verble-shell .arcade-board { padding-inline: .55rem; }
+  .verble-shell .phrase-layout .slot-inline-fixed.apostrophe { top: clamp(-.93rem, calc(1.125rem - 7.5vw), -.55rem); }
   .verble-shell .phrase-layout.has-selected-word .slot-word-button.selected { --word-scale: 1.025; --word-pop-peak: 1.04; }
   .verble-shell .slot-tile { width: clamp(1.28rem, 7vw, 1.85rem); height: clamp(1.75rem, 8vw, 2.3rem); }
   .arcade-status-hint { display: none; }
