@@ -20,7 +20,7 @@ export default async function AccountStatsPage() {
   const supabase = await createSupabaseServerClient();
   const { data: { user } } = await supabase.auth.getUser();
 
-  if (!user) return <div className="verble-shell arcade-stats-shell"><MainNav label="" /><main className="arcade-stats-main"><div className="arcade-stats-intro"><p className="arcade-eyebrow">Your performance</p><h1>Verble Stats</h1><p>Keep your streak and results together.</p></div><AccountLoginPanel /></main></div>;
+  if (!user) return <div className="verble-shell arcade-stats-shell"><MainNav label="" /><main className="arcade-stats-main"><AccountLoginPanel /></main></div>;
 
   const stats = await getAccountStats(user.id);
   const gameStats = stats.games.find((game) => game.gameSlug === "verble");
