@@ -19,6 +19,32 @@ body {
 
 .font-headline { font-family: var(--font-outfit), sans-serif; }
 
+.arcade-dialog-close {
+  position: absolute;
+  top: .75rem;
+  right: .75rem;
+  z-index: 10;
+  display: inline-flex;
+  width: 2.5rem;
+  height: 2.5rem;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 0;
+  border-radius: .5rem;
+  background: transparent;
+  color: #595c5e;
+  font-family: var(--font-outfit), sans-serif;
+  font-size: 1.75rem;
+  font-weight: 400;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 150ms ease;
+}
+
+.arcade-dialog-close:hover { color: var(--arcade-ink); }
+.arcade-dialog-close:focus-visible { outline: 2px solid var(--arcade-violet); outline-offset: 2px; }
+
 .verble-shell {
   --background: #fcf8ff;
   --surface: #fff;

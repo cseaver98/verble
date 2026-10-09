@@ -1775,7 +1775,7 @@ export default function VerbleGameClient({
             onClick={(event) => event.stopPropagation()}
           >
             <button
-              className="result-modal-close"
+              className="arcade-dialog-close"
               type="button"
               onClick={() => setIsPhraseConfirmOpen(false)}
               aria-label="Close full phrase confirmation"
@@ -1831,7 +1831,7 @@ export default function VerbleGameClient({
           >
             <ResultOutcomeEffects didWin={gameState === "won"} />
             <button
-              className="result-modal-close"
+              className="arcade-dialog-close"
               type="button"
               onClick={() => setIsResultOpen(false)}
               aria-label="Close result dialog"

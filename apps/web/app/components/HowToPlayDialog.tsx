@@ -181,7 +181,7 @@ export default function HowToPlayDialog({ game, onClose }: HowToPlayDialogProps)
   return (
     <div className="result-modal-backdrop" onClick={onClose}>
       <section className={`result-modal-panel how-to-play-modal-panel tutorial-${game}`} role="dialog" aria-modal="true" aria-labelledby="how-to-play-title" aria-describedby="how-to-play-subtitle" onClick={(event) => event.stopPropagation()}>
-        <button className="result-modal-close" type="button" onClick={onClose} aria-label="Close how to play dialog">×</button>
+        <button className="arcade-dialog-close" type="button" onClick={onClose} aria-label="Close how to play dialog">×</button>
         <header className="tutorial-header">
           <h2 className="result-modal-title how-to-play-title" id="how-to-play-title">How to play Verble</h2>
           <p className="how-to-play-subtitle" id="how-to-play-subtitle">Solve the daily phrase one word at a time.</p>

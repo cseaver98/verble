@@ -157,7 +157,7 @@ export default function AuthDialog({
             type="button"
             onClick={onClose}
             aria-label="Close login dialog"
-            className="absolute right-4 top-4 inline-flex h-9 w-9 cursor-pointer items-center justify-center rounded-full bg-[#eff1f4] text-lg font-bold text-[#2c2f31] transition hover:bg-[#e0e3e6]"
+            className="arcade-dialog-close"
           >
             ×
           </button>

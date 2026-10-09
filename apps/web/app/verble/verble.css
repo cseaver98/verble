@@ -580,30 +580,6 @@
   gap: 0.55rem;
 }
 
-.verble-shell .result-modal-close {
-  position: absolute;
-  top: 0.55rem;
-  right: 0.55rem;
-  display: inline-flex;
-  height: 2.25rem;
-  width: 2.25rem;
-  align-items: center;
-  justify-content: center;
-  border-radius: 999px;
-  border: 1px solid var(--surface-container, var(--outline-soft));
-  background: var(--surface-container-lowest, var(--surface));
-  color: var(--foreground, var(--text));
-  font-size: 1.125rem;
-  font-weight: 700;
-  line-height: 1;
-  cursor: pointer;
-  transition: background-color 200ms ease;
-}
-
-.verble-shell .result-modal-close:hover {
-  background: var(--surface-container-high, var(--surface-high));
-}
-
 .verble-shell .result-modal-title {
   margin: 0;
   padding-right: 2.5rem;

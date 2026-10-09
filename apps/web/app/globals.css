@@ -254,7 +254,7 @@ body {
   pointer-events: none;
 }
 
-.result-outcome-panel .result-modal-close {
+.result-outcome-panel .arcade-dialog-close {
   z-index: 10;
 }
 
