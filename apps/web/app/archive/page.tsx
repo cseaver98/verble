@@ -3,14 +3,12 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import ArcadeIcon from "../components/ArcadeIcon";
-import ArchiveLockGate from "../components/ArchiveLockGate";
 import LockedArchiveTile from "../components/LockedArchiveTile";
 import useArchiveCompletionStatus from "../components/useArchiveCompletionStatus";
 import LoadingLabel from "../components/LoadingLabel";
 import MainNav from "../verble/components/MainNav";
 
 type ArchiveItem = { puzzleDate: string };
-type ArchiveAccess = { subscriptionsLaunched?: boolean; canAccessArchive?: boolean };
 type ArchiveFilter = "all" | "unplayed" | "solved";
 
 const formatDateLabel = (date: string): string => {
@@ -23,7 +21,6 @@ const formatDateLabel = (date: string): string => {
 export default function ArchivePage() {
   const [items, setItems] = useState<ArchiveItem[]>([]);
   const [lockEnabled, setLockEnabled] = useState(false);
-  const [archiveAccess, setArchiveAccess] = useState<ArchiveAccess | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [displayMonth, setDisplayMonth] = useState("");
@@ -42,7 +39,6 @@ export default function ArchivePage() {
         const latest = Array.isArray(payload.items) ? payload.items[0]?.puzzleDate : null;
         if (typeof latest === "string") setDisplayMonth(latest.slice(0, 7));
         setLockEnabled(Boolean(payload.lockEnabled));
-        setArchiveAccess(payload.archiveAccess ?? null);
       } catch (loadError) {
         if (!active) return;
         setError(loadError instanceof Error ? loadError.message : "Failed to load archive");
@@ -96,19 +92,10 @@ export default function ArchivePage() {
     const next = new Date(Date.UTC(year, month - 1 + delta, 1));
     setDisplayMonth(`${next.getUTCFullYear()}-${String(next.getUTCMonth() + 1).padStart(2, "0")}`);
   };
-  const isSubscriptionLocked = Boolean(archiveAccess?.subscriptionsLaunched && !archiveAccess.canAccessArchive);
-
   return (
     <div className="verble-shell">
       <MainNav label="" />
       <main className="container">
-        {isSubscriptionLocked ? (
-          <ArchiveLockGate
-            archiveHref="/"
-            backLabel="Back to games"
-            mode="subscription"
-          />
-        ) : (
         <section className="card legal-card archive-card arcade-archive-page">
           <div className="arcade-page-heading"><div><p className="arcade-eyebrow">Your Verble journey</p><h1 className="page-title">Past Days</h1><p className="page-subtle">Missed a phrase? Replay past daily challenges.</p></div><Link className="arcade-page-icon" href="/"><ArcadeIcon name="ticket" /> Today</Link></div>
           {loading ? <p className="page-subtle"><LoadingLabel text="Loading archive" /></p> : null}
@@ -134,7 +121,6 @@ export default function ArchivePage() {
             </>
           ) : null}
         </section>
-        )}
       </main>
     </div>
   );

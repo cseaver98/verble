@@ -1,6 +1,5 @@
 import { dailyGames } from "@/lib/games";
 import { getTodayPuzzleDate } from "@/lib/puzzle-date";
-import { getSubscriptionAccess } from "@/lib/subscriptions";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import { getDailyStanding, type DailyStanding } from "@/lib/daily-standing";
 import {
@@ -59,9 +58,6 @@ export type AccountStats = {
     latestDailyStanding: (DailyStanding & { puzzleDate: string }) | null;
   };
   games: GameStats[];
-  entitlements: {
-    advancedStats: boolean;
-  };
 };
 
 const roundRate = (value: number) => Math.round(value * 1000) / 1000;
@@ -98,7 +94,6 @@ const summarizeGame = (gameSlug: string, gameName: string, rows: GameResultRow[]
 };
 
 export async function getAccountStats(userId: string): Promise<AccountStats> {
-  const subscriptionAccess = await getSubscriptionAccess(userId);
   const rows: GameResultRow[] = [];
   const pageSize = 500;
   for (let offset = 0; ; offset += pageSize) {
@@ -165,8 +160,5 @@ export async function getAccountStats(userId: string): Promise<AccountStats> {
       latestDailyStanding,
     },
     games: gameStats,
-    entitlements: {
-      advancedStats: subscriptionAccess.canAccessPremiumStats,
-    },
   };
 }

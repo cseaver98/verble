@@ -1,13 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import VerbleWordmark from "../components/VerbleWordmark";
 import MainNav from "../verble/components/MainNav";
 import AccountLoginPanel from "./AccountLoginPanel";
 import ProfileForm from "./ProfileForm";
 import EmailPreferencesForm from "./EmailPreferencesForm";
 import SignOutButton from "./SignOutButton";
 import { getProfile } from "@/lib/account-profile";
-import { getSubscriptionAccess } from "@/lib/subscriptions";
 import { createSupabaseServerClient } from "@/lib/supabase-auth/server";
 
 export const metadata: Metadata = {
@@ -47,17 +45,11 @@ export default async function AccountPage() {
   }
 
   const profile = await getProfile(user.id);
-  const subscriptionAccess = await getSubscriptionAccess(user.id);
   const displayName = profile?.displayName ?? "Dabbler";
   const email = user.email ?? "Private email";
   const displayedEmail = isApplePrivateRelayEmail(email) ? "Private Apple relay email" : email;
   const createdAt = user.created_at ? new Intl.DateTimeFormat("en", { month: "long", day: "numeric", year: "numeric" }).format(new Date(user.created_at)) : "Unknown";
   const displayNameHeadingClass = getDisplayNameHeadingClass(displayName);
-  const plusStatusLabel = subscriptionAccess.flags.subscriptionsEnabled
-    ? subscriptionAccess.isSubscriber
-      ? "Active"
-      : "Coming soon"
-    : "Coming soon";
   const feedbackHref = `mailto:${supportEmail}?subject=${encodeURIComponent("Verble feedback or bug report")}`;
 
   return (
@@ -71,24 +63,11 @@ export default async function AccountPage() {
                 <h1 className={`font-headline w-full min-w-0 flex-1 break-words font-extrabold leading-tight text-[#2c2f31] ${displayNameHeadingClass}`}>
                   {displayName}
                 </h1>
-                <div className="grid w-full shrink-0 grid-cols-2 gap-2 sm:flex sm:w-auto sm:flex-col sm:items-end">
-                  {subscriptionAccess.canAccessSubscriberBadges ? (
-                    <div className="relative flex h-[4.35rem] w-full min-w-0 items-center justify-center overflow-hidden rounded-2xl border border-[#dec46f] bg-[linear-gradient(135deg,#fff8d2_0%,#f4c95d_36%,#fff1a6_58%,#b8860b_100%)] px-3 py-3 text-center shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_12px_28px_rgba(156,111,10,0.16)] sm:w-[12.5rem] sm:px-4">
-                      <div className="pointer-events-none absolute inset-y-0 left-1/4 w-8 rotate-12 bg-white/55 blur-md" />
-                      <div className="relative">
-                        <p className="whitespace-nowrap text-[0.6rem] font-extrabold uppercase tracking-[0.1em] text-[#7a5200] sm:text-xs sm:tracking-[0.14em]">Subscriber</p>
-                        <p className="mt-1 text-xs sm:text-base">
-                          <VerbleWordmark plus className="justify-center text-[1em]" />
-                        </p>
-                      </div>
-                    </div>
-                  ) : null}
-                  <div className="relative flex h-[4.35rem] w-full min-w-0 items-center justify-center overflow-hidden rounded-2xl border border-[#cfd5dc] bg-[linear-gradient(135deg,#ffffff_0%,#d9dee4_34%,#f8fafc_54%,#b8c0ca_100%)] px-3 py-3 text-center shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_12px_28px_rgba(44,47,49,0.08)] sm:w-[12.5rem] sm:px-4">
-                    <div className="pointer-events-none absolute inset-y-0 left-1/4 w-8 rotate-12 bg-white/45 blur-md" />
-                    <div className="relative">
+                <div className="relative flex h-[4.35rem] w-full shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-[#cfd5dc] bg-[linear-gradient(135deg,#ffffff_0%,#d9dee4_34%,#f8fafc_54%,#b8c0ca_100%)] px-3 py-3 text-center shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_12px_28px_rgba(44,47,49,0.08)] sm:w-[12.5rem] sm:px-4">
+                  <div className="pointer-events-none absolute inset-y-0 left-1/4 w-8 rotate-12 bg-white/45 blur-md" />
+                  <div className="relative">
                     <p className="whitespace-nowrap text-[0.6rem] font-extrabold uppercase tracking-[0.1em] text-[#75777a] sm:text-xs sm:tracking-[0.14em]">Member since</p>
                     <p className="mt-1 whitespace-nowrap text-xs font-extrabold text-[#2c2f31] sm:text-base">{createdAt}</p>
-                    </div>
                   </div>
                 </div>
               </div>
@@ -117,30 +96,6 @@ export default async function AccountPage() {
                 <div className="rounded-2xl bg-[#f5f6f9] px-4 py-3">
                   <p className="text-xs font-extrabold uppercase tracking-[0.14em] text-[#75777a]">Email</p>
                   <p className="mt-1 break-words text-base font-extrabold text-[#2c2f31]">{displayedEmail}</p>
-                </div>
-                <div className="rounded-2xl border border-[#d8dce2] bg-[#fdfefe] px-4 py-4">
-                  <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-                    <div>
-                      <p className="text-xs font-extrabold uppercase tracking-[0.14em] text-[#75777a]">Plan</p>
-                      <p className="mt-1 text-base font-extrabold text-[#2c2f31]">
-                        {subscriptionAccess.isSubscriber ? <VerbleWordmark plus className="text-base" /> : "Free"}
-                      </p>
-                      <p className="mt-2 text-sm font-semibold leading-relaxed text-[#595c5e]">
-                        {subscriptionAccess.flags.subscriptionsEnabled
-                          ? subscriptionAccess.isSubscriber
-                            ? <>Your account is ready for <VerbleWordmark plus className="text-[1em]" /> features as they launch.</>
-                            : <><VerbleWordmark plus className="text-[1em]" /> will unlock the Verble archive, premium stats, and account badges.</>
-                          : <><VerbleWordmark plus className="text-[1em]" /> is being prepared in the background. The Verble archive, premium stats, and badges are coming later.</>}
-                      </p>
-                    </div>
-                    <span className={`inline-flex shrink-0 items-center justify-center rounded-full px-3 py-1 text-xs font-extrabold uppercase tracking-[0.12em] ${
-                      subscriptionAccess.isSubscriber
-                        ? "bg-[#d1ffc7] text-[#114c15]"
-                        : "bg-[#eff1f4] text-[#595c5e]"
-                    }`}>
-                      {plusStatusLabel}
-                    </span>
-                  </div>
                 </div>
                 <EmailPreferencesForm
                   initialMarketingEmailOptIn={profile?.marketingEmailOptIn ?? false}

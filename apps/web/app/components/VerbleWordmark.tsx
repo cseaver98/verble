@@ -1,25 +1,13 @@
 type VerbleWordmarkProps = {
-  plus?: boolean;
   className?: string;
-  plusClassName?: string;
 };
 
 export default function VerbleWordmark({
-  plus = false,
   className = "",
-  plusClassName = "",
 }: VerbleWordmarkProps) {
   return (
     <span className={`font-headline inline-flex items-baseline whitespace-nowrap font-black normal-case tracking-[-0.055em] text-[#4030da] ${className}`.trim()}>
       <span>Verble</span><span className="text-[#75b7a0]">.</span><span>fun</span>
-      {plus ? (
-        <span
-          aria-label="plus"
-          className={`ml-[0.04em] inline-block translate-y-[-0.16em] text-[1.24em] leading-none text-[#b8860b] [-webkit-text-stroke:0.018em_rgba(184,134,11,0.72)] ${plusClassName}`.trim()}
-        >
-          +
-        </span>
-      ) : null}
     </span>
   );
 }

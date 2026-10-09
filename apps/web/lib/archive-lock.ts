@@ -1,6 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getSubscriptionAccess, getSubscriptionFeatureFlags } from "@/lib/subscriptions";
-import { createSupabaseServerClient } from "@/lib/supabase-auth/server";
 import { archiveOnlyGameSlugs } from "@/lib/games";
 
 export const ARCHIVE_UNLOCK_COOKIE = "verble_archive_game_one_unlock";
@@ -34,8 +32,6 @@ export const applyArchiveUnlockCookie = (response: NextResponse): NextResponse =
   return response;
 };
 
-export type ArchivePuzzleLockReason = "secret" | "subscription";
-
 export const createArchiveLockedResponse = () =>
   NextResponse.json(
     {
@@ -46,47 +42,7 @@ export const createArchiveLockedResponse = () =>
     { status: 423 },
   );
 
-export const createArchiveSubscriptionLockedResponse = () =>
-  NextResponse.json(
-    {
-      locked: true,
-      lockMode: "subscription",
-      lockTitle: "Verble+",
-      lockDescription: "The Verble archive is locked behind Verble+\nVerble+ is coming soon.",
-    },
-    { status: 423 },
-  );
-
-export async function getCurrentArchiveSubscriptionAccess(gameSlug?: string) {
-  if (gameSlug && archiveOnlyGameSlugs.has(gameSlug)) {
-    return {
-      subscriptionsLaunched: false,
-      canAccessArchive: true,
-      isSubscriber: false,
-    };
-  }
-
-  const flags = getSubscriptionFeatureFlags();
-  const supabase = await createSupabaseServerClient();
-  const { data: { user } } = await supabase.auth.getUser();
-
-  if (!user) {
-    return {
-      subscriptionsLaunched: flags.archiveSubscriptionsEnabled,
-      canAccessArchive: false,
-      isSubscriber: false,
-    };
-  }
-
-  const access = await getSubscriptionAccess(user.id);
-  return {
-    subscriptionsLaunched: access.flags.archiveSubscriptionsEnabled,
-    canAccessArchive: access.canAccessArchive,
-    isSubscriber: access.isSubscriber,
-  };
-}
-
-export async function getArchivePuzzleLockState({
+export function getArchivePuzzleLockState({
   request,
   archiveGameNumber,
   gameSlug,
@@ -95,31 +51,6 @@ export async function getArchivePuzzleLockState({
   archiveGameNumber?: number | null;
   gameSlug?: string;
 }) {
-  const archiveAccess = await getCurrentArchiveSubscriptionAccess(gameSlug);
-
-  if (archiveAccess.subscriptionsLaunched) {
-    return {
-      locked: !archiveAccess.canAccessArchive,
-      reason: archiveAccess.canAccessArchive ? null : "subscription" as ArchivePuzzleLockReason,
-    };
-  }
-
   const locked = isLockedArchiveGameNumber(archiveGameNumber, gameSlug) && !hasArchiveUnlockCookie(request);
-  return {
-    locked,
-    reason: locked ? "secret" as ArchivePuzzleLockReason : null,
-  };
-}
-
-export async function shouldLockArchivePuzzleRequest({
-  request,
-  archiveGameNumber,
-  gameSlug,
-}: {
-  request: Pick<NextRequest, "cookies">;
-  archiveGameNumber?: number | null;
-  gameSlug?: string;
-}) {
-  const lockState = await getArchivePuzzleLockState({ request, archiveGameNumber, gameSlug });
-  return lockState.locked;
+  return { locked };
 }

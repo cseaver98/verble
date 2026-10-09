@@ -26,15 +26,6 @@ const manrope = Manrope({
   subsets: ["latin"],
 });
 
-const subscriberBootScript = `
-try {
-  var isSubscriber = window.localStorage.getItem("verble:v1:is-subscriber") === "true";
-  document.documentElement.dataset.verbleSubscriber = isSubscriber ? "true" : "false";
-} catch (_) {
-  document.documentElement.dataset.verbleSubscriber = "false";
-}
-`;
-
 const isStagingEnvironment = (): boolean => process.env.NEXT_PUBLIC_APP_ENV === "staging";
 const twitterImageUrl = "/opengraph-image";
 const siteUrl = "https://verble.fun";
@@ -131,7 +122,6 @@ export default function RootLayout({
         />
       </head>
       <body className={`${plusJakartaSans.variable} ${manrope.variable} ${outfit.variable} antialiased`}>
-        <script dangerouslySetInnerHTML={{ __html: subscriberBootScript }} />
         <AuthStateStorageBoundary />
         <AnalyticsPageTracker />
         {children}

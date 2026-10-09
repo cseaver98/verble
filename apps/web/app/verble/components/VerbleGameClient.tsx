@@ -247,7 +247,7 @@ export default function VerbleGameClient({
   const { isHowToPlayOpen, openHowToPlay, closeHowToPlay } = useHowToPlayDialog("verble", Boolean(puzzle) && !loading);
   const [isPhraseConfirmOpen, setIsPhraseConfirmOpen] = useState(false);
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
-  const [archiveLock, setArchiveLock] = useState<{ title: string; description: string; mode?: "password" | "subscription" } | null>(null);
+  const [archiveLock, setArchiveLock] = useState<{ title: string; description: string } | null>(null);
   const [revealState, setRevealState] = useState<{
     slotIndex: number;
     letters: string[];
@@ -450,7 +450,6 @@ export default function VerbleGameClient({
             setArchiveLock({
               title: typeof payload.lockTitle === "string" ? payload.lockTitle : "Archive Game #1 is locked",
               description: typeof payload.lockDescription === "string" ? payload.lockDescription : "Enter the shared password to open this retired archive game.",
-              mode: payload.lockMode === "subscription" ? "subscription" : "password",
             });
             setError("");
           }
@@ -1433,7 +1432,7 @@ export default function VerbleGameClient({
       <div className="verble-shell">
         <MainNav label={navLabel} />
         <main className="container">
-          <ArchiveLockGate archiveHref={archiveHref} title={archiveLock.title} description={archiveLock.description} mode={archiveLock.mode} />
+          <ArchiveLockGate archiveHref={archiveHref} title={archiveLock.title} description={archiveLock.description} />
         </main>
       </div>
     );

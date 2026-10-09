@@ -36,7 +36,6 @@ export function VerbleNav({
               React.createElement("span", null, "Verble"),
               React.createElement("span", { className: "dd-brand-dot" }, "."),
               React.createElement("span", { className: "dd-brand-fun" }, "fun"),
-              React.createElement("span", { className: "dd-brand-plus", "aria-hidden": "true" }, "+"),
             ),
           ),
           subtitle

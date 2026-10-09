@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import {
   createArchiveLockedResponse,
-  createArchiveSubscriptionLockedResponse,
   getArchivePuzzleLockState,
 } from "../../../../../lib/archive-lock";
 import { getVerblePuzzleByDate } from "../../../../../lib/verble/puzzle-repository";
@@ -17,11 +16,9 @@ export async function GET(request: NextRequest) {
     if (!puzzle) {
       return NextResponse.json({ error: `No Verble puzzle scheduled for ${date}` }, { status: 404 });
     }
-    const lockState = await getArchivePuzzleLockState({ request, archiveGameNumber: puzzle.archiveGameNumber });
+    const lockState = getArchivePuzzleLockState({ request, archiveGameNumber: puzzle.archiveGameNumber });
     if (lockState.locked) {
-      return lockState.reason === "subscription"
-        ? createArchiveSubscriptionLockedResponse()
-        : createArchiveLockedResponse();
+      return createArchiveLockedResponse();
     }
 
     return NextResponse.json(puzzle);

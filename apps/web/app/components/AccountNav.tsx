@@ -14,17 +14,6 @@ type AccountUser = {
   email: string | null;
   displayName: string | null;
   avatarUrl: string | null;
-  subscription?: {
-    isSubscriber?: boolean;
-  };
-};
-
-const SUBSCRIBER_STORAGE_KEY = "verble:v1:is-subscriber";
-
-const publishSubscriberStatus = (isSubscriber: boolean) => {
-  document.documentElement.dataset.verbleSubscriber = isSubscriber ? "true" : "false";
-  window.localStorage.setItem(SUBSCRIBER_STORAGE_KEY, isSubscriber ? "true" : "false");
-  window.dispatchEvent(new CustomEvent("verble:subscription-status", { detail: { isSubscriber } }));
 };
 
 export default function AccountNav() {
@@ -44,19 +33,17 @@ export default function AccountNav() {
       if (!isMounted) return;
       if (!response?.ok) {
         setUser(null);
-        publishSubscriberStatus(false);
         setLoading(false);
         return;
       }
       const payload = await response.json().catch(() => ({ user: null }));
       setUser(payload.user ?? null);
-      publishSubscriberStatus(Boolean(payload.user?.subscription?.isSubscriber));
       setLoading(false);
     };
 
     void loadUser();
 
-    const { data: subscription } = supabase.auth.onAuthStateChange(() => {
+    const { data: authListener } = supabase.auth.onAuthStateChange(() => {
       void loadUser();
     });
     window.addEventListener("verble:profile-updated", loadUser);
@@ -64,7 +51,7 @@ export default function AccountNav() {
     return () => {
       isMounted = false;
       window.removeEventListener("verble:profile-updated", loadUser);
-      subscription.subscription.unsubscribe();
+      authListener.subscription.unsubscribe();
     };
   }, [supabase]);
 
@@ -92,7 +79,6 @@ export default function AccountNav() {
     clearLocalGameState();
     window.localStorage.setItem("verble:v1:viewer", "guest");
     await fetch("/api/player", { method: "DELETE" }).catch(() => null);
-    publishSubscriberStatus(false);
     setUser(null);
     setIsMenuOpen(false);
     router.replace("/");

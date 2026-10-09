@@ -4,14 +4,9 @@ import { useEffect } from "react";
 import { clearLocalGameState } from "@/lib/local-game-state";
 
 const VIEWER_STORAGE_KEY = "verble:v1:viewer";
-const SUBSCRIBER_STORAGE_KEY = "verble:v1:is-subscriber";
-
 type SessionResponse = {
   user?: {
     id?: string | null;
-    subscription?: {
-      isSubscriber?: boolean;
-    };
   } | null;
 };
 
@@ -26,11 +21,6 @@ export default function AuthStateStorageBoundary() {
       const payload = (await response.json().catch(() => ({ user: null }))) as SessionResponse;
       const nextViewer = payload.user?.id ? `user:${payload.user.id}` : "guest";
       const previousViewer = window.localStorage.getItem(VIEWER_STORAGE_KEY);
-      const isSubscriber = Boolean(payload.user?.subscription?.isSubscriber);
-
-      document.documentElement.dataset.verbleSubscriber = isSubscriber ? "true" : "false";
-      window.localStorage.setItem(SUBSCRIBER_STORAGE_KEY, isSubscriber ? "true" : "false");
-
       if (previousViewer && previousViewer !== nextViewer) {
         clearLocalGameState();
         window.localStorage.setItem(VIEWER_STORAGE_KEY, nextViewer);

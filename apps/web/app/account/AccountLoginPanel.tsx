@@ -18,7 +18,7 @@ export default function AccountLoginPanel() {
           Save your stats and streaks
         </h1>
         <p className="mx-auto mt-4 max-w-xl text-base font-semibold leading-relaxed text-[#595c5e] sm:text-lg">
-          Create a free account to keep your progress across devices and unlock your <VerbleWordmark className="text-[1em]" /> stats.
+          Create an account to keep your progress across devices and unlock your <VerbleWordmark className="text-[1em]" /> stats.
         </p>
         <button
           type="button"
