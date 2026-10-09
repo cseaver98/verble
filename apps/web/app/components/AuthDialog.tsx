@@ -194,7 +194,7 @@ export default function AuthDialog({
           <button
             type="submit"
             disabled={loadingProvider !== null}
-            className="font-headline h-12 cursor-pointer rounded-full bg-[#2f672d] px-4 text-sm font-extrabold text-[#d1ffc7] transition hover:bg-[#225b22] disabled:cursor-wait disabled:opacity-70"
+            className="font-headline h-12 cursor-pointer rounded-full bg-[#5a4ff3] px-4 text-sm font-extrabold text-white shadow-[0_3px_0_#4030da] transition hover:bg-[#4030da] hover:shadow-[0_3px_0_#2d20b0] disabled:cursor-wait disabled:opacity-70"
           >
             {loadingProvider === "email" ? "Sending link..." : "Send login link"}
           </button>
