@@ -4,7 +4,22 @@ export type ArcadeIconName = "menu" | "calendar" | "stats" | "profile" | "ticket
 
 const paths: Record<ArcadeIconName, React.ReactNode> = {
   menu: <><path d="M4 6h16M4 12h16M4 18h16" /></>,
-  calendar: <><rect x="3" y="5" width="18" height="16" rx="2" /><path d="M7 3v4M17 3v4M3 10h18M7 14h2M12 14h2M7 18h2" /></>,
+  calendar: <>
+    <rect x="2.4" y="4" width="19.2" height="17.6" rx="1.6" strokeWidth="1.7" />
+    <path d="M2.4 9h19.2M7.2 2.4v3.2M16.8 2.4v3.2" strokeWidth="1.7" />
+    <circle cx="12" cy="12" r=".8" fill="currentColor" stroke="none" />
+    <circle cx="15.2" cy="12" r=".8" fill="currentColor" stroke="none" />
+    <circle cx="18.4" cy="12" r=".8" fill="currentColor" stroke="none" />
+    <circle cx="5.6" cy="15.2" r=".8" fill="currentColor" stroke="none" />
+    <circle cx="8.8" cy="15.2" r=".8" fill="currentColor" stroke="none" />
+    <circle cx="12" cy="15.2" r=".8" fill="currentColor" stroke="none" />
+    <circle cx="15.2" cy="15.2" r=".8" fill="currentColor" stroke="none" />
+    <circle cx="18.4" cy="15.2" r=".8" fill="currentColor" stroke="none" />
+    <circle cx="5.6" cy="18.4" r=".8" fill="currentColor" stroke="none" />
+    <circle cx="8.8" cy="18.4" r=".8" fill="currentColor" stroke="none" />
+    <circle cx="12" cy="18.4" r=".8" fill="currentColor" stroke="none" />
+    <circle cx="15.2" cy="18.4" r=".8" fill="currentColor" stroke="none" />
+  </>,
   stats: <><path d="M3 20V11h4v9M10 20V4h4v16M17 20v-7h4v7M2 20h20" /></>,
   profile: <><circle cx="12" cy="8" r="3.2" /><path d="M5 20v-2a7 7 0 0 1 14 0v2H5Z" /></>,
   ticket: <><path d="M4 4h16v5a3 3 0 0 0 0 6v5H4v-5a3 3 0 0 0 0-6V4Z" /><path d="M12 4v3M12 10v4M12 17v3" /></>,
