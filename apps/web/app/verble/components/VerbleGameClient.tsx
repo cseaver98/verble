@@ -1838,10 +1838,12 @@ export default function VerbleGameClient({
             >
               ×
             </button>
-            <div className="arcade-result-emblem" aria-hidden="true">{gameState === "won" ? "✦" : "↻"}</div>
-            <h2 className="result-modal-title" id="verble-result-title">
-              {resultLabel}
-            </h2>
+            <div className="arcade-result-heading">
+              <div className="arcade-result-emblem" aria-hidden="true">{gameState === "won" ? "✦" : "↻"}</div>
+              <h2 className="result-modal-title" id="verble-result-title">
+                {resultLabel}
+              </h2>
+            </div>
             <div className="result-modal-summary">
               <p className="result-modal-copy result-modal-subtitle">{isArchiveView ? "Archive" : "Daily"} Verble #{puzzle.archiveGameNumber ?? "—"} · <strong>{guessesUsed}/{maxGuesses} attempts</strong></p>
             </div>
