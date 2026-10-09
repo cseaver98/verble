@@ -8,7 +8,7 @@ export const metadata = buildGameMetadata("verble");
 
 export default async function HomePage() {
   const access = await getAccountAccess("verble");
-  const game = <VerbleGameClient apiUrl="/api/verble/puzzle/today" navLabel="" hideToday lockDailyCompletion />;
+  const game = <VerbleGameClient apiUrl="/api/verble/puzzle/today" navLabel="" lockDailyCompletion />;
 
   return (
     <>

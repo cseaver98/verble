@@ -24,7 +24,6 @@ import { formatSolveTime, getSolveDurationSeconds } from "../../../lib/solve-met
 type VerbleGameClientProps = {
   apiUrl: string;
   navLabel?: string;
-  hideToday?: boolean;
   archiveHref?: string;
   storagePrefix?: string;
   completionPrefix?: string;
@@ -218,7 +217,6 @@ const getPerformanceLabel = (didWin: boolean, attemptsUsed: number, maxGuesses: 
 export default function VerbleGameClient({
   apiUrl,
   navLabel = "Verble",
-  hideToday = false,
   archiveHref = "/archive",
   storagePrefix = "verble:v1:today",
   completionPrefix = "verble:v1:completed",
@@ -1403,7 +1401,7 @@ export default function VerbleGameClient({
   if (loading) {
     return (
       <div className="verble-shell">
-        <MainNav label={navLabel} hideToday={hideToday} />
+        <MainNav label={navLabel} />
         <main className="container">
           <section className="card legal-card">
             <p className="page-title" role="status"><LoadingLabel text="Loading puzzle" /></p>
@@ -1416,7 +1414,7 @@ export default function VerbleGameClient({
   if (archiveLock) {
     return (
       <div className="verble-shell">
-        <MainNav label={navLabel} hideToday={hideToday} />
+        <MainNav label={navLabel} />
         <main className="container">
           <ArchiveLockGate archiveHref={archiveHref} title={archiveLock.title} description={archiveLock.description} mode={archiveLock.mode} />
         </main>
@@ -1427,7 +1425,7 @@ export default function VerbleGameClient({
   if (error || !puzzle) {
     return (
       <div className="verble-shell">
-        <MainNav label={navLabel} hideToday={hideToday} />
+        <MainNav label={navLabel} />
         <main className="container">
           <VerbleUnavailable
             title="Verble unavailable"
@@ -1447,7 +1445,7 @@ export default function VerbleGameClient({
     : contextChipLabel;
   return (
     <div className="verble-shell">
-      <MainNav label={navLabel} hideToday={hideToday} />
+      <MainNav label={navLabel} />
       <main className="container">
         <section className="card verble-card">
           <div className="game-meta-row">

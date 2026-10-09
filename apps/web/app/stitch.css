@@ -62,7 +62,7 @@ body {
   --dd-menu-hover-bg: #efebff;
   font-family: var(--font-outfit), sans-serif;
   background: #fcf8ff;
-  padding-bottom: 6rem;
+  padding-bottom: 1.5rem;
 }
 
 .verble-shell .dd-nav,
@@ -97,9 +97,26 @@ body {
 .arcade-account-trigger svg { width: 1.35rem; height: 1.35rem; }
 .arcade-account-loading { width: 2.45rem; overflow: hidden; color: #777587; background: #efebff; font-size: 0; }
 .arcade-account-trigger:hover { background: #5a4ff3; }
-.verble-shell .menu-toggle-btn { width: 2.65rem; height: 2.65rem; border-radius: .75rem; color: var(--arcade-ink); }
-.verble-shell .menu-toggle-btn:hover { background: #efebff; color: var(--arcade-violet); }
-.nav-menu .nav-menu-close { width: 2.5rem; height: 2.5rem; border: 0; border-radius: .5rem; background: transparent; color: #595c5e; font-family: var(--font-outfit), sans-serif; font-size: 1.75rem; font-weight: 400; }
+
+.arcade-site-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width: min(1120px, calc(100% - 2rem));
+  margin: 0 auto;
+  padding: 1.25rem 0 2rem;
+  border-top: 1px solid #e9e5f2;
+  color: #626078;
+  font: 600 .78rem/1.4 var(--font-outfit), sans-serif;
+}
+.arcade-site-footer nav { display: flex; align-items: center; gap: 1.25rem; }
+.arcade-site-footer a { color: inherit; text-decoration: none; transition: color 160ms ease; }
+.arcade-site-footer a:hover, .arcade-site-footer a:focus-visible { color: var(--arcade-violet); }
+
+@media (max-width: 720px) {
+  .arcade-site-footer { padding-bottom: calc(var(--arcade-mobile-nav-height) + 1.25rem); }
+}
 
 .arcade-bottom-nav {
   display: none;
@@ -337,13 +354,13 @@ body {
 .arcade-account-main form button[type="submit"], .arcade-account-main #email-preferences button { background: #5a4ff3; color: #fff; border-radius: .85rem; box-shadow: 0 3px 0 #4030da; }
 .arcade-account-main form input:focus { border-color: #5a4ff3; --tw-ring-color: rgb(195 192 255 / 45%); }
 
-:where(.arcade-bottom-nav a, .arcade-result-actions > *, .arcade-stats-actions a, .arcade-page-icon, .arcade-replay-card, .arcade-month-switcher button, .arcade-archive-filters button, .arcade-account-menu a, .nav-menu .nav-menu-item, .nav-menu .nav-menu-archive-link, .nav-menu .nav-menu-legal-link) {
+:where(.arcade-bottom-nav a, .arcade-result-actions > *, .arcade-stats-actions a, .arcade-page-icon, .arcade-replay-card, .arcade-month-switcher button, .arcade-archive-filters button, .arcade-account-menu a) {
   transition: background-color 160ms ease, color 160ms ease, box-shadow 160ms ease;
 }
 
 @media (hover: hover) and (pointer: fine) {
-  :is(.arcade-nav-icon, .arcade-bottom-nav a, .arcade-result-actions > a, .arcade-page-icon, .arcade-month-switcher button:not(:disabled), .arcade-archive-filters button:not([aria-pressed="true"]), .arcade-replay-card, .arcade-stats-actions .arcade-secondary-link, .arcade-account-menu a, .arcade-account-main a[href="/"], .nav-menu .nav-menu-item, .nav-menu .nav-menu-archive-link, .nav-menu .nav-menu-legal-link, .nav-menu .nav-menu-close):hover,
-  .verble-shell :is(.menu-toggle-btn, .how-to-play-btn, .arcade-clear-button:not(:disabled), .archive-tile:not(.is-locked)):hover {
+  :is(.arcade-nav-icon, .arcade-bottom-nav a, .arcade-result-actions > a, .arcade-page-icon, .arcade-month-switcher button:not(:disabled), .arcade-archive-filters button:not([aria-pressed="true"]), .arcade-replay-card, .arcade-stats-actions .arcade-secondary-link, .arcade-account-menu a, .arcade-account-main a[href="/"]):hover,
+  .verble-shell :is(.how-to-play-btn, .arcade-clear-button:not(:disabled), .archive-tile:not(.is-locked)):hover {
     background: var(--arcade-hover-bg);
     color: var(--arcade-violet);
   }
@@ -395,7 +412,7 @@ body {
   .verble-shell .arcade-result-heading .result-modal-title { font-size: clamp(1.1rem, 5.8vw, 2.1rem); letter-spacing: -.04em; }
   .verble-shell .result-outcome-panel[data-outcome="win"] .arcade-result-heading .result-modal-title { font-size: clamp(1.4rem, 7.2vw, 2.1rem); }
   .verble-shell .arcade-result-heading .arcade-result-emblem { width: 2.15rem; height: 2.15rem; border-radius: .72rem; font-size: 1.35rem; }
-  .verble-shell .arcade-nav-icon, .verble-shell .menu-toggle-btn { width: 2.35rem; height: 2.35rem; }
+  .verble-shell .arcade-nav-icon { width: 2.35rem; height: 2.35rem; }
   .verble-shell .dd-nav-left-content { gap: 0; }
   .verble-shell .game-meta-row { grid-template-columns: minmax(0, 1fr) auto auto; gap: .25rem; }
   .verble-shell .arcade-game-chip { min-width: 0; overflow: hidden; padding-inline: .45rem; letter-spacing: .01em; }

@@ -11,6 +11,7 @@ import "./desktop-game-layout.css";
 import AuthStateStorageBoundary from "./components/AuthStateStorageBoundary";
 import AnalyticsPageTracker from "./components/AnalyticsPageTracker";
 import BottomNav from "./components/BottomNav";
+import SiteFooter from "./components/SiteFooter";
 import "./stitch.css";
 
 const outfit = Outfit({ variable: "--font-outfit", subsets: ["latin"] });
@@ -134,6 +135,7 @@ export default function RootLayout({
         <AuthStateStorageBoundary />
         <AnalyticsPageTracker />
         {children}
+        <SiteFooter />
         <BottomNav />
         <Analytics />
         <SpeedInsights />
