@@ -4,17 +4,11 @@ import { FormEvent, KeyboardEvent, useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import type { AuthError } from "@supabase/supabase-js";
 import { createSupabaseBrowserClient } from "@/lib/supabase-auth/client";
-import { trackEvent, trackEventOnce } from "@/lib/analytics-client";
+import { trackEvent } from "@/lib/analytics-client";
 
 type AuthDialogProps = {
   isOpen: boolean;
   onClose: () => void;
-  mode?: "login" | "gate";
-  title?: string;
-  subtitle?: string;
-  dismissible?: boolean;
-  backHref?: string;
-  backLabel?: string;
 };
 
 const getRedirectTo = () => {
@@ -44,12 +38,6 @@ const stopEditableKeyPropagation = (event: KeyboardEvent<HTMLElement>) => {
 export default function AuthDialog({
   isOpen,
   onClose,
-  mode = "login",
-  title: titleOverride,
-  subtitle: subtitleOverride,
-  dismissible = true,
-  backHref,
-  backLabel = "Back to hub",
 }: AuthDialogProps) {
   const supabase = useMemo(() => createSupabaseBrowserClient(), []);
   const [portalRoot, setPortalRoot] = useState<HTMLElement | null>(null);
@@ -76,11 +64,6 @@ export default function AuthDialog({
       document.body.style.overflow = previousOverflow;
     };
   }, [isOpen]);
-
-  useEffect(() => {
-    if (!isOpen || mode !== "gate") return;
-    trackEventOnce("account-wall-shown", { eventName: "account_wall_shown" });
-  }, [isOpen, mode]);
 
   if (!portalRoot || !isOpen) return null;
 
@@ -132,17 +115,10 @@ export default function AuthDialog({
     setLoadingProvider(null);
   };
 
-  const title = titleOverride ?? "Log in or create an account";
-  const subtitle =
-    subtitleOverride ??
-    (mode === "gate"
-      ? "You have completed your free games. Log in to keep playing and save your stats."
-      : "Save your stats, streaks, and progress across devices.");
-
   return createPortal(
     <div
       className="arcade-modal-backdrop fixed inset-0 z-[100] flex items-center justify-center bg-[#2c2f31]/45 px-4 backdrop-blur-sm"
-      onClick={dismissible ? onClose : undefined}
+      onClick={onClose}
     >
       <section
         className="arcade-modal-panel relative w-full max-w-md rounded-[2rem] border border-[#d8dce2] bg-white p-6 shadow-[0_28px_80px_rgba(44,47,49,0.22)]"
@@ -152,23 +128,21 @@ export default function AuthDialog({
         onClick={(event) => event.stopPropagation()}
         onKeyDown={stopEditableKeyPropagation}
       >
-        {dismissible ? (
-          <button
-            type="button"
-            onClick={onClose}
-            aria-label="Close login dialog"
-            className="arcade-dialog-close"
-          >
-            ×
-          </button>
-        ) : null}
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label="Close login dialog"
+          className="arcade-dialog-close"
+        >
+          ×
+        </button>
 
-        <div className={`mb-6 ${dismissible ? "pr-8" : ""}`}>
+        <div className="mb-6 pr-8">
           <p className="dd-brand-word mb-2 inline-block !text-xl">Verble<span className="dd-brand-dot">.</span>fun</p>
           <h2 id="auth-dialog-title" className="font-headline text-3xl font-extrabold leading-tight text-[#2c2f31]">
-            {title}
+            Log in or create an account
           </h2>
-          <p className="mt-3 text-base font-semibold leading-relaxed text-[#595c5e]">{subtitle}</p>
+          <p className="mt-3 text-base font-semibold leading-relaxed text-[#595c5e]">Save your stats, streaks, and progress across devices.</p>
         </div>
 
         <div className="grid gap-3">
@@ -228,14 +202,6 @@ export default function AuthDialog({
 
         {message ? <p className="mt-4 text-sm font-bold text-[#2f672d]">{message}</p> : null}
         {error ? <p className="mt-4 text-sm font-bold text-[#b02500]">{error}</p> : null}
-        {backHref ? (
-          <a
-            href={backHref}
-            className="mt-5 inline-flex w-full items-center justify-center text-sm font-bold text-[#595c5e] underline decoration-[#abadb0] underline-offset-4 transition hover:text-[#2c2f31]"
-          >
-            {backLabel}
-          </a>
-        ) : null}
       </section>
     </div>,
     portalRoot,

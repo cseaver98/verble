@@ -7,7 +7,6 @@ export const analyticsEventNames = [
   "game_completed",
   "next_game_clicked",
   "result_shared",
-  "account_wall_shown",
   "signup_started",
   "signup_completed",
   "reminder_prompt_shown",

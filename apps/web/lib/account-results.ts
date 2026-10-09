@@ -1,10 +1,7 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { allowedGameSlugs } from "@/lib/games";
 import { getOrCreatePlayerId } from "@/lib/player-id";
-import { getTodayPuzzleDate } from "@/lib/puzzle-date";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
-
-export const GUEST_COMPLETION_LIMIT = 3;
 
 type GameResultInput = {
   gameSlug: string;
@@ -192,95 +189,6 @@ export const recordGameResult = async (input: GameResultInput) => {
   }
 
   return data;
-};
-
-export const getGuestCompletionCount = async (playerId?: string | null) => {
-  const supabase = getAccountSupabaseAdmin();
-  const resolvedPlayerId = playerId || await ensureGuestPlayer({ supabase });
-  const today = getTodayPuzzleDate();
-
-  const { data: resultRows, error } = await supabase
-    .schema("core")
-    .from("game_results")
-    .select("game_slug")
-    .eq("player_id", resolvedPlayerId)
-    .eq("puzzle_date", today)
-    .eq("is_archive", false)
-    .returns<Array<{ game_slug: string }>>();
-
-  if (error) {
-    throw new Error(`Failed to count guest completions: ${error.message}`);
-  }
-
-  const { data: legacyRows, error: legacyError } = await supabase
-    .schema("core")
-    .from("completions")
-    .select("game_slug")
-    .eq("player_id", resolvedPlayerId)
-    .eq("puzzle_date", today)
-    .returns<Array<{ game_slug: string }>>();
-
-  if (legacyError) {
-    throw new Error(`Failed to count legacy guest completions: ${legacyError.message}`);
-  }
-
-  const completedGameSlugs = new Set([
-    ...(resultRows ?? []).map((row) => row.game_slug),
-    ...(legacyRows ?? []).map((row) => row.game_slug),
-  ].filter((gameSlug) => allowedGameSlugs.has(gameSlug)));
-  const count = completedGameSlugs.size;
-
-  return { playerId: resolvedPlayerId, count, limit: GUEST_COMPLETION_LIMIT, locked: count >= GUEST_COMPLETION_LIMIT };
-};
-
-export const hasGuestTodayCompletion = async ({
-  playerId,
-  gameSlug,
-  puzzleDate,
-}: {
-  playerId: string;
-  gameSlug: string;
-  puzzleDate: string;
-}) => {
-  if (!allowedGameSlugs.has(gameSlug)) {
-    return false;
-  }
-
-  assertValidDate(puzzleDate);
-
-  const supabase = getAccountSupabaseAdmin();
-  const { data: resultRow, error: resultError } = await supabase
-    .schema("core")
-    .from("game_results")
-    .select("id")
-    .eq("player_id", playerId)
-    .eq("game_slug", gameSlug)
-    .eq("puzzle_date", puzzleDate)
-    .eq("is_archive", false)
-    .maybeSingle<{ id: string }>();
-
-  if (resultError) {
-    throw new Error(`Failed to read today game result: ${resultError.message}`);
-  }
-
-  if (resultRow) {
-    return true;
-  }
-
-  const { data: completionRow, error: completionError } = await supabase
-    .schema("core")
-    .from("completions")
-    .select("player_id")
-    .eq("player_id", playerId)
-    .eq("game_slug", gameSlug)
-    .eq("puzzle_date", puzzleDate)
-    .maybeSingle<{ player_id: string }>();
-
-  if (completionError) {
-    throw new Error(`Failed to read today completion: ${completionError.message}`);
-  }
-
-  return Boolean(completionRow);
 };
 
 export const claimGuestResultsForUser = async ({

@@ -1,18 +1,13 @@
 import VerbleGameClient from "./verble/components/VerbleGameClient";
-import GameAccountGate from "./components/GameAccountGate";
 import GameSeoContent from "./components/GameSeoContent";
-import { getAccountAccess } from "@/lib/account-access";
 import { buildGameMetadata } from "@/lib/game-seo";
 
 export const metadata = buildGameMetadata("verble");
 
-export default async function HomePage() {
-  const access = await getAccountAccess("verble");
-  const game = <VerbleGameClient apiUrl="/api/verble/puzzle/today" navLabel="" lockDailyCompletion />;
-
+export default function HomePage() {
   return (
     <>
-      {access.locked ? <GameAccountGate gameName="Verble">{game}</GameAccountGate> : game}
+      <VerbleGameClient apiUrl="/api/verble/puzzle/today" navLabel="" lockDailyCompletion />
       <GameSeoContent slug="verble" />
     </>
   );
