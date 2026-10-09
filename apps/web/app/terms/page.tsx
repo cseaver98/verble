@@ -1,6 +1,5 @@
+import Link from "next/link";
 import MainNav from "../verble/components/MainNav";
-
-const legalContactEmail = "support@verble.fun";
 
 export default function TermsPage() {
   return (
@@ -9,47 +8,29 @@ export default function TermsPage() {
       <main className="min-h-screen bg-transparent px-5 pb-12 text-[#2c2f31] sm:px-8">
         <section className="mx-auto mt-6 max-w-4xl rounded-[2rem] bg-white p-8 shadow-[0_20px_40px_rgba(44,47,49,0.06)] sm:p-10">
           <h1 className="font-headline text-3xl font-extrabold text-[#2c2f31]">Terms of Use</h1>
-          <p className="mt-2 text-sm text-[#595c5e]">Last updated March 26, 2026.</p>
+          <p className="mt-2 text-sm text-[#595c5e]">Last updated October 9, 2026.</p>
 
           <div className="mt-6 space-y-4 text-[15px] leading-7 text-[#3e4245]">
+            <p>By using Verble, you agree to these terms and our <Link href="/privacy" className="underline underline-offset-2">Privacy Policy</Link>.</p>
+
+            <h2 className="font-headline pt-2 text-xl font-bold text-[#2c2f31]">Playing Verble</h2>
             <p>
-              Verble and its games are provided for entertainment and informational use. By using any
-              Verble site, you agree not to misuse the service, interfere with operations, or attempt abusive
-              scraping, automation, or other disruptive behavior.
-            </p>
-            <p>
-              We may add, remove, or change puzzles, schedules, game mechanics, and features at any time. Some account,
-              login, or cross-device features may be available now or introduced over time, and continued use of the
-              service remains subject to these terms and our privacy policy.
-            </p>
-            <p>
-              Verble includes original game logic, curation, and editorial content. Third-party names, images,
-              and references remain the property of their respective rights holders.
+              Verble is a daily phrase game for entertainment. Please do not interfere with the game, misuse an
+              account, or attempt to disrupt the service. We may restrict access when needed to protect Verble or its
+              players.
             </p>
 
-            <h2 className="font-headline pt-2 text-xl font-bold text-[#2c2f31]">Use Of The Service</h2>
-            <ul className="list-disc space-y-2 pl-5">
-              <li>Daily games, archive games, and account-related features may differ from one another and may change over time.</li>
-              <li>Some parts of the service may rely on curated editorial context, reference material, and third-party source material.</li>
-              <li>Archive access, unlock flows, and past scheduled content may not match the current day experience.</li>
-            </ul>
-
-            <h2 className="font-headline pt-2 text-xl font-bold text-[#2c2f31]">Accounts And Access</h2>
+            <h2 className="font-headline pt-2 text-xl font-bold text-[#2c2f31]">Content and availability</h2>
             <p>
-              If login or account features are offered, you are responsible for your access methods and for using those
-              features lawfully. We may suspend or restrict access to protect the service, users, or our systems.
+              Verble&apos;s design, game, and original content belong to Verble. We may change puzzles, features, or
+              availability at any time. The service is provided as available, without a guarantee that it will always
+              be uninterrupted or error-free.
             </p>
 
-            <h2 className="font-headline pt-2 text-xl font-bold text-[#2c2f31]">Intellectual Property And Claims</h2>
+            <h2 className="font-headline pt-2 text-xl font-bold text-[#2c2f31]">Contact</h2>
             <p>
-              If you believe content on Verble infringes your rights, contact {legalContactEmail} with the URL,
-              ownership claim, and requested action.
-            </p>
-
-            <h2 className="font-headline pt-2 text-xl font-bold text-[#2c2f31]">Disclaimer</h2>
-            <p>
-              Verble is provided as-is and as-available, without warranties of uninterrupted availability,
-              accuracy, or fitness for a specific purpose.
+              For questions or concerns about these terms or Verble content, email
+              {" "}<a href="mailto:support@verble.fun" className="underline underline-offset-2">support@verble.fun</a>.
             </p>
           </div>
         </section>
