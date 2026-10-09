@@ -1351,17 +1351,6 @@ export default function VerbleGameClient({
     if (result === "failed") setCopyStatus("Share failed");
   };
 
-  const copyResult = async () => {
-    const text = getShareText();
-    if (!text) return;
-    try {
-      await navigator.clipboard.writeText(text);
-      setCopyStatus("Copied to clipboard");
-    } catch {
-      setCopyStatus("Copy failed");
-    }
-  };
-
   useEffect(() => {
     if (gameState !== "playing" || !selectedSlotMeta || isResolvingGuess) {
       return;
@@ -1894,7 +1883,6 @@ export default function VerbleGameClient({
             ) : null}
             <div className="arcade-result-metrics"><span>⏱ {solveDurationSeconds === null ? "Time not recorded" : formatSolveTime(solveDurationSeconds)}{solveDurationSeconds !== null ? <small>from first letter</small> : null}</span>{!isArchiveView && gameState === "won" && resultPerformance?.topPercent ? <span>🏅 Top {resultPerformance.topPercent}% <small>of {resultPerformance.cohortSize} timed wins</small></span> : null}</div>
             {resultAccountStats ? <div className="arcade-result-stats account"><div><strong>{resultAccountStats.overall.played}</strong><span>Played</span></div><div><strong>{resultAccountStats.overall.winRate === null ? "—" : `${Math.round(resultAccountStats.overall.winRate * 100)}%`}</strong><span>Win rate</span></div><div><strong>{resultAccountStats.overall.currentVerbleStreak}</strong><span>Streak</span></div><div><strong>{resultAccountStats.overall.bestVerbleStreak}</strong><span>Best</span></div></div> : <div className="arcade-result-stats"><div><strong>{guessesUsed}</strong><span>Attempts</span></div><div><strong>{Math.max(0, maxGuesses - guessesUsed)}</strong><span>Remaining</span></div><div><strong>{Object.keys(solvedWords).length}</strong><span>Words solved</span></div></div>}
-            <div className="arcade-share-card"><div><strong>Verble Grid Share</strong><button type="button" onClick={() => void copyResult()}>Copy ↗</button></div><p>{buildVerbleShareRow({ slots: puzzle.slots, slotMarks, didWin: gameState === "won" })}</p></div>
             {lockDailyCompletion && !isArchiveView ? (
               <p className="result-modal-timer">Next Verble in <strong>{nextGameCountdown || "--:--:--"}</strong></p>
             ) : null}

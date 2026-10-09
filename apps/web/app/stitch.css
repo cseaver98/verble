@@ -198,11 +198,6 @@ body {
 .arcade-result-stats > div { padding: .75rem .4rem; border-radius: .85rem; background: #efebff; text-align: center; }
 .arcade-result-stats strong { display: block; color: #181445; font-size: 1.35rem; line-height: 1.2; }
 .arcade-result-stats span { display: block; margin-top: .2rem; color: #464555; font-size: .68rem; font-weight: 700; }
-.arcade-share-card { border: 1px solid #f1edfb; border-radius: 1rem; padding: .75rem; }
-.arcade-share-card > div { display: flex; justify-content: space-between; align-items: center; gap: .5rem; }
-.arcade-share-card strong { font-size: .85rem; color: #181445; }
-.arcade-share-card button { border: 0; border-radius: .65rem; background: #efebff; color: #4030da; font: 800 .7rem var(--font-outfit), sans-serif; padding: .4rem .65rem; cursor: pointer; }
-.arcade-share-card p { margin: .5rem 0 0; padding: .7rem; border-radius: .8rem; background: #f6f2ff; text-align: center; font-size: 1rem; line-height: 1.6; overflow-wrap: anywhere; }
 .verble-shell .arcade-result-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .5rem; padding-top: .2rem; }
 .arcade-result-actions > * { display: flex; align-items: center; justify-content: center; gap: .35rem; min-height: 2.6rem; border: 0; border-radius: .8rem; background: #efebff; color: #181445; text-decoration: none; font: 800 .77rem var(--font-outfit), sans-serif; cursor: pointer; }
 .arcade-result-actions svg { width: 1rem; height: 1rem; }
