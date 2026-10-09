@@ -127,11 +127,10 @@ body {
 .verble-shell .slot-tiles { gap: clamp(.12rem, .5vw, .22rem); }
 .verble-shell .slot-tile { width: clamp(1.38rem, 5.9vw, 2.45rem); height: clamp(1.86rem, 7vw, 2.8rem); border: 1.5px solid #e2e8f0; border-radius: .5rem; color: var(--arcade-ink); font-family: var(--font-outfit), sans-serif; font-size: clamp(.85rem, 2.5vw, 1.45rem); box-shadow: 0 3px 0 #cbd5e1; }
 .verble-shell .slot-tile.filled { border-color: #94a3b8; background: #fff; }
-.verble-shell .phrase-layout.has-selected-word .slot-word-button.selected .slot-tile:not(.fixed):not(.reveal):not(.solved):not(.correct):not(.present):not(.absent) { border-color: #c9c3ff; background: #fbfaff; box-shadow: 0 5px 0 #c9c3ff, 0 10px 18px rgb(64 48 218 / 13%); }
+.verble-shell .phrase-layout.has-selected-word .slot-word-button.selected .slot-tile:not(.fixed):not(.reveal):not(.solved):not(.correct):not(.present):not(.absent) { border-color: transparent; background: #fbfaff; box-shadow: 0 5px 0 #c9c3ff, 0 10px 18px rgb(64 48 218 / 13%); }
 .verble-shell .slot-tile.correct, .verble-shell .slot-word-button.solved .slot-tile:not(.fixed), .verble-shell .slot-tile.solved { background: #10b981; border-color: #10b981; color: #fff; box-shadow: 0 3px 0 #059669; }
 .verble-shell .slot-tile.present { background: #fbbf24; border-color: #fbbf24; color: #181445; box-shadow: 0 3px 0 #f59e0b; }
 .verble-shell .slot-tile.absent { background: #94a3b8; border-color: #94a3b8; color: #fff; box-shadow: 0 3px 0 #64748b; }
-.verble-shell .slot-word-button:focus-visible .slot-tile:not(.fixed):not(.reveal):not(.solved) { outline: 2px solid #5a4ff3; outline-offset: 2px; }
 .verble-shell .slot-inline-fixed, .verble-shell .slot-sep { color: #464555; }
 .arcade-word-status { display: flex; align-items: center; gap: .45rem; flex-wrap: wrap; min-height: 2.65rem; border-radius: .9rem; padding: .6rem .7rem; background: #f8f5ff; color: #464555; font-size: .75rem; font-weight: 600; }
 .arcade-word-status strong { color: var(--arcade-violet); font-size: .82rem; }

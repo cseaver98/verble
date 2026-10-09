@@ -142,10 +142,6 @@
   outline: none;
 }
 
-.verble-shell .slot-word-button:focus-visible .slot-tile:not(.fixed):not(.reveal):not(.solved) {
-  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.55);
-}
-
 .verble-shell .slot-word-button:disabled {
   cursor: default;
 }
@@ -246,10 +242,6 @@
   background: #b5bbc5;
   border-color: #a3a9b4;
   color: #fff;
-}
-
-.verble-shell .slot-word-button.selected .slot-tile:not(.fixed):not(.reveal):not(.solved) {
-  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.42);
 }
 
 .verble-shell .slot-tile.pick-word-pulse:not(.fixed):not(.reveal):not(.solved) {
