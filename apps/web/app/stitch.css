@@ -337,8 +337,13 @@ body {
   .dd-brand-word { font-size: 1.45rem; }
   .verble-shell .arcade-nav-icon, .verble-shell .menu-toggle-btn { width: 2.35rem; height: 2.35rem; }
   .verble-shell .dd-nav-left-content { gap: 0; }
-  .verble-shell .game-meta-row { grid-template-columns: 1fr auto; }
-  .verble-shell .guess-progress-chip { grid-column: 1 / -1; justify-self: end; }
+  .verble-shell .game-meta-row { grid-template-columns: minmax(0, 1fr) auto auto; gap: .25rem; }
+  .verble-shell .arcade-game-chip { min-width: 0; overflow: hidden; padding-inline: .45rem; letter-spacing: .01em; }
+  .verble-shell .how-to-play-btn { padding-inline: .45rem; font-size: .69rem; }
+  .verble-shell .guess-progress-chip { grid-column: auto; justify-self: end; }
+  .verble-shell .guess-progress-chip .guess-progress-label { gap: .1rem; font-size: .59rem; }
+  .verble-shell .guess-progress-label strong { font-size: 1.12rem; }
+  .verble-shell .guess-progress-label > span { font-size: .65rem; }
   .verble-shell .game-meta-row { padding-bottom: 1.1rem; }
   .verble-shell .arcade-board { padding-inline: .55rem; }
   .verble-shell .phrase-layout .slot-inline-fixed.apostrophe { top: clamp(-.93rem, calc(1.125rem - 7.5vw), -.55rem); }
