@@ -137,7 +137,7 @@ export default function AccountNav() {
       </button>
 
       {isMenuOpen ? (
-        <div className="absolute right-0 top-11 z-[80] w-56 rounded-2xl border border-[#d8dce2] bg-white p-2 shadow-[0_18px_50px_rgba(44,47,49,0.16)]">
+        <div className="arcade-account-menu absolute right-0 top-11 z-[80] w-56 rounded-2xl border border-[#d8dce2] bg-white p-2 shadow-[0_18px_50px_rgba(44,47,49,0.16)]">
           <p className="px-3 py-2 text-xs font-bold text-[#75777a]">Signed in as</p>
           <p className="truncate px-3 pb-2 text-sm font-extrabold text-[#2c2f31]" title={label}>{label}</p>
           <div className="my-1 h-px bg-[#eff1f4]" />

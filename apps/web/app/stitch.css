@@ -7,6 +7,8 @@
   --arcade-canvas: #f8f9fe;
   --arcade-mint: #10b981;
   --arcade-amber: #fbbf24;
+  --arcade-hover-bg: #e3dfff;
+  --arcade-hover-primary: #4030da;
   --arcade-mobile-nav-height: calc(3.3rem + .48rem + max(.48rem, env(safe-area-inset-bottom)) + 1px);
   --arcade-modal-top-pad: max(1rem, env(safe-area-inset-top));
 }
@@ -42,7 +44,7 @@ body {
   transition: color 150ms ease;
 }
 
-.arcade-dialog-close:hover { color: var(--arcade-ink); }
+.arcade-dialog-close:hover { color: var(--arcade-violet); }
 .arcade-dialog-close:focus-visible { outline: 2px solid var(--arcade-violet); outline-offset: 2px; }
 
 .verble-shell {
@@ -96,7 +98,8 @@ body {
 .arcade-account-loading { width: 2.45rem; overflow: hidden; color: #777587; background: #efebff; font-size: 0; }
 .arcade-account-trigger:hover { background: #5a4ff3; }
 .verble-shell .menu-toggle-btn { width: 2.65rem; height: 2.65rem; border-radius: .75rem; color: var(--arcade-ink); }
-.verble-shell .menu-toggle-btn:hover { background: #efebff; }
+.verble-shell .menu-toggle-btn:hover { background: #efebff; color: var(--arcade-violet); }
+.nav-menu .nav-menu-close { width: 2.5rem; height: 2.5rem; border: 0; border-radius: .5rem; background: transparent; color: #595c5e; font-family: var(--font-outfit), sans-serif; font-size: 1.75rem; font-weight: 400; }
 
 .arcade-bottom-nav {
   display: none;
@@ -178,7 +181,9 @@ body {
 .verble-shell .keyboard { gap: .42rem; --alpha-key-size: auto; }
 .verble-shell .keyboard-row { gap: .28rem; }
 .verble-shell .key { width: auto; min-width: 0; flex: 1 1 0; height: clamp(2.45rem, 9vw, 3.15rem); background: #f1f5f9; color: var(--arcade-ink); border: 1px solid #e2e8f0; border-radius: .48rem; box-shadow: 0 3px 0 #cbd5e1; font-family: var(--font-outfit), sans-serif; font-size: clamp(.88rem, 3.4vw, 1.1rem); padding: 0; }
-.verble-shell .key:hover:not(:disabled) { background: #e3dfff; }
+.verble-shell .key:hover:not(:disabled):not(.enter-key):not([data-state="resolved"]):not([data-state="present"]):not([data-state="absent"]) { background: var(--arcade-hover-bg); color: var(--arcade-violet); }
+.verble-shell .key.enter-key:hover:not(:disabled) { background: #5a4ff3; border-color: #5a4ff3; color: #fff; }
+.verble-shell .key:is([data-state="resolved"], [data-state="present"], [data-state="absent"]):hover:not(:disabled) { filter: brightness(1.08); }
 .verble-shell .key:active:not(:disabled) { transform: translateY(2px); box-shadow: 0 1px 0 #cbd5e1; }
 .verble-shell .key:disabled { opacity: 1; color: #8d93a0; }
 .verble-shell .key[data-state="present"] { background: #fbbf24; color: #181445; border-color: #fbbf24; box-shadow: 0 3px 0 #f59e0b; }
@@ -331,6 +336,32 @@ body {
 .arcade-account-main a[href="/account/stats"], .arcade-account-main a[href^="mailto:"] { background: #5a4ff3; color: #fff; border-radius: .85rem; box-shadow: 0 3px 0 #4030da; }
 .arcade-account-main form button[type="submit"], .arcade-account-main #email-preferences button { background: #5a4ff3; color: #fff; border-radius: .85rem; box-shadow: 0 3px 0 #4030da; }
 .arcade-account-main form input:focus { border-color: #5a4ff3; --tw-ring-color: rgb(195 192 255 / 45%); }
+
+:where(.arcade-bottom-nav a, .arcade-result-actions > *, .arcade-stats-actions a, .arcade-page-icon, .arcade-replay-card, .arcade-month-switcher button, .arcade-archive-filters button, .arcade-account-menu a, .nav-menu .nav-menu-item, .nav-menu .nav-menu-archive-link, .nav-menu .nav-menu-legal-link) {
+  transition: background-color 160ms ease, color 160ms ease, box-shadow 160ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  :is(.arcade-nav-icon, .arcade-bottom-nav a, .arcade-result-actions > a, .arcade-page-icon, .arcade-month-switcher button:not(:disabled), .arcade-archive-filters button:not([aria-pressed="true"]), .arcade-replay-card, .arcade-stats-actions .arcade-secondary-link, .arcade-account-menu a, .arcade-account-main a[href="/"], .nav-menu .nav-menu-item, .nav-menu .nav-menu-archive-link, .nav-menu .nav-menu-legal-link, .nav-menu .nav-menu-close):hover,
+  .verble-shell :is(.menu-toggle-btn, .how-to-play-btn, .arcade-clear-button:not(:disabled), .archive-tile:not(.is-locked)):hover {
+    background: var(--arcade-hover-bg);
+    color: var(--arcade-violet);
+  }
+
+  :is(.arcade-result-actions > .arcade-result-share, .arcade-stats-actions .arcade-primary-link, .arcade-login-button):hover,
+  .arcade-account-main :is(a[href="/account/stats"], a[href^="mailto:"], form button[type="submit"]:not(:disabled), #email-preferences button:not(:disabled)):hover {
+    background: var(--arcade-hover-primary);
+    color: #fff;
+  }
+
+  .arcade-result-actions > .arcade-result-share:hover { box-shadow: 0 3px 0 #2d20b0; }
+  .arcade-jump-button:hover { background: #2d20b0; }
+  .arcade-action-row .arcade-phrase-button:not(:disabled):hover { filter: brightness(1.06); }
+  :is(.arcade-login-panel a[href="/"], .arcade-modal-panel a[href], .verble-shell .archive-card a.page-subtle):hover { color: var(--arcade-violet); }
+  .tutorial-back-btn:hover { background: var(--arcade-hover-bg); color: var(--arcade-violet); }
+  .tutorial-next-btn:hover { background: var(--arcade-hover-primary); }
+  .tutorial-pagination button:not(.is-active):hover { background: var(--arcade-violet); }
+}
 
 @media (max-width: 720px) {
   .arcade-bottom-nav { display: grid; }
