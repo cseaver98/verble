@@ -141,11 +141,11 @@ export default function AuthDialog({
 
   return createPortal(
     <div
-      className="fixed inset-0 z-[100] flex items-center justify-center bg-[#2c2f31]/45 px-4 backdrop-blur-sm"
+      className="arcade-modal-backdrop fixed inset-0 z-[100] flex items-center justify-center bg-[#2c2f31]/45 px-4 backdrop-blur-sm"
       onClick={dismissible ? onClose : undefined}
     >
       <section
-        className="relative w-full max-w-md rounded-[2rem] border border-[#d8dce2] bg-white p-6 shadow-[0_28px_80px_rgba(44,47,49,0.22)]"
+        className="arcade-modal-panel relative w-full max-w-md rounded-[2rem] border border-[#d8dce2] bg-white p-6 shadow-[0_28px_80px_rgba(44,47,49,0.22)]"
         role="dialog"
         aria-modal="true"
         aria-labelledby="auth-dialog-title"

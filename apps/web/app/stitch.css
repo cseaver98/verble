@@ -7,6 +7,8 @@
   --arcade-canvas: #f8f9fe;
   --arcade-mint: #10b981;
   --arcade-amber: #fbbf24;
+  --arcade-mobile-nav-height: calc(3.3rem + .48rem + max(.48rem, env(safe-area-inset-bottom)) + 1px);
+  --arcade-modal-top-pad: max(1rem, env(safe-area-inset-top));
 }
 
 body {
@@ -316,7 +318,10 @@ body {
   .arcade-day-number { font-size: .65rem; }
   .verble-shell .arcade-calendar-day .archive-tile-title { font-size: .72rem; }
   .arcade-month-switcher h2 { min-width: 7.5rem; font-size: .93rem; }
-  .verble-shell .result-modal-panel { max-height: calc(100dvh - 6rem); }
+  .verble-shell .result-modal-backdrop { padding: var(--arcade-modal-top-pad) 1rem calc(var(--arcade-mobile-nav-height) + 1rem); }
+  .verble-shell .result-modal-panel { max-height: calc(100dvh - var(--arcade-mobile-nav-height) - var(--arcade-modal-top-pad) - 1rem); }
+  .arcade-modal-backdrop { padding-top: var(--arcade-modal-top-pad); padding-bottom: calc(var(--arcade-mobile-nav-height) + 1rem); }
+  .arcade-modal-backdrop .arcade-modal-panel { max-height: calc(100dvh - var(--arcade-mobile-nav-height) - var(--arcade-modal-top-pad) - 1rem); overflow-y: auto; overscroll-behavior: contain; }
   .arcade-stats-grid, .arcade-breakdown-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .arcade-stats-main { padding-top: 1.25rem; }
 }

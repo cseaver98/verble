@@ -64,9 +64,9 @@ export default function DisplayNameDialog({ isOpen, onComplete }: DisplayNameDia
   if (!portalRoot || !isOpen) return null;
 
   return createPortal(
-    <div className="fixed inset-0 z-[110] flex items-center justify-center bg-[#2c2f31]/45 px-4 backdrop-blur-sm">
+    <div className="arcade-modal-backdrop fixed inset-0 z-[110] flex items-center justify-center bg-[#2c2f31]/45 px-4 backdrop-blur-sm">
       <section
-        className="relative w-full max-w-md overflow-hidden rounded-[2rem] border border-[#d8dce2] bg-white p-6 shadow-[0_28px_80px_rgba(44,47,49,0.22)]"
+        className="arcade-modal-panel relative w-full max-w-md overflow-hidden rounded-[2rem] border border-[#d8dce2] bg-white p-6 shadow-[0_28px_80px_rgba(44,47,49,0.22)]"
         role="dialog"
         aria-modal="true"
         aria-labelledby="display-name-dialog-title"
