@@ -182,6 +182,13 @@ body {
 .verble-shell .phrase-layout.has-selected-word .slot-word-button.selected .slot-tile:is(.correct, .solved):not(.reveal) { box-shadow: 0 5px 0 #059669, 0 10px 18px rgb(5 150 105 / 18%); }
 .verble-shell .phrase-layout.has-selected-word .slot-word-button.selected .slot-tile.present:not(.reveal) { box-shadow: 0 5px 0 #f59e0b, 0 10px 18px rgb(245 158 11 / 18%); }
 .verble-shell .phrase-layout.has-selected-word .slot-word-button.selected .slot-tile.absent:not(.reveal) { box-shadow: 0 5px 0 #64748b, 0 10px 18px rgb(100 116 139 / 18%); }
+.verble-shell .slot-word-button.invalid-guess .slot-tiles { animation: arcade-invalid-word-shake 480ms ease-in-out; }
+.verble-shell .phrase-layout.has-selected-word .slot-word-button.selected.invalid-guess .slot-tile:not(.fixed):not(.locked):not(.reveal):not(.solved):not(.correct):not(.present):not(.absent) { background: #fff1f2; border-color: #ef9ba9; box-shadow: 0 5px 0 #e7a9b4, 0 10px 18px rgb(212 70 92 / 14%); }
+@keyframes arcade-invalid-word-shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-4px); }
+  40%, 80% { transform: translateX(4px); }
+}
 .verble-shell .slot-word-button .slot-tile.reveal:not(.fixed) { border-color: transparent; box-shadow: none; }
 .verble-shell .slot-inline-fixed, .verble-shell .slot-sep { color: #464555; }
 .arcade-word-status { display: flex; align-items: center; gap: .45rem; flex-wrap: wrap; min-height: 2.65rem; border-radius: .9rem; padding: .6rem .7rem; background: #f8f5ff; color: #464555; font-size: .75rem; font-weight: 600; }
@@ -435,6 +442,7 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .verble-shell .slot-word-button.invalid-guess .slot-tiles { animation: none; }
   .verble-shell .phrase-layout.has-selected-word .slot-cluster { transition: none; }
   .verble-shell .phrase-layout.has-selected-word .slot-word-button.selected { animation: none; }
   .arcade-action-row button:active:not(:disabled), .verble-shell .key:active:not(:disabled), .verble-shell .archive-tile:hover { transform: none; }

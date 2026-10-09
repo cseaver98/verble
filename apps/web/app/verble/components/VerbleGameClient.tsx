@@ -229,6 +229,8 @@ export default function VerbleGameClient({
   const [gameState, setGameState] = useState<GameState>("playing");
   const [message, setMessage] = useState("");
   const [selectedSlot, setSelectedSlot] = useState<number | null>(null);
+  const [invalidGuessFeedback, setInvalidGuessFeedback] = useState<{ slotIndex: number; sequence: number } | null>(null);
+  const invalidGuessSequenceRef = useRef(0);
   const [wordAttempts, setWordAttempts] = useState<WordAttempt[]>([]);
   const [solvedWords, setSolvedWords] = useState<Record<number, string>>({});
   const [slotDrafts, setSlotDrafts] = useState<SlotDrafts>({});
@@ -285,6 +287,12 @@ export default function VerbleGameClient({
   const [isResolvingGuess, setIsResolvingGuess] = useState(false);
   const shouldShowNextGameCountdown = lockDailyCompletion && !isArchiveView && gameState !== "playing";
   const nextGameCountdown = useNextGameCountdown(shouldShowNextGameCountdown);
+
+  useEffect(() => {
+    if (!invalidGuessFeedback) return;
+    const timeoutId = window.setTimeout(() => setInvalidGuessFeedback(null), 650);
+    return () => window.clearTimeout(timeoutId);
+  }, [invalidGuessFeedback]);
 
   useEffect(() => {
     if (!isResultOpen || gameState === "playing") return;
@@ -666,12 +674,14 @@ export default function VerbleGameClient({
 
     const currentIndex = playableSlots.findIndex((slot) => slot.index === selectedSlot);
     if (currentIndex === -1) {
+      setInvalidGuessFeedback(null);
       setSelectedSlot(direction > 0 ? playableSlots[0].index : playableSlots[playableSlots.length - 1].index);
       setMessage("");
       return;
     }
 
     const nextIndex = (currentIndex + direction + playableSlots.length) % playableSlots.length;
+    setInvalidGuessFeedback(null);
     setSelectedSlot(playableSlots[nextIndex].index);
     setMessage("");
   };
@@ -815,9 +825,16 @@ export default function VerbleGameClient({
         throw new Error(responsePayload.error || "Could not validate guess");
       }
     } catch (submitError) {
-      setMessage(submitError instanceof Error ? submitError.message : "Could not validate guess");
+      const errorMessage = submitError instanceof Error ? submitError.message : "Could not validate guess";
+      setMessage(errorMessage);
+      if (errorMessage === "That word is not in the allowed dictionary.") {
+        invalidGuessSequenceRef.current += 1;
+        setInvalidGuessFeedback({ slotIndex: selectedSlotMeta.index, sequence: invalidGuessSequenceRef.current });
+      }
       return;
     }
+
+    setInvalidGuessFeedback(null);
 
     const feedback = Array.isArray(responsePayload.feedback) ? responsePayload.feedback : [];
     const submittedAt = Date.now();
@@ -1495,11 +1512,12 @@ export default function VerbleGameClient({
                     type="button"
                     aria-label={`Word ${slot.index + 1}, ${slot.length} letters${solved ? ", solved" : ""}`}
                     aria-pressed={isPlayable ? isSelected : undefined}
-                    className={`slot-word-button ${solved ? "solved" : ""} ${isSelected ? "selected" : ""}`}
+                    className={`slot-word-button ${solved ? "solved" : ""} ${isSelected ? "selected" : ""} ${isSelected && invalidGuessFeedback?.slotIndex === slot.index ? "invalid-guess" : ""}`}
                     onClick={() => {
                       if (!isPlayable) {
                         return;
                       }
+                      setInvalidGuessFeedback(null);
                       setSelectedSlot(slot.index);
                       setMessage("");
                     }}
@@ -1507,12 +1525,13 @@ export default function VerbleGameClient({
                       if (!isPlayable) {
                         return;
                       }
+                      setInvalidGuessFeedback(null);
                       setSelectedSlot(slot.index);
                       setMessage("");
                     }}
                     disabled={!isPlayable}
                   >
-                    <span className="slot-tiles">
+                    <span className="slot-tiles" key={invalidGuessFeedback?.slotIndex === slot.index ? invalidGuessFeedback.sequence : "ready"}>
                       {displayChars.map((item, index) => (
                         (() => {
                           const letterIndex = item.letterIndex ?? -1;
