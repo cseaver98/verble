@@ -163,7 +163,7 @@ body {
 .verble-shell .phrase-layout { justify-content: center; align-content: center; align-items: flex-end; gap: 1rem .56rem; margin: .1rem 0 .65rem; min-height: 6.9rem; }
 .verble-shell .slot-word-button { padding: .16rem; border-radius: .9rem; }
 .verble-shell .slot-word-button.selected { background: transparent; box-shadow: none; }
-.verble-shell .slot-word-button.pick-word-lift .slot-tiles { animation: arcade-pick-word-lift 2.7s ease-in-out infinite; }
+.verble-shell .slot-word-button.pick-word-lift .slot-tiles { animation: arcade-pick-word-lift 2.3s ease-in-out infinite; }
 @keyframes arcade-pick-word-lift {
   0%, 27%, 100% { transform: translateY(0); filter: none; }
   11% { transform: translateY(-5px); filter: drop-shadow(0 5px 5px rgb(90 79 243 / 30%)); }
