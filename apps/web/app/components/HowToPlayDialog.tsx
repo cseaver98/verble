@@ -23,6 +23,10 @@ function VerbleTileRow({
   animateTyping = false,
   entryOrder = [],
   pickWordLiftIndex,
+  flipAtMs,
+  flipDurationMs = 260,
+  flipStaggerMs = 208,
+  flipIndices,
 }: {
   values: readonly string[];
   states?: readonly TileState[];
@@ -32,14 +36,35 @@ function VerbleTileRow({
   animateTyping?: boolean;
   entryOrder?: readonly (number | null)[];
   pickWordLiftIndex?: number;
+  flipAtMs?: number;
+  flipDurationMs?: number;
+  flipStaggerMs?: number;
+  flipIndices?: readonly number[];
 }) {
   return (
-    <div className={`slot-cluster tutorial-verble-word${animateReveals ? " tutorial-verble-animate-reveals" : ""}${animateTyping ? " tutorial-verble-typing-word" : ""}`} aria-hidden="true">
+    <div className={`slot-cluster tutorial-verble-word${selected ? " selected" : ""}${animateReveals ? " tutorial-verble-animate-reveals" : ""}${animateTyping ? " tutorial-verble-typing-word" : ""}`} aria-hidden="true">
       <span className={`slot-word-button${selected ? " selected" : ""}${pickWordLiftIndex !== undefined ? " pick-word-lift" : ""}`}>
         <span className="slot-tiles" style={pickWordLiftIndex !== undefined ? { animationDelay: `${pickWordLiftIndex * 160}ms` } : undefined}>
-          {values.map((value, index) => (
-            <span className="slot-char-group" key={`${value}-${index}`}>
-              <span className={`slot-tile ${states[index] ?? ""} ${value ? "filled" : ""}`}>
+          {values.map((value, index) => {
+            const state = states[index];
+            const shouldFlip = flipAtMs !== undefined && (flipIndices ? flipIndices.includes(index) : state === "correct" || state === "present" || state === "absent");
+            const flipEnd = state === "correct"
+              ? { background: "#10b981", color: "#ffffff" }
+              : state === "present"
+                ? { background: "#fbbf24", color: "#181445" }
+                : { background: "#94a3b8", color: "#ffffff" };
+            return <span className="slot-char-group" key={`${value}-${index}`}>
+              <span
+                className={`slot-tile ${state ?? ""} ${value ? "filled" : ""} ${shouldFlip ? "reveal" : ""}`}
+                style={shouldFlip ? {
+                  "--flip-start-bg": "#ffffff",
+                  "--flip-start-color": "#181445",
+                  "--flip-end-bg": flipEnd.background,
+                  "--flip-end-color": flipEnd.color,
+                  "--flip-delay": `${(flipAtMs ?? 0) + index * flipStaggerMs}ms`,
+                  "--flip-duration": `${flipDurationMs}ms`,
+                } as CSSProperties : undefined}
+              >
                 {entryOrder[index] != null && value ? (
                   <span
                     className="tutorial-verble-full-entry"
@@ -54,38 +79,43 @@ function VerbleTileRow({
                   {trailingFixed[index]}
                 </span>
               ) : null}
-            </span>
-          ))}
+            </span>;
+          })}
         </span>
       </span>
     </div>
   );
 }
 
-function VerbleChooseBoard({ selected }: { selected: boolean }) {
+function VerbleChooseBoard({ stage }: { stage: "empty" | "typing" | "solved" }) {
+  const isTyping = stage === "typing";
+  const isSolved = stage === "solved";
   return (
-    <div className={`phrase-layout tutorial-verble-phrase${selected ? " has-selected-word tutorial-verble-choose-selected" : ""}`}>
-      <VerbleTileRow values={selected ? ["R", "O", "M", "E"] : ["", "", "", ""]} selected={selected} animateTyping={selected} animateReveals={false} pickWordLiftIndex={selected ? undefined : 0} />
-      <VerbleTileRow values={["", "", "", "", ""]} trailingFixed={{ 3: "'" }} animateReveals={false} pickWordLiftIndex={selected ? undefined : 1} />
-      <VerbleTileRow values={["", "", "", "", ""]} animateReveals={false} pickWordLiftIndex={selected ? undefined : 2} />
-      <VerbleTileRow values={["", ""]} animateReveals={false} pickWordLiftIndex={selected ? undefined : 3} />
-      <VerbleTileRow values={[""]} animateReveals={false} pickWordLiftIndex={selected ? undefined : 4} />
-      <VerbleTileRow values={["", "", ""]} animateReveals={false} pickWordLiftIndex={selected ? undefined : 5} />
+    <div className={`phrase-layout tutorial-verble-phrase${isTyping ? " has-selected-word tutorial-verble-choose-selected" : ""}`}>
+      <VerbleTileRow values={stage === "empty" ? ["", "", "", ""] : ["R", "O", "M", "E"]} states={isSolved ? ["correct", "correct", "correct", "correct"] : undefined} selected={isTyping} animateTyping={isTyping} animateReveals={false} pickWordLiftIndex={stage === "empty" ? 0 : undefined} flipAtMs={isSolved ? 4700 : undefined} />
+      <VerbleTileRow values={["", "", "", "", ""]} trailingFixed={{ 3: "'" }} animateReveals={false} pickWordLiftIndex={stage === "empty" ? 1 : undefined} />
+      <VerbleTileRow values={["", "", "", "", ""]} animateReveals={false} pickWordLiftIndex={stage === "empty" ? 2 : undefined} />
+      <VerbleTileRow values={["", ""]} animateReveals={false} pickWordLiftIndex={stage === "empty" ? 3 : undefined} />
+      <VerbleTileRow values={[""]} animateReveals={false} pickWordLiftIndex={stage === "empty" ? 4 : undefined} />
+      <VerbleTileRow values={["", "", ""]} animateReveals={false} pickWordLiftIndex={stage === "empty" ? 5 : undefined} />
     </div>
   );
 }
 
 function VerbleChooseFlow() {
   return (
-    <div className="tutorial-verble-choose-flow tutorial-game-preview" role="img" aria-label="An empty phrase ripples to invite a word choice. The first word is selected, then ROME is typed into its tiles.">
+    <div className="tutorial-verble-choose-flow tutorial-game-preview" role="img" aria-label="An empty phrase invites a word choice. ROME is selected, typed, submitted, and flips green.">
       <div className="tutorial-verble-stage-labels">
         <span className="tutorial-verble-step-label tutorial-verble-choose-label-pick">Pick any word</span>
-        <span className="tutorial-verble-step-label tutorial-verble-choose-label-type">Type your guess</span>
+        <span className="tutorial-verble-step-label tutorial-verble-choose-label-type">Type ROME</span>
+        <span className="tutorial-verble-step-label tutorial-verble-choose-label-solved">ROME is correct</span>
       </div>
       <div className="tutorial-verble-layer-stack tutorial-verble-choose-layers">
-        <div className="tutorial-verble-choose-empty"><VerbleChooseBoard selected={false} /></div>
-        <div className="tutorial-verble-choose-guess"><VerbleChooseBoard selected /></div>
+        <div className="tutorial-verble-choose-empty"><VerbleChooseBoard stage="empty" /></div>
+        <div className="tutorial-verble-choose-guess"><VerbleChooseBoard stage="typing" /></div>
+        <div className="tutorial-verble-choose-solved"><VerbleChooseBoard stage="solved" /></div>
       </div>
+      <span className="tutorial-verble-submit-cue tutorial-verble-choose-submit"><kbd>Enter</kbd><em>Submit ROME</em></span>
     </div>
   );
 }
@@ -95,11 +125,11 @@ function VerblePhraseExample({ stage }: { stage: "typing" | "feedback" | "reveal
   const isGuessing = stage === "typing" || stage === "feedback";
 
   return (
-    <div className="phrase-layout tutorial-verble-phrase">
+    <div className={`phrase-layout tutorial-verble-phrase${isGuessing ? " has-selected-word" : ""}`}>
       <VerbleTileRow values={["R", "O", "M", "E"]} states={["correct", "correct", "correct", "correct"]} animateReveals={false} />
-      <VerbleTileRow values={isRevealed ? ["", "", "", "", "T"] : ["", "", "", "", ""]} states={isRevealed ? ["draft", "draft", "draft", "draft", "correct"] : undefined} trailingFixed={{ 3: "'" }} />
-      <VerbleTileRow values={isGuessing ? VERBLE_TUTORIAL.wordGuess.split("") : ["", "", "I", "", "T"]} states={stage === "feedback" ? VERBLE_TUTORIAL.wordGuessFeedback : isRevealed ? ["draft", "draft", "correct", "draft", "correct"] : undefined} selected={stage === "typing"} animateTyping={stage === "typing"} />
-      <VerbleTileRow values={isRevealed ? ["I", ""] : ["", ""]} states={isRevealed ? ["correct", "draft"] : undefined} />
+      <VerbleTileRow values={isRevealed ? ["", "", "", "", "T"] : ["", "", "", "", ""]} states={isRevealed ? ["draft", "draft", "draft", "draft", "correct"] : undefined} trailingFixed={{ 3: "'" }} flipAtMs={isRevealed ? 5400 : undefined} flipDurationMs={520} flipStaggerMs={0} flipIndices={isRevealed ? [4] : undefined} />
+      <VerbleTileRow values={isGuessing ? VERBLE_TUTORIAL.wordGuess.split("") : ["", "", "I", "", "T"]} states={stage === "feedback" ? VERBLE_TUTORIAL.wordGuessFeedback : isRevealed ? ["draft", "draft", "correct", "draft", "correct"] : undefined} selected={isGuessing} animateTyping={stage === "typing"} flipAtMs={stage === "feedback" ? 2800 : isRevealed ? 5400 : undefined} flipDurationMs={isRevealed ? 520 : 260} flipStaggerMs={isRevealed ? 0 : 208} flipIndices={isRevealed ? [2] : undefined} />
+      <VerbleTileRow values={isRevealed ? ["I", ""] : ["", ""]} states={isRevealed ? ["correct", "draft"] : undefined} flipAtMs={isRevealed ? 5400 : undefined} flipDurationMs={520} flipStaggerMs={0} flipIndices={isRevealed ? [0] : undefined} />
       <VerbleTileRow values={[""]} />
       <VerbleTileRow values={["", "", ""]} />
     </div>
@@ -108,7 +138,7 @@ function VerblePhraseExample({ stage }: { stage: "typing" | "feedback" | "reveal
 
 function VerbleGuessFlow() {
   return (
-    <div className="tutorial-verble-flow tutorial-game-preview" role="img" aria-label="Animated example showing a word guess revealing letters across the phrase">
+    <div className="tutorial-verble-flow tutorial-game-preview" role="img" aria-label="With ROME solved, ADMIT is guessed for BUILT. Its tiles flip gray, yellow, and green; the yellow I and green T reveal matching spots across the phrase.">
       <div className="tutorial-verble-stage-labels">
         <span className="tutorial-verble-step-label tutorial-verble-label-guessing">Guessing ADMIT</span>
         <span className="tutorial-verble-step-label tutorial-verble-label-updated">Phrase updated</span>
@@ -119,32 +149,36 @@ function VerbleGuessFlow() {
         <div className="tutorial-verble-phrase-after"><VerblePhraseExample stage="revealed" /></div>
       </div>
       <span className="tutorial-verble-submit-cue"><kbd>Enter</kbd><em>Submit guess</em></span>
-      <div className="tutorial-verble-reveal-cue" aria-hidden="true"><span /><strong>Yellow I + green T reveal everywhere</strong><span /></div>
+      <div className="tutorial-verble-reveal-cue" aria-hidden="true"><span /><strong>I and T reveal matching tiles</strong><span /></div>
     </div>
   );
 }
 
-function VerbleFullPhraseBoard() {
+function VerbleFullPhraseBoard({ reveal = false }: { reveal?: boolean }) {
   return (
     <div className="phrase-layout tutorial-verble-phrase">
       <VerbleTileRow values={["R", "O", "M", "E"]} states={["correct", "correct", "correct", "correct"]} animateReveals={false} />
-      <VerbleTileRow values={["W", "A", "S", "N", "T"]} states={["draft", "draft", "draft", "draft", "correct"]} trailingFixed={{ 3: "'" }} entryOrder={[0, 1, 2, 3, null]} />
-      <VerbleTileRow values={["B", "U", "I", "L", "T"]} states={["draft", "draft", "correct", "draft", "correct"]} entryOrder={[4, 5, null, 6, null]} />
-      <VerbleTileRow values={["I", "N"]} states={["correct", "draft"]} entryOrder={[null, 7]} />
-      <VerbleTileRow values={["A"]} states={["draft"]} entryOrder={[8]} />
-      <VerbleTileRow values={["D", "A", "Y"]} states={["draft", "draft", "draft"]} entryOrder={[9, 10, 11]} />
+      <VerbleTileRow values={["W", "A", "S", "N", "T"]} states={reveal ? ["correct", "correct", "correct", "correct", "correct"] : ["draft", "draft", "draft", "draft", "correct"]} trailingFixed={{ 3: "'" }} entryOrder={reveal ? [] : [0, 1, 2, 3, null]} flipAtMs={reveal ? 4500 : undefined} flipIndices={reveal ? [0, 1, 2, 3] : undefined} />
+      <VerbleTileRow values={["B", "U", "I", "L", "T"]} states={reveal ? ["correct", "correct", "correct", "correct", "correct"] : ["draft", "draft", "correct", "draft", "correct"]} entryOrder={reveal ? [] : [4, 5, null, 6, null]} flipAtMs={reveal ? 4680 : undefined} flipIndices={reveal ? [0, 1, 3] : undefined} />
+      <VerbleTileRow values={["I", "N"]} states={reveal ? ["correct", "correct"] : ["correct", "draft"]} entryOrder={reveal ? [] : [null, 7]} flipAtMs={reveal ? 4860 : undefined} flipIndices={reveal ? [1] : undefined} />
+      <VerbleTileRow values={["A"]} states={reveal ? ["correct"] : ["draft"]} entryOrder={reveal ? [] : [8]} flipAtMs={reveal ? 5040 : undefined} />
+      <VerbleTileRow values={["D", "A", "Y"]} states={reveal ? ["correct", "correct", "correct"] : ["draft", "draft", "draft"]} entryOrder={reveal ? [] : [9, 10, 11]} flipAtMs={reveal ? 5220 : undefined} />
     </div>
   );
 }
 
 function VerbleFullPhraseFlow() {
   return (
-    <div className="tutorial-verble-full-flow tutorial-game-preview" role="img" aria-label="Animated example of completing and submitting the full phrase">
+    <div className="tutorial-verble-full-flow tutorial-game-preview" role="img" aria-label="The remaining letters complete ROME WASN'T BUILT IN A DAY. Enter opens a confirmation, then submitting flips the remaining tiles green.">
       <div className="tutorial-verble-full-stage">
         <div className="tutorial-verble-full-board">
           <span className="tutorial-verble-step-label">Complete the phrase</span>
           <VerbleFullPhraseBoard />
           <span className="tutorial-verble-full-submit"><kbd>Enter</kbd><em>Submit full phrase</em></span>
+        </div>
+        <div className="tutorial-verble-full-result">
+          <span className="tutorial-verble-step-label">Phrase solved</span>
+          <VerbleFullPhraseBoard reveal />
         </div>
         <div className="phrase-guess-modal-panel tutorial-phrase-confirm tutorial-verble-confirm-popup">
           <h4 className="result-modal-title phrase-guess-title">Submit full phrase?</h4>
@@ -166,13 +200,13 @@ const pages = [
   {
     eyebrow: "Choose a word",
     heading: "Pick a word to start",
-    copy: "Choose any word in the phrase, then type a guess for that word. You can switch words whenever you like.",
+    copy: "Choose any word, type a guess, and press Enter. A correct word turns green. You can switch words at any time.",
     visual: <VerbleChooseFlow />,
   },
   {
     eyebrow: "Reveal matching letters",
     heading: "One guess helps the whole phrase",
-    copy: "Green and yellow letters from a guess reveal matching spots across the phrase. Gray letters don't reveal.",
+    copy: "Try ADMIT for BUILT. Its green T and yellow I reveal matching spots across the phrase; gray letters don't.",
     visual: <VerbleGuessFlow />,
   },
   {
@@ -185,8 +219,15 @@ const pages = [
 
 export default function HowToPlayDialog({ game, onClose }: HowToPlayDialogProps) {
   const [pageIndex, setPageIndex] = useState(0);
+  const [cycle, setCycle] = useState(0);
   const page = pages[pageIndex];
   const isLastPage = pageIndex === pages.length - 1;
+
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const interval = window.setInterval(() => setCycle((current) => current + 1), 8400);
+    return () => window.clearInterval(interval);
+  }, [pageIndex]);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -207,7 +248,7 @@ export default function HowToPlayDialog({ game, onClose }: HowToPlayDialogProps)
           <h2 className="result-modal-title how-to-play-title" id="how-to-play-title">How to play Verble</h2>
           <p className="how-to-play-subtitle" id="how-to-play-subtitle">Solve the daily phrase one word at a time.</p>
         </header>
-        <div className="tutorial-page" key={pageIndex}>
+        <div className="tutorial-page" key={`${pageIndex}-${cycle}`}>
           <div className="tutorial-copy"><span className="tutorial-eyebrow">{page.eyebrow}</span><h3>{page.heading}</h3><p>{page.copy}</p></div>
           <div className="tutorial-visual">{page.visual}</div>
         </div>
