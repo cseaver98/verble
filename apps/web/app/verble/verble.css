@@ -245,22 +245,25 @@
 }
 
 .verble-shell .slot-tile.pick-word-pulse:not(.fixed):not(.reveal):not(.solved) {
+  outline: 1px solid rgba(37, 99, 235, 0.18);
   animation: verble-pick-word-pulse 1.65s ease-in-out infinite;
 }
 
 @keyframes verble-pick-word-pulse {
   0%, 100% {
-    box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.18), inset 0 -1px 0 rgba(47, 51, 61, 0.03);
+    outline-width: 1px;
+    outline-color: rgba(37, 99, 235, 0.18);
   }
   50% {
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.46), inset 0 -1px 0 rgba(47, 51, 61, 0.03);
+    outline-width: 3px;
+    outline-color: rgba(37, 99, 235, 0.46);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .verble-shell .slot-tile.pick-word-pulse:not(.fixed):not(.reveal):not(.solved) {
     animation: none;
-    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.42), inset 0 -1px 0 rgba(47, 51, 61, 0.03);
+    outline: 2px solid rgba(37, 99, 235, 0.42);
   }
 }
 
@@ -269,10 +272,6 @@
   background: #65b84d;
   border-color: #5aa545;
   color: #fff;
-}
-
-.verble-shell .slot-tile.locked {
-  box-shadow: none;
 }
 
 .verble-shell .slot-tile.reveal {
@@ -541,7 +540,7 @@
 .verble-shell .message[data-kind="hint"] { color: #2f672d; }
 
 .verble-shell .slot-tile.phrase-ready:not(.fixed):not(.reveal) {
-  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.42), inset 0 -1px 0 rgba(47, 51, 61, 0.03);
+  outline: 2px solid rgba(37, 99, 235, 0.42);
 }
 
 .verble-shell .result-modal-backdrop {
@@ -973,7 +972,7 @@
   }
 .verble-shell .slot-tile.pick-word-pulse:not(.fixed):not(.reveal):not(.solved) {
     animation: none;
-    box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.18), inset 0 -1px 0 rgba(47, 51, 61, 0.03);
+    outline: 1px solid rgba(37, 99, 235, 0.18);
   }
 .verble-shell .card {
     padding: 0.85rem;
