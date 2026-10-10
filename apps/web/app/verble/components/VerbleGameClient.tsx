@@ -1530,7 +1530,7 @@ export default function VerbleGameClient({
                     }}
                     disabled={!isPlayable}
                   >
-                    <span className="slot-tiles" key={invalidGuessFeedback?.slotIndex === slot.index ? invalidGuessFeedback.sequence : "ready"} style={shouldShowPickWordLift && isPlayable ? { animationDelay: `${slot.index * 180}ms` } : undefined}>
+                    <span className="slot-tiles" key={invalidGuessFeedback?.slotIndex === slot.index ? invalidGuessFeedback.sequence : "ready"} style={shouldShowPickWordLift && isPlayable ? { animationDelay: `${slot.index * 110}ms` } : undefined}>
                       {displayChars.map((item, index) => (
                         (() => {
                           const letterIndex = item.letterIndex ?? -1;
