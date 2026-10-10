@@ -81,6 +81,17 @@
   font-size: 0.86rem;
 }
 .tutorial-verble-word .slot-word-button { pointer-events: none; }
+.tutorial-verble-choose-flow { display: grid; gap: 0.42rem; }
+.tutorial-verble-choose-layers { min-height: 7.5rem; }
+.tutorial-verble-choose-empty { animation: tutorial-verble-choose-empty 6s linear infinite; }
+.tutorial-verble-choose-guess { opacity: 0; animation: tutorial-verble-choose-guess 6s linear infinite; }
+.tutorial-verble-choose-label-pick { animation: tutorial-verble-choose-empty 6s linear infinite; }
+.tutorial-verble-choose-label-type { opacity: 0; animation: tutorial-verble-choose-guess 6s linear infinite; }
+.verble-shell .phrase-layout.tutorial-verble-choose-selected.has-selected-word .slot-word-button.selected { animation: tutorial-verble-choose-select 6s ease-in-out infinite; }
+.tutorial-verble-choose-guess .tutorial-verble-typing-word .slot-char-group:nth-child(1) .tutorial-verble-typed-letter { animation: tutorial-verble-choose-type-1 6s ease-out infinite; }
+.tutorial-verble-choose-guess .tutorial-verble-typing-word .slot-char-group:nth-child(2) .tutorial-verble-typed-letter { animation: tutorial-verble-choose-type-2 6s ease-out infinite; }
+.tutorial-verble-choose-guess .tutorial-verble-typing-word .slot-char-group:nth-child(3) .tutorial-verble-typed-letter { animation: tutorial-verble-choose-type-3 6s ease-out infinite; }
+.tutorial-verble-choose-guess .tutorial-verble-typing-word .slot-char-group:nth-child(4) .tutorial-verble-typed-letter { animation: tutorial-verble-choose-type-4 6s ease-out infinite; }
 .tutorial-verble-flow { display: grid; gap: 0.42rem; }
 .tutorial-verble-flow-step { display: grid; justify-items: center; gap: 0.24rem; }
 .tutorial-verble-step-label { color: var(--tutorial-muted); font-size: 0.62rem; font-weight: 850; letter-spacing: 0.045em; text-transform: uppercase; }
@@ -236,6 +247,43 @@
 @keyframes tutorial-page-in {
   from { opacity: 0; transform: translateY(0.3rem); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes tutorial-verble-choose-empty {
+  0%, 20%, 100% { opacity: 1; }
+  27%, 88% { opacity: 0; }
+}
+
+@keyframes tutorial-verble-choose-guess {
+  0%, 22%, 100% { opacity: 0; }
+  28%, 88% { opacity: 1; }
+  95% { opacity: 0; }
+}
+
+@keyframes tutorial-verble-choose-select {
+  0%, 24% { scale: 0.98; }
+  30% { scale: 1.065; }
+  36%, 100% { scale: 1.045; }
+}
+
+@keyframes tutorial-verble-choose-type-1 {
+  0%, 33%, 100% { opacity: 0; transform: translateY(0.25rem) scale(0.85); }
+  38%, 88% { opacity: 1; transform: none; }
+}
+
+@keyframes tutorial-verble-choose-type-2 {
+  0%, 39%, 100% { opacity: 0; transform: translateY(0.25rem) scale(0.85); }
+  44%, 88% { opacity: 1; transform: none; }
+}
+
+@keyframes tutorial-verble-choose-type-3 {
+  0%, 45%, 100% { opacity: 0; transform: translateY(0.25rem) scale(0.85); }
+  50%, 88% { opacity: 1; transform: none; }
+}
+
+@keyframes tutorial-verble-choose-type-4 {
+  0%, 51%, 100% { opacity: 0; transform: translateY(0.25rem) scale(0.85); }
+  56%, 88% { opacity: 1; transform: none; }
 }
 
 @keyframes tutorial-verble-draft {
@@ -428,6 +476,10 @@
 
 @media (prefers-reduced-motion: reduce) {
   .tutorial-page { animation: none; }
+  .tutorial-verble-choose-empty, .tutorial-verble-choose-label-pick { display: none; }
+  .tutorial-verble-choose-guess, .tutorial-verble-choose-label-type { animation: none; opacity: 1; }
+  .verble-shell .phrase-layout.tutorial-verble-choose-selected.has-selected-word .slot-word-button.selected { animation: none; }
+  .tutorial-verble-choose-guess .tutorial-verble-typing-word .tutorial-verble-typed-letter { animation: none !important; opacity: 1; transform: none; }
   .tutorial-verble-phrase-typing,
   .tutorial-verble-phrase-feedback,
   .tutorial-verble-submit-cue,
