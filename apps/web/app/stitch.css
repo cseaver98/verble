@@ -163,6 +163,11 @@ body {
 .verble-shell .phrase-layout { justify-content: center; align-content: center; align-items: flex-end; gap: 1rem .56rem; margin: .1rem 0 .65rem; min-height: 6.9rem; }
 .verble-shell .slot-word-button { padding: .16rem; border-radius: .9rem; }
 .verble-shell .slot-word-button.selected { background: transparent; box-shadow: none; }
+.verble-shell .slot-word-button.pick-word-lift .slot-tiles { animation: arcade-pick-word-lift 3.8s ease-in-out infinite; }
+@keyframes arcade-pick-word-lift {
+  0%, 18%, 100% { transform: translateY(0); filter: none; }
+  8% { transform: translateY(-2px); filter: drop-shadow(0 3px 3px rgb(64 48 218 / 12%)); }
+}
 .verble-shell .phrase-layout.has-selected-word .slot-cluster { transition: opacity 220ms ease; }
 .verble-shell .phrase-layout.has-selected-word .slot-cluster:not(.selected) { opacity: .52; }
 .verble-shell .phrase-layout.has-selected-word .slot-cluster.selected { position: relative; z-index: 1; }
@@ -443,6 +448,7 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .verble-shell .slot-word-button.pick-word-lift .slot-tiles { animation: none; }
   .verble-shell .slot-word-button.invalid-guess .slot-tiles { animation: none; }
   .verble-shell .phrase-layout.has-selected-word .slot-cluster { transition: none; }
   .verble-shell .phrase-layout.has-selected-word .slot-word-button.selected { animation: none; }

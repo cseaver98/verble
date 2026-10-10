@@ -656,7 +656,7 @@ export default function VerbleGameClient({
       slot.index === selectedSlotMeta.index || Boolean(solvedWords[slot.index])
     ));
   const canOpenFullPhraseConfirm = canSubmitFullPhraseGuess && !shouldSubmitLastUnsolvedWord;
-  const shouldShowPickWordPulse =
+  const shouldShowPickWordLift =
     gameState === "playing"
     && !selectedSlotMeta
     && !isResolvingGuess;
@@ -1511,7 +1511,7 @@ export default function VerbleGameClient({
                     type="button"
                     aria-label={`Word ${slot.index + 1}, ${slot.length} letters${solved ? ", solved" : ""}`}
                     aria-pressed={isPlayable ? isSelected : undefined}
-                    className={`slot-word-button ${solved ? "solved" : ""} ${isSelected ? "selected" : ""} ${isSelected && invalidGuessFeedback?.slotIndex === slot.index ? "invalid-guess" : ""}`}
+                    className={`slot-word-button ${solved ? "solved" : ""} ${isSelected ? "selected" : ""} ${shouldShowPickWordLift && isPlayable ? "pick-word-lift" : ""} ${isSelected && invalidGuessFeedback?.slotIndex === slot.index ? "invalid-guess" : ""}`}
                     onClick={() => {
                       if (!isPlayable) {
                         return;
@@ -1530,7 +1530,7 @@ export default function VerbleGameClient({
                     }}
                     disabled={!isPlayable}
                   >
-                    <span className="slot-tiles" key={invalidGuessFeedback?.slotIndex === slot.index ? invalidGuessFeedback.sequence : "ready"}>
+                    <span className="slot-tiles" key={invalidGuessFeedback?.slotIndex === slot.index ? invalidGuessFeedback.sequence : "ready"} style={shouldShowPickWordLift && isPlayable ? { animationDelay: `${slot.index * 180}ms` } : undefined}>
                       {displayChars.map((item, index) => (
                         (() => {
                           const letterIndex = item.letterIndex ?? -1;
@@ -1590,7 +1590,7 @@ export default function VerbleGameClient({
                           return (
                             <span key={`${slot.index}-${index}`} className="slot-char-group">
                               <span
-                                className={`slot-tile ${item.kind === "fixed" ? "fixed" : ""} ${item.kind === "letter" && solved && !phraseRevealForSlot ? "solved" : ""} ${item.kind === "letter" && isSelected ? "selected" : ""} ${item.kind === "letter" && item.value ? "filled" : ""} ${item.kind === "letter" && shouldShowPickWordPulse ? "pick-word-pulse" : ""} ${item.kind === "letter" && canOpenFullPhraseConfirm ? "phrase-ready" : ""} ${item.kind === "letter" && !activeRevealIndex ? feedbackClass : ""} ${item.kind === "letter" && activeRevealIndex ? "reveal" : ""} ${item.kind === "letter" && postRevealIndex ? "reveal-swap" : ""} ${item.kind === "letter" && persistedLocks[letterIndex] ? "locked" : ""}`}
+                                className={`slot-tile ${item.kind === "fixed" ? "fixed" : ""} ${item.kind === "letter" && solved && !phraseRevealForSlot ? "solved" : ""} ${item.kind === "letter" && isSelected ? "selected" : ""} ${item.kind === "letter" && item.value ? "filled" : ""} ${item.kind === "letter" && canOpenFullPhraseConfirm ? "phrase-ready" : ""} ${item.kind === "letter" && !activeRevealIndex ? feedbackClass : ""} ${item.kind === "letter" && activeRevealIndex ? "reveal" : ""} ${item.kind === "letter" && postRevealIndex ? "reveal-swap" : ""} ${item.kind === "letter" && persistedLocks[letterIndex] ? "locked" : ""}`}
                                 style={
                                   item.kind === "letter" && activeRevealIndex
                                     ? ({

@@ -244,29 +244,6 @@
   color: #fff;
 }
 
-.verble-shell .slot-tile.pick-word-pulse:not(.fixed):not(.reveal):not(.solved) {
-  outline: 1px solid rgba(37, 99, 235, 0.18);
-  animation: verble-pick-word-pulse 1.65s ease-in-out infinite;
-}
-
-@keyframes verble-pick-word-pulse {
-  0%, 100% {
-    outline-width: 1px;
-    outline-color: rgba(37, 99, 235, 0.18);
-  }
-  50% {
-    outline-width: 3px;
-    outline-color: rgba(37, 99, 235, 0.46);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .verble-shell .slot-tile.pick-word-pulse:not(.fixed):not(.reveal):not(.solved) {
-    animation: none;
-    outline: 2px solid rgba(37, 99, 235, 0.42);
-  }
-}
-
 .verble-shell .slot-word-button.solved .slot-tile:not(.fixed),
 .verble-shell .slot-tile.solved {
   background: #65b84d;
@@ -969,10 +946,6 @@
     -webkit-appearance: none;
     transform: none !important;
     translate: none !important;
-  }
-.verble-shell .slot-tile.pick-word-pulse:not(.fixed):not(.reveal):not(.solved) {
-    animation: none;
-    outline: 1px solid rgba(37, 99, 235, 0.18);
   }
 .verble-shell .card {
     padding: 0.85rem;
