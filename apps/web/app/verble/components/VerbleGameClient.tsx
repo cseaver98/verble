@@ -10,7 +10,7 @@ import ResultOutcomeEffects from "../../components/ResultOutcomeEffects";
 import MainNav from "./MainNav";
 import { normalizePhraseWithPunctuation } from "../../../lib/verble/puzzle-repository";
 import { toPublicAppUrl } from "../../../lib/app-url";
-import { recordGameCompletionQuietly } from "../../../lib/record-game-completion";
+import { recordGameCompletion, type RecordGameCompletionInput } from "../../../lib/record-game-completion";
 import { buildResultPayload } from "../../../lib/result-payload";
 import { buildGameShareText, shareResultText } from "../../../lib/share-results";
 import { fetchStoredGameResult, getResultPayloadAnswer, getResultPayloadAttempts } from "../../../lib/stored-game-result";
@@ -18,6 +18,7 @@ import { useNextGameCountdown } from "../../../lib/use-next-game-countdown";
 import LoadingLabel from "../../components/LoadingLabel";
 import GuessProgressChip from "../../components/GuessProgressChip";
 import useHowToPlayDialog from "../../components/useHowToPlayDialog";
+import useArchiveCompletionStatus from "../../components/useArchiveCompletionStatus";
 import { trackGameStarted } from "../../../lib/analytics-client";
 import { formatSolveTime, getSolveDurationSeconds } from "../../../lib/solve-metrics";
 
@@ -226,6 +227,8 @@ export default function VerbleGameClient({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [puzzle, setPuzzle] = useState<VerblePuzzle | null>(null);
+  const [statusRefreshKey, setStatusRefreshKey] = useState(0);
+  const { results: playStatuses, loaded: playStatusesLoaded } = useArchiveCompletionStatus("verble", isArchiveView && puzzle ? [puzzle.puzzleDate] : [], statusRefreshKey);
   const [gameState, setGameState] = useState<GameState>("playing");
   const [message, setMessage] = useState("");
   const [selectedSlot, setSelectedSlot] = useState<number | null>(null);
@@ -287,6 +290,13 @@ export default function VerbleGameClient({
   const [isResolvingGuess, setIsResolvingGuess] = useState(false);
   const shouldShowNextGameCountdown = lockDailyCompletion && !isArchiveView && gameState !== "playing";
   const nextGameCountdown = useNextGameCountdown(shouldShowNextGameCountdown);
+  const recordResult = (input: RecordGameCompletionInput) => {
+    void recordGameCompletion(input).then(() => {
+      if (input.isArchive) setStatusRefreshKey((current) => current + 1);
+    }).catch((error) => {
+      console.warn(error instanceof Error ? error.message : "Failed to record game completion");
+    });
+  };
 
   useEffect(() => {
     if (!invalidGuessFeedback) return;
@@ -428,7 +438,7 @@ export default function VerbleGameClient({
     }
 
     const restored = parseStored(raw, progressKey, true);
-    if (!lockDailyCompletion && restored.gameState !== "playing") {
+    if (!lockDailyCompletion && (restored.gameState !== "playing" || restored.guessesUsed >= targetPuzzle.maxGuesses)) {
       window.localStorage.removeItem(progressKey);
       return getDefaultRestoredState(targetPuzzle);
     }
@@ -1013,7 +1023,7 @@ export default function VerbleGameClient({
           setGameState("won");
           setIsResolvingGuess(false);
           setIsResultOpen(true);
-          recordGameCompletionQuietly({
+          recordResult({
             gameSlug: "verble",
             puzzleId: puzzle.puzzleId,
             puzzleDate: puzzle.puzzleDate,
@@ -1055,7 +1065,7 @@ export default function VerbleGameClient({
           setGameState("lost");
           setIsResolvingGuess(false);
           setIsResultOpen(true);
-          recordGameCompletionQuietly({
+          recordResult({
             gameSlug: "verble",
             puzzleId: puzzle.puzzleId,
             puzzleDate: puzzle.puzzleDate,
@@ -1207,7 +1217,7 @@ export default function VerbleGameClient({
         setGameState("won");
         setIsResolvingGuess(false);
         setIsResultOpen(true);
-        recordGameCompletionQuietly({
+        recordResult({
           gameSlug: "verble",
           puzzleId: puzzle.puzzleId,
           puzzleDate: puzzle.puzzleDate,
@@ -1298,7 +1308,7 @@ export default function VerbleGameClient({
       setGameState("lost");
       setIsResolvingGuess(false);
       setIsResultOpen(true);
-      recordGameCompletionQuietly({
+      recordResult({
         gameSlug: "verble",
         puzzleId: puzzle.puzzleId,
         puzzleDate: puzzle.puzzleDate,
@@ -1459,6 +1469,13 @@ export default function VerbleGameClient({
   const statusChipLabel = shouldShowNextGameCountdown
     ? `Next Verble in ${nextGameCountdown || "--:--:--"}`
     : contextChipLabel;
+  const playStatus = playStatuses.get(puzzle.puzzleDate);
+  const dailyPlayLabel = playStatus?.daily
+    ? playStatus.daily.isWin ? `Won in ${playStatus.daily.guessesUsed} ${playStatus.daily.guessesUsed === 1 ? "try" : "tries"}` : "Lost"
+    : "Missed";
+  const archivePlayLabel = playStatus?.archive
+    ? playStatus.archive.isWin ? `Won in ${playStatus.archive.guessesUsed} ${playStatus.archive.guessesUsed === 1 ? "try" : "tries"}` : "Lost"
+    : "Not played yet";
   return (
     <div className="verble-shell">
       <MainNav label={navLabel} />
@@ -1471,6 +1488,10 @@ export default function VerbleGameClient({
             </button>
             <GuessProgressChip used={guessesUsed} total={maxGuesses} />
           </div>
+          {isArchiveView ? <div className="arcade-play-history" aria-label="Puzzle play history">
+            {playStatusesLoaded ? <><span><strong>Daily:</strong> {dailyPlayLabel}</span><span><strong>Archive first play:</strong> {archivePlayLabel}</span></> : <span>Loading play history…</span>}
+            <small>Replays are practice and do not change these results.</small>
+          </div> : null}
 
           <div className="arcade-board">
           <div className={`phrase-layout ${selectedSlot !== null && gameState === "playing" ? "has-selected-word" : ""}`}>
@@ -1902,7 +1923,7 @@ export default function VerbleGameClient({
             {lockDailyCompletion && !isArchiveView ? (
               <p className="result-modal-timer">Next Verble in <strong>{nextGameCountdown || "--:--:--"}</strong></p>
             ) : null}
-            <ResultDialogActions currentGameSlug="verble" onShare={shareResult} />
+            <ResultDialogActions currentGameSlug="verble" onShare={shareResult} onReplay={isArchiveView ? () => window.location.reload() : undefined} />
             {copyStatus ? <p className="result-modal-copy">{copyStatus}</p> : null}
           </section>
         </div>

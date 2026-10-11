@@ -2,11 +2,14 @@ import { allowedGameSlugs } from "@/lib/games";
 import { getOrCreatePlayerId } from "@/lib/player-id";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import { createSupabaseServerClient } from "@/lib/supabase-auth/server";
+import type { PuzzlePlayStatus } from "@/lib/puzzle-play-status";
 import { NextRequest, NextResponse } from "next/server";
 
 type ArchiveCompletionRow = {
   puzzle_date: string;
+  is_archive: boolean;
   is_win: boolean;
+  guesses_used: number;
 };
 
 export async function GET(request: NextRequest) {
@@ -24,7 +27,7 @@ export async function GET(request: NextRequest) {
     const query = supabase
       .schema("core")
       .from("game_results")
-      .select("puzzle_date,is_win")
+      .select("puzzle_date,is_archive,is_win,guesses_used")
       .eq("game_slug", gameSlug);
 
     const { data, error } = user
@@ -35,14 +38,16 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "Failed to load archive completions", details: error.message }, { status: 500 });
     }
 
-    const resultsByDate = new Map<string, boolean>();
+    const resultsByDate = new Map<string, PuzzlePlayStatus>();
     for (const row of data ?? []) {
-      resultsByDate.set(row.puzzle_date, (resultsByDate.get(row.puzzle_date) ?? false) || row.is_win);
+      const status = resultsByDate.get(row.puzzle_date) ?? { daily: null, archive: null };
+      status[row.is_archive ? "archive" : "daily"] = { isWin: row.is_win, guessesUsed: row.guesses_used };
+      resultsByDate.set(row.puzzle_date, status);
     }
 
     return NextResponse.json({
       gameSlug,
-      results: [...resultsByDate].map(([puzzleDate, isWin]) => ({ puzzleDate, isWin })),
+      results: [...resultsByDate].map(([puzzleDate, status]) => ({ puzzleDate, ...status })),
     });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Unknown error";

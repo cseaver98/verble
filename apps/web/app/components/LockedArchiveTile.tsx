@@ -3,15 +3,18 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
+import type { FirstPlayResult } from "@/lib/puzzle-play-status";
 
 type LockedArchiveTileProps = {
   href: string;
   tileLabel: string;
   dateLabel: string;
   isLocked: boolean;
-  result?: boolean;
+  dailyResult?: FirstPlayResult | null;
+  archiveResult?: FirstPlayResult | null;
   hideDate?: boolean;
   dayNumber: number;
+  isToday?: boolean;
 };
 
 const CLICK_PATTERN = ["top-left", "top-right", "bottom-left", "bottom-right", "center"] as const;
@@ -36,9 +39,11 @@ export default function LockedArchiveTile({
   tileLabel,
   dateLabel,
   isLocked,
-  result,
+  dailyResult,
+  archiveResult,
   hideDate = false,
   dayNumber,
+  isToday = false,
 }: LockedArchiveTileProps) {
   const router = useRouter();
   const [stepIndex, setStepIndex] = useState(0);
@@ -50,25 +55,27 @@ export default function LockedArchiveTile({
     return stepIndex > 0 ? `Secret pattern progress ${stepIndex} of ${CLICK_PATTERN.length}` : "Locked archive tile";
   }, [isLocked, stepIndex]);
 
-  const completedBadge = result === true ? (
+  const completedBadge = dailyResult?.isWin === true ? (
     <span className="archive-complete-badge">
-      <span>Completed</span>
+      <span>Daily win</span>
       <span
         aria-hidden
         className="archive-complete-check"
       />
     </span>
   ) : null;
-  const failedBadge = result === false ? <span className="archive-failed-badge">Failed</span> : null;
-  const notDoneBadge = result === undefined && !isLocked ? <span className="archive-not-done-badge">Not done</span> : null;
+  const failedBadge = dailyResult?.isWin === false ? <span className="archive-failed-badge">Daily loss</span> : null;
+  const missedBadge = dailyResult === null && !isLocked && !isToday ? <span className="archive-not-done-badge">Missed daily</span> : null;
+  const archiveBadge = archiveResult ? <span className="archive-played-badge" title="Archive played" aria-hidden="true" /> : null;
 
   if (!isLocked) {
     return (
-      <Link className="archive-tile arcade-calendar-day" href={href} aria-label={`${dateLabel}, ${tileLabel}, ${result === true ? "solved" : result === false ? "failed" : "unplayed"}`}>
+      <Link className={`archive-tile arcade-calendar-day${isToday ? " is-today" : ""}`} href={href} aria-label={`${dateLabel}, ${tileLabel}, ${dailyResult ? `daily ${dailyResult.isWin ? "win" : "loss"}` : isToday ? "daily game" : dailyResult === null ? "missed daily" : "result loading"}${archiveResult ? ", archive played" : ""}`}>
         <span className="arcade-day-number" aria-hidden="true">{dayNumber}</span>
         {completedBadge}
         {failedBadge}
-        {notDoneBadge}
+        {missedBadge}
+        {archiveBadge}
         <span className="archive-tile-title">{tileLabel}</span>
         <span className={`archive-tile-date ${hideDate ? "archive-tile-date-hidden" : ""}`}>{dateLabel}</span>
       </Link>
@@ -105,6 +112,7 @@ export default function LockedArchiveTile({
       <span className="archive-lock-badge">Locked</span>
       {completedBadge}
       {failedBadge}
+      {archiveBadge}
       <span className="archive-tile-title">{tileLabel}</span>
       <span className={`archive-tile-date ${hideDate ? "archive-tile-date-hidden" : ""}`}>{dateLabel}</span>
     </button>

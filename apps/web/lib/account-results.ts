@@ -101,6 +101,7 @@ const findExistingResult = async ({
     .eq(ownerColumn, ownerId)
     .eq("game_slug", input.gameSlug)
     .eq("puzzle_date", input.puzzleDate)
+    .eq("is_archive", Boolean(input.isArchive))
     .maybeSingle<GameResultRow>();
 
   if (error) {
@@ -159,9 +160,11 @@ export const recordGameResult = async (input: GameResultInput) => {
   }
 
   const existing = await findExistingResult({ supabase, input, ownerId, ownerColumn });
+  if (existing) return existing;
+
   const payload = {
-    user_id: input.userId ?? existing?.user_id ?? null,
-    player_id: input.userId ? existing?.player_id ?? null : playerId,
+    user_id: input.userId ?? null,
+    player_id: input.userId ? null : playerId,
     game_slug: input.gameSlug,
     puzzle_id: input.puzzleId,
     puzzle_date: input.puzzleDate,
@@ -171,20 +174,20 @@ export const recordGameResult = async (input: GameResultInput) => {
     max_guesses: input.maxGuesses,
     completed_at: completedAt,
     result_payload: input.resultPayload ?? {},
-    solve_duration_seconds: input.solveDurationSeconds ?? existing?.solve_duration_seconds ?? null,
+    solve_duration_seconds: input.solveDurationSeconds ?? null,
     updated_at: new Date().toISOString(),
   };
 
-  const query = existing
-    ? supabase.schema("core").from("game_results").update(payload).eq("id", existing.id)
-    : supabase.schema("core").from("game_results").insert(payload);
-
-  const { data, error } = await query.select("*").single<GameResultRow>();
+  const { data, error } = await supabase.schema("core").from("game_results").insert(payload).select("*").single<GameResultRow>();
+  if (error?.code === "23505") {
+    const concurrentResult = await findExistingResult({ supabase, input, ownerId, ownerColumn });
+    if (concurrentResult) return concurrentResult;
+  }
   if (error) {
     throw new Error(`Failed to record game result: ${error.message}`);
   }
 
-  if (playerId) {
+  if (playerId && !input.isArchive) {
     await writeLegacyCompletion({ supabase, playerId, input: { ...input, completedAt } });
   }
 
@@ -231,6 +234,7 @@ export const claimGuestResultsForUser = async ({
         gameSlug: row.game_slug,
         puzzleId: row.puzzle_id,
         puzzleDate: row.puzzle_date,
+        isArchive: row.is_archive,
         isWin: row.is_win,
         guessesUsed: row.guesses_used,
         maxGuesses: row.max_guesses,

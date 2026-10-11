@@ -299,15 +299,28 @@ body {
 .arcade-month-switcher button { width: 2rem; height: 2rem; border: 0; border-radius: .65rem; background: white; color: #4030da; font-size: 1.4rem; line-height: 1; cursor: pointer; }
 .arcade-month-switcher button:disabled { opacity: .35; cursor: not-allowed; }
 .arcade-jump-button { border: 0; border-radius: .65rem; background: #4030da; color: white; padding: .55rem .8rem; font: 700 .75rem var(--font-outfit), sans-serif; cursor: pointer; }
-.arcade-archive-filters { display: flex; gap: .35rem; padding: .25rem; border-radius: 999px; background: #efebff; width: fit-content; }
+.arcade-archive-filters { display: flex; flex-wrap: wrap; gap: .35rem; padding: .25rem; border-radius: 1rem; background: #efebff; width: fit-content; max-width: 100%; }
 .arcade-archive-filters button { border: 0; border-radius: 999px; padding: .45rem .9rem; background: transparent; color: #464555; font: 700 .78rem var(--font-outfit), sans-serif; cursor: pointer; }
 .arcade-archive-filters button[aria-pressed="true"] { background: white; color: #4030da; box-shadow: 0 2px 6px rgb(24 20 69 / 9%); }
+.arcade-calendar-legend { display: flex; flex-wrap: wrap; align-items: center; gap: .35rem .8rem; color: #56536b; font: 700 .68rem var(--font-outfit), sans-serif; }
+.arcade-calendar-legend span { display: inline-flex; align-items: center; gap: .3rem; white-space: nowrap; }
+.arcade-calendar-legend i { display: inline-grid; place-items: center; width: .75rem; height: .75rem; border-radius: 50%; font-size: .6rem; font-style: normal; line-height: 1; }
+.arcade-calendar-legend .legend-win { background: #079466; color: white; }
+.arcade-calendar-legend .legend-loss { background: #e85e58; }
+.arcade-calendar-legend .legend-missed { background: #f3a928; }
+.arcade-calendar-legend .legend-archive { width: .55rem; height: .55rem; margin: 0 .1rem; border-radius: .12rem; background: #6b55e7; transform: rotate(45deg); }
+.arcade-play-history { display: flex; flex-wrap: wrap; align-items: center; gap: .3rem .65rem; margin: .25rem 0 .75rem; padding: .65rem .8rem; border-radius: .85rem; background: #f3efff; color: #464555; font: 700 .75rem var(--font-outfit), sans-serif; }
+.arcade-play-history strong { color: #4030da; }
+.arcade-play-history small { flex-basis: 100%; color: #777587; font-size: .68rem; font-weight: 600; }
 .arcade-weekdays { display: grid; grid-template-columns: repeat(7, 1fr); gap: .4rem; text-align: center; color: #777587; text-transform: uppercase; font-size: .68rem; font-weight: 800; }
 .verble-shell .arcade-calendar-grid { grid-template-columns: repeat(7, minmax(0, 1fr)); gap: .4rem; }
 .arcade-calendar-day { position: relative; min-height: 5.5rem; border: 1px solid #efebff; border-radius: .8rem; background: #fcfaff; padding: .3rem; }
 .arcade-calendar-blank { min-height: 5.5rem; }
 .arcade-day-number { position: absolute; z-index: 1; top: .4rem; left: .55rem; color: #777587; font-size: .75rem; font-weight: 700; }
 .verble-shell .archive-tile.arcade-calendar-day { display: block; width: 100%; aspect-ratio: auto; box-shadow: none; }
+.verble-shell .archive-tile.arcade-calendar-day.is-today { background: #e0faf0; border: 2px solid #24b787; }
+.verble-shell .archive-tile.arcade-calendar-day.is-today:hover { background: #c9f3e3; }
+.verble-shell .arcade-calendar-day.is-today .archive-tile-title { color: #006c49; }
 .verble-shell .arcade-calendar-day .archive-tile-title { font-size: 1rem; }
 .verble-shell .arcade-calendar-day .archive-tile-date { display: none; }
 .arcade-calendar-day :is(.archive-complete-badge, .archive-not-done-badge, .archive-failed-badge) { top: auto; bottom: .35rem; left: auto; right: .35rem; transform: none; display: flex; align-items: center; justify-content: center; width: 1rem; height: 1rem; padding: 0; border-radius: 50%; font-size: 0; box-shadow: 0 0 0 2px #f6f2ff; }
@@ -315,6 +328,7 @@ body {
 .arcade-calendar-day .archive-complete-check { width: .52rem; height: .32rem; border-color: white; border-width: 0 0 .14rem .14rem; transform: translateY(-.08rem) rotate(-45deg); }
 .arcade-calendar-day .archive-not-done-badge { background: #f3a928; }
 .arcade-calendar-day .archive-failed-badge { background: #e85e58; }
+.arcade-calendar-day .archive-played-badge { position: absolute; top: .45rem; right: .4rem; width: .55rem; height: .55rem; border-radius: .12rem; background: #6b55e7; transform: rotate(45deg); box-shadow: 0 0 0 2px #f6f2ff; }
 .arcade-calendar-day .archive-lock-badge { top: -.1rem; left: auto; right: .15rem; transform: none; padding: .15rem; font-size: 0; min-width: .5rem; min-height: .5rem; }
 .arcade-calendar-empty { margin: 0; color: #777587; font-size: .8rem; }
 .arcade-replay-card { display: flex; align-items: center; gap: .8rem; margin-top: 1rem; padding: .9rem 1rem; border-radius: 1rem; background: #efebff; color: #181445; text-decoration: none; }
@@ -377,7 +391,7 @@ body {
 }
 
 @media (hover: hover) and (pointer: fine) {
-  :is(.arcade-nav-icon, .arcade-bottom-nav a, .arcade-result-actions > a, .arcade-page-icon, .arcade-month-switcher button:not(:disabled), .arcade-archive-filters button:not([aria-pressed="true"]), .arcade-replay-card, .arcade-stats-actions .arcade-secondary-link, .arcade-account-menu a, .arcade-account-main a[href="/"]):hover,
+  :is(.arcade-nav-icon, .arcade-bottom-nav a, .arcade-result-actions > :not(.arcade-result-share), .arcade-page-icon, .arcade-month-switcher button:not(:disabled), .arcade-archive-filters button:not([aria-pressed="true"]), .arcade-replay-card, .arcade-stats-actions .arcade-secondary-link, .arcade-account-menu a, .arcade-account-main a[href="/"]):hover,
   .verble-shell :is(.how-to-play-btn, .arcade-clear-button:not(:disabled), .archive-tile:not(.is-locked)):hover {
     background: var(--arcade-hover-bg);
     color: var(--arcade-violet);
@@ -408,10 +422,14 @@ body {
   .verble-shell .phrase-layout { gap: .95rem .35rem; }
   .verble-shell .archive-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .verble-shell .arcade-calendar-grid { grid-template-columns: repeat(7, minmax(0, 1fr)); }
+  .arcade-archive-filters { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); width: 100%; }
+  .arcade-archive-filters button { padding: .45rem .35rem; }
+  .arcade-calendar-legend { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .arcade-calendar-day, .arcade-calendar-blank { min-height: 4.4rem; }
   .arcade-calendar-day { padding: .15rem; }
   .arcade-day-number { font-size: .65rem; }
   .verble-shell .arcade-calendar-day .archive-tile-title { font-size: .72rem; }
+  .verble-shell .arcade-calendar-day.is-today .archive-tile-title { font-size: .62rem; }
   .arcade-month-switcher h2 { min-width: 7.5rem; font-size: .93rem; }
   .verble-shell .result-modal-backdrop { padding: var(--arcade-modal-top-pad) 1rem calc(var(--arcade-mobile-nav-height) + 1rem); }
   .verble-shell .result-modal-panel { max-height: calc(100dvh - var(--arcade-mobile-nav-height) - var(--arcade-modal-top-pad) - 1rem); }

@@ -91,7 +91,7 @@ insert into fixture_results values
   ('2026-09-04', true, 3, 310, false),
   ('2026-09-05', false, 6, 620, false),
   ('2026-09-06', true, 4, 480, false),
-  ('2026-09-08', true, 5, 700, true),
+  ('2026-09-08', true, 5, 700, false),
   ('2026-09-09', true, 2, 260, false),
   ('2026-09-10', true, 1, 170, false),
   ('2026-09-11', true, 6, 800, false),
@@ -100,11 +100,11 @@ insert into fixture_results values
   ('2026-09-15', true, 4, 395, false),
   ('2026-09-16', true, 1, 190, false),
   ('2026-09-18', true, 2, 280, false),
-  ('2026-09-19', true, 5, 620, true),
+  ('2026-09-19', true, 5, 620, false),
   ('2026-09-20', false, 6, 710, false),
   ('2026-09-22', true, 3, 355, false),
   ('2026-09-23', true, 2, 240, false),
-  ('2026-09-24', true, 4, 550, true),
+  ('2026-09-24', true, 4, 550, false),
   ('2026-09-26', true, 5, 620, false),
   ('2026-09-27', false, 6, 700, false),
   ('2026-09-28', true, 1, 165, false),
@@ -130,6 +130,46 @@ select g.id, 'verble', s.phrase_id::text, r.puzzle_date, r.is_archive, r.is_win,
        r.guesses_used, 6, (r.puzzle_date::timestamp + time '20:00') at time zone 'UTC',
        r.solve_duration_seconds, jsonb_build_object('localFixture', 'september-2026-review')
 from fixture_results r
+join verble.daily_schedule s on s.puzzle_date = r.puzzle_date
+cross join fixture_guest g
+on conflict do nothing;
+
+-- Separate first archive plays demonstrate all three combinations: a missed
+-- daily, a lost daily, and a won daily followed by an archive play.
+create temp table fixture_archive_results (
+  puzzle_date date primary key,
+  is_win boolean not null,
+  guesses_used integer not null,
+  solve_duration_seconds integer not null
+) on commit drop;
+
+insert into fixture_archive_results values
+  ('2026-09-01', true, 2, 250),
+  ('2026-09-05', true, 4, 470),
+  ('2026-09-08', true, 5, 700),
+  ('2026-09-19', true, 5, 620),
+  ('2026-09-24', true, 4, 550);
+
+insert into core.game_results (
+  user_id, game_slug, puzzle_id, puzzle_date, is_archive, is_win,
+  guesses_used, max_guesses, completed_at, solve_duration_seconds, result_payload
+)
+select o.id, 'verble', s.phrase_id::text, r.puzzle_date, true, r.is_win,
+       r.guesses_used, 6, '2026-10-01 20:00:00+00', r.solve_duration_seconds,
+       jsonb_build_object('localFixture', 'september-2026-review-archive')
+from fixture_archive_results r
+join verble.daily_schedule s on s.puzzle_date = r.puzzle_date
+cross join fixture_owner o
+on conflict do nothing;
+
+insert into core.game_results (
+  player_id, game_slug, puzzle_id, puzzle_date, is_archive, is_win,
+  guesses_used, max_guesses, completed_at, solve_duration_seconds, result_payload
+)
+select g.id, 'verble', s.phrase_id::text, r.puzzle_date, true, r.is_win,
+       r.guesses_used, 6, '2026-10-01 20:00:00+00', r.solve_duration_seconds,
+       jsonb_build_object('localFixture', 'september-2026-review-archive')
+from fixture_archive_results r
 join verble.daily_schedule s on s.puzzle_date = r.puzzle_date
 cross join fixture_guest g
 on conflict do nothing;

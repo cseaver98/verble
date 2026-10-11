@@ -1,17 +1,20 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import type { PuzzlePlayStatus } from "@/lib/puzzle-play-status";
 
 type ArchiveCompletionResponse = {
-  results?: Array<{ puzzleDate: string; isWin: boolean }>;
+  results?: Array<{ puzzleDate: string } & PuzzlePlayStatus>;
   error?: string;
 };
 
-const emptyResults = new Map<string, boolean>();
+const emptyResults = new Map<string, PuzzlePlayStatus>();
 
-export default function useArchiveCompletionStatus(gameSlug: string, puzzleDates: string[]) {
-  const [results, setResults] = useState<Map<string, boolean>>(new Map());
+export default function useArchiveCompletionStatus(gameSlug: string, puzzleDates: string[], refreshKey = 0) {
+  const [results, setResults] = useState<Map<string, PuzzlePlayStatus>>(new Map());
+  const [loadedKey, setLoadedKey] = useState("");
   const dateKey = useMemo(() => puzzleDates.join("|"), [puzzleDates]);
+  const requestKey = `${gameSlug}:${dateKey}:${refreshKey}`;
 
   useEffect(() => {
     if (!puzzleDates.length) {
@@ -27,11 +30,13 @@ export default function useArchiveCompletionStatus(gameSlug: string, puzzleDates
           throw new Error(payload.error || "Failed to load archive completion status");
         }
         if (!active) return;
-        setResults(new Map(Array.isArray(payload.results) ? payload.results.map((result) => [result.puzzleDate, result.isWin]) : []));
+        setResults(new Map(Array.isArray(payload.results) ? payload.results.map((result) => [result.puzzleDate, { daily: result.daily, archive: result.archive }]) : []));
+        setLoadedKey(requestKey);
       } catch (error) {
         if (!active) return;
         console.warn(error instanceof Error ? error.message : "Failed to load archive completion status");
         setResults(new Map());
+        setLoadedKey(requestKey);
       }
     };
 
@@ -40,7 +45,7 @@ export default function useArchiveCompletionStatus(gameSlug: string, puzzleDates
     return () => {
       active = false;
     };
-  }, [dateKey, gameSlug, puzzleDates.length]);
+  }, [dateKey, gameSlug, refreshKey, requestKey, puzzleDates.length]);
 
-  return puzzleDates.length ? results : emptyResults;
+  return { results: puzzleDates.length ? results : emptyResults, loaded: puzzleDates.length ? loadedKey === requestKey : true };
 }
