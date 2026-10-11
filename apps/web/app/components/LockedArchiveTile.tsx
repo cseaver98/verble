@@ -11,6 +11,7 @@ type LockedArchiveTileProps = {
   isLocked: boolean;
   result?: boolean;
   hideDate?: boolean;
+  dayNumber: number;
 };
 
 const CLICK_PATTERN = ["top-left", "top-right", "bottom-left", "bottom-right", "center"] as const;
@@ -37,6 +38,7 @@ export default function LockedArchiveTile({
   isLocked,
   result,
   hideDate = false,
+  dayNumber,
 }: LockedArchiveTileProps) {
   const router = useRouter();
   const [stepIndex, setStepIndex] = useState(0);
@@ -62,7 +64,8 @@ export default function LockedArchiveTile({
 
   if (!isLocked) {
     return (
-      <Link className="archive-tile" href={href}>
+      <Link className="archive-tile arcade-calendar-day" href={href} aria-label={`${dateLabel}, ${tileLabel}`}>
+        <span className="arcade-day-number" aria-hidden="true">{dayNumber}</span>
         {completedBadge}
         {failedBadge}
         {notDoneBadge}
@@ -93,11 +96,12 @@ export default function LockedArchiveTile({
   return (
     <button
       type="button"
-      className="archive-tile is-locked"
+      className="archive-tile arcade-calendar-day is-locked"
       onClick={handleClick}
       aria-label={`${tileLabel} locked archive game`}
       title={lockHint}
     >
+      <span className="arcade-day-number" aria-hidden="true">{dayNumber}</span>
       <span className="archive-lock-badge">Locked</span>
       {completedBadge}
       {failedBadge}

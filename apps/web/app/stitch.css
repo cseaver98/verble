@@ -306,8 +306,8 @@ body {
 .verble-shell .arcade-calendar-grid { grid-template-columns: repeat(7, minmax(0, 1fr)); gap: .4rem; }
 .arcade-calendar-day { position: relative; min-height: 5.5rem; border: 1px solid #efebff; border-radius: .8rem; background: #fcfaff; padding: .3rem; }
 .arcade-calendar-blank { min-height: 5.5rem; }
-.arcade-day-number { position: relative; z-index: 1; display: block; margin: .1rem .25rem; color: #777587; font-size: .75rem; font-weight: 700; }
-.verble-shell .arcade-calendar-day .archive-tile { width: 100%; height: calc(100% - 1.5rem); aspect-ratio: auto; gap: .25rem; padding: .25rem; box-shadow: none; }
+.arcade-day-number { position: absolute; z-index: 1; top: .4rem; left: .55rem; color: #777587; font-size: .75rem; font-weight: 700; }
+.verble-shell .archive-tile.arcade-calendar-day { display: block; width: 100%; aspect-ratio: auto; box-shadow: none; }
 .verble-shell .arcade-calendar-day .archive-tile-title { font-size: 1rem; }
 .verble-shell .arcade-calendar-day .archive-tile-date { display: none; }
 .arcade-calendar-day .archive-complete-badge, .arcade-calendar-day .archive-not-done-badge, .arcade-calendar-day .archive-failed-badge, .arcade-calendar-day .archive-lock-badge { top: -.1rem; left: auto; right: .15rem; transform: none; padding: .15rem; font-size: 0; min-width: .5rem; min-height: .5rem; }
