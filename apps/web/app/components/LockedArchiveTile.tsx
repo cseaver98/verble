@@ -9,7 +9,7 @@ type LockedArchiveTileProps = {
   tileLabel: string;
   dateLabel: string;
   isLocked: boolean;
-  isCompleted?: boolean;
+  result?: boolean;
   hideDate?: boolean;
 };
 
@@ -35,7 +35,7 @@ export default function LockedArchiveTile({
   tileLabel,
   dateLabel,
   isLocked,
-  isCompleted = false,
+  result,
   hideDate = false,
 }: LockedArchiveTileProps) {
   const router = useRouter();
@@ -48,7 +48,7 @@ export default function LockedArchiveTile({
     return stepIndex > 0 ? `Secret pattern progress ${stepIndex} of ${CLICK_PATTERN.length}` : "Locked archive tile";
   }, [isLocked, stepIndex]);
 
-  const completedBadge = isCompleted ? (
+  const completedBadge = result === true ? (
     <span className="archive-complete-badge">
       <span>Completed</span>
       <span
@@ -57,12 +57,14 @@ export default function LockedArchiveTile({
       />
     </span>
   ) : null;
-  const notDoneBadge = !isCompleted && !isLocked ? <span className="archive-not-done-badge">Not done</span> : null;
+  const failedBadge = result === false ? <span className="archive-failed-badge">Failed</span> : null;
+  const notDoneBadge = result === undefined && !isLocked ? <span className="archive-not-done-badge">Not done</span> : null;
 
   if (!isLocked) {
     return (
       <Link className="archive-tile" href={href}>
         {completedBadge}
+        {failedBadge}
         {notDoneBadge}
         <span className="archive-tile-title">{tileLabel}</span>
         <span className={`archive-tile-date ${hideDate ? "archive-tile-date-hidden" : ""}`}>{dateLabel}</span>
@@ -98,6 +100,7 @@ export default function LockedArchiveTile({
     >
       <span className="archive-lock-badge">Locked</span>
       {completedBadge}
+      {failedBadge}
       <span className="archive-tile-title">{tileLabel}</span>
       <span className={`archive-tile-date ${hideDate ? "archive-tile-date-hidden" : ""}`}>{dateLabel}</span>
     </button>

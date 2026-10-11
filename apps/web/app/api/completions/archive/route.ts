@@ -6,6 +6,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 type ArchiveCompletionRow = {
   puzzle_date: string;
+  is_win: boolean;
 };
 
 export async function GET(request: NextRequest) {
@@ -23,9 +24,8 @@ export async function GET(request: NextRequest) {
     const query = supabase
       .schema("core")
       .from("game_results")
-      .select("puzzle_date")
-      .eq("game_slug", gameSlug)
-      .eq("is_archive", true);
+      .select("puzzle_date,is_win")
+      .eq("game_slug", gameSlug);
 
     const { data, error } = user
       ? await query.eq("user_id", user.id).returns<ArchiveCompletionRow[]>()
@@ -35,9 +35,14 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "Failed to load archive completions", details: error.message }, { status: 500 });
     }
 
+    const resultsByDate = new Map<string, boolean>();
+    for (const row of data ?? []) {
+      resultsByDate.set(row.puzzle_date, (resultsByDate.get(row.puzzle_date) ?? false) || row.is_win);
+    }
+
     return NextResponse.json({
       gameSlug,
-      completedDates: [...new Set((data ?? []).map((row) => row.puzzle_date))],
+      results: [...resultsByDate].map(([puzzleDate, isWin]) => ({ puzzleDate, isWin })),
     });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Unknown error";

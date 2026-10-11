@@ -3,14 +3,14 @@
 import { useEffect, useMemo, useState } from "react";
 
 type ArchiveCompletionResponse = {
-  completedDates?: string[];
+  results?: Array<{ puzzleDate: string; isWin: boolean }>;
   error?: string;
 };
 
-const emptyCompletedDates = new Set<string>();
+const emptyResults = new Map<string, boolean>();
 
 export default function useArchiveCompletionStatus(gameSlug: string, puzzleDates: string[]) {
-  const [completedDates, setCompletedDates] = useState<Set<string>>(new Set());
+  const [results, setResults] = useState<Map<string, boolean>>(new Map());
   const dateKey = useMemo(() => puzzleDates.join("|"), [puzzleDates]);
 
   useEffect(() => {
@@ -27,11 +27,11 @@ export default function useArchiveCompletionStatus(gameSlug: string, puzzleDates
           throw new Error(payload.error || "Failed to load archive completion status");
         }
         if (!active) return;
-        setCompletedDates(new Set(Array.isArray(payload.completedDates) ? payload.completedDates : []));
+        setResults(new Map(Array.isArray(payload.results) ? payload.results.map((result) => [result.puzzleDate, result.isWin]) : []));
       } catch (error) {
         if (!active) return;
         console.warn(error instanceof Error ? error.message : "Failed to load archive completion status");
-        setCompletedDates(new Set());
+        setResults(new Map());
       }
     };
 
@@ -42,5 +42,5 @@ export default function useArchiveCompletionStatus(gameSlug: string, puzzleDates
     };
   }, [dateKey, gameSlug, puzzleDates.length]);
 
-  return puzzleDates.length ? completedDates : emptyCompletedDates;
+  return puzzleDates.length ? results : emptyResults;
 }

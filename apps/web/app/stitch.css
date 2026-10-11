@@ -286,6 +286,7 @@ body {
 .verble-shell .archive-tile-date { color: #464555; }
 .archive-complete-badge { background: #d5f9ec; color: #006c49; }
 .archive-not-done-badge { background: #fff0c6; color: #694d00; }
+.archive-failed-badge { position: absolute; top: .75rem; left: 50%; transform: translateX(-50%); border-radius: 999px; background: #ffe4df; color: #9b3029; padding: .34rem .48rem; font-family: var(--font-plus-jakarta-sans), sans-serif; font-size: .62rem; font-weight: 700; letter-spacing: .08em; line-height: 1; text-transform: uppercase; }
 
 .arcade-page-heading { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1rem; }
 .arcade-eyebrow { margin: 0 0 .25rem; color: #4030da; font-weight: 800; font-size: .72rem; text-transform: uppercase; letter-spacing: .1em; }
@@ -309,9 +310,10 @@ body {
 .verble-shell .arcade-calendar-day .archive-tile { width: 100%; height: calc(100% - 1.5rem); aspect-ratio: auto; gap: .25rem; padding: .25rem; box-shadow: none; }
 .verble-shell .arcade-calendar-day .archive-tile-title { font-size: 1rem; }
 .verble-shell .arcade-calendar-day .archive-tile-date { display: none; }
-.arcade-calendar-day .archive-complete-badge, .arcade-calendar-day .archive-not-done-badge, .arcade-calendar-day .archive-lock-badge { top: -.1rem; left: auto; right: .15rem; transform: none; padding: .15rem; font-size: 0; min-width: .5rem; min-height: .5rem; }
+.arcade-calendar-day .archive-complete-badge, .arcade-calendar-day .archive-not-done-badge, .arcade-calendar-day .archive-failed-badge, .arcade-calendar-day .archive-lock-badge { top: -.1rem; left: auto; right: .15rem; transform: none; padding: .15rem; font-size: 0; min-width: .5rem; min-height: .5rem; }
 .arcade-calendar-day .archive-complete-check { width: .4rem; height: .26rem; border-width: .1rem; }
 .arcade-calendar-day .archive-not-done-badge { background: #fbbf24; }
+.arcade-calendar-day .archive-failed-badge { background: #ee8d82; }
 .arcade-calendar-empty { margin: 0; color: #777587; font-size: .8rem; }
 .arcade-replay-card { display: flex; align-items: center; gap: .8rem; margin-top: 1rem; padding: .9rem 1rem; border-radius: 1rem; background: #efebff; color: #181445; text-decoration: none; }
 .arcade-replay-icon { width: 2.5rem; height: 2.5rem; display: grid; place-items: center; flex: none; border-radius: .75rem; background: #5a4ff3; color: white; }

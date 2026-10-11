@@ -9,7 +9,7 @@ import LoadingLabel from "../components/LoadingLabel";
 import MainNav from "../verble/components/MainNav";
 
 type ArchiveItem = { puzzleDate: string };
-type ArchiveFilter = "all" | "unplayed" | "solved";
+type ArchiveFilter = "all" | "unplayed" | "solved" | "failed";
 
 const formatDateLabel = (date: string): string => {
   const parsed = new Date(`${date}T00:00:00`);
@@ -25,7 +25,7 @@ export default function ArchivePage() {
   const [error, setError] = useState("");
   const [displayMonth, setDisplayMonth] = useState("");
   const [filter, setFilter] = useState<ArchiveFilter>("all");
-  const completedDates = useArchiveCompletionStatus("verble", items.map((item) => item.puzzleDate));
+  const results = useArchiveCompletionStatus("verble", items.map((item) => item.puzzleDate));
 
   useEffect(() => {
     let active = true;
@@ -60,15 +60,17 @@ export default function ArchivePage() {
         ...item,
         archiveGameNumber,
         isLocked: lockEnabled && archiveGameNumber === 1,
-        isCompleted: completedDates.has(item.puzzleDate),
+        result: results.get(item.puzzleDate),
         dateLabel: formatDateLabel(item.puzzleDate),
         hideDate: lockEnabled && archiveGameNumber === 1,
         tileLabel: lockEnabled && archiveGameNumber === 1 ? "?" : `#${lockEnabled ? archiveGameNumber - 1 : archiveGameNumber}`,
       };
     });
-  }, [completedDates, items, lockEnabled]);
+  }, [results, items, lockEnabled]);
 
-  const monthRows = useMemo(() => rows.filter((item) => item.puzzleDate.startsWith(displayMonth) && (filter === "all" || (filter === "solved" ? item.isCompleted : !item.isCompleted))), [rows, displayMonth, filter]);
+  const monthRows = useMemo(() => rows.filter((item) => item.puzzleDate.startsWith(displayMonth) && (
+    filter === "all" || (filter === "solved" && item.result === true) || (filter === "failed" && item.result === false) || (filter === "unplayed" && item.result === undefined)
+  )), [rows, displayMonth, filter]);
   const monthItems = useMemo(() => {
     if (!/^\d{4}-\d{2}$/.test(displayMonth)) return [];
     const [year, month] = displayMonth.split("-").map(Number);
@@ -109,14 +111,14 @@ export default function ArchivePage() {
                   <button type="button" className="arcade-jump-button" onClick={() => setDisplayMonth(latestMonth)}>Latest puzzles</button>
                 </div>
                 <div className="arcade-archive-filters" aria-label="Filter past games">
-                  {(["all", "unplayed", "solved"] as ArchiveFilter[]).map((value) => <button type="button" key={value} onClick={() => setFilter(value)} aria-pressed={filter === value}>{value === "all" ? "All" : value === "unplayed" ? "Unplayed" : "Solved"}</button>)}
+                  {(["all", "unplayed", "solved", "failed"] as ArchiveFilter[]).map((value) => <button type="button" key={value} onClick={() => setFilter(value)} aria-pressed={filter === value}>{value === "all" ? "All" : value === "unplayed" ? "Unplayed" : value === "solved" ? "Solved" : "Failed"}</button>)}
                 </div>
                 {rows[0] ? <Link href={`/archive/${rows[0].puzzleDate}`} className="arcade-replay-card"><span className="arcade-replay-icon"><ArcadeIcon name="refresh" /></span><span><strong>Ready for another round?</strong><small>Replay the latest past phrase · {rows[0].dateLabel}</small></span><span aria-hidden="true">→</span></Link> : null}
                 <div className="arcade-weekdays" aria-hidden="true">{["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => <span key={day}>{day}</span>)}</div>
                 <div className="archive-grid arcade-calendar-grid">
-                  {monthItems.map((day, index) => day ? <div className="arcade-calendar-day" key={day.day}><span className="arcade-day-number">{day.day}</span>{day.item ? <LockedArchiveTile href={`/archive/${day.item.puzzleDate}`} tileLabel={day.item.tileLabel} dateLabel={day.item.dateLabel} isLocked={day.item.isLocked} isCompleted={day.item.isCompleted} hideDate={day.item.hideDate} /> : null}</div> : <div key={`blank-${index}`} className="arcade-calendar-blank" />)}
+                  {monthItems.map((day, index) => day ? <div className="arcade-calendar-day" key={day.day}><span className="arcade-day-number">{day.day}</span>{day.item ? <LockedArchiveTile href={`/archive/${day.item.puzzleDate}`} tileLabel={day.item.tileLabel} dateLabel={day.item.dateLabel} isLocked={day.item.isLocked} result={day.item.result} hideDate={day.item.hideDate} /> : null}</div> : <div key={`blank-${index}`} className="arcade-calendar-blank" />)}
                 </div>
-                {monthRows.length === 0 ? <p className="arcade-calendar-empty">No {filter === "all" ? "Verble puzzles" : filter === "solved" ? "solved puzzles" : "unplayed puzzles"} in this month.</p> : null}
+                {monthRows.length === 0 ? <p className="arcade-calendar-empty">No {filter === "all" ? "Verble puzzles" : filter === "solved" ? "solved puzzles" : filter === "failed" ? "failed puzzles" : "unplayed puzzles"} in this month.</p> : null}
               </>}
             </>
           ) : null}
