@@ -64,7 +64,7 @@ export default function LockedArchiveTile({
 
   if (!isLocked) {
     return (
-      <Link className="archive-tile arcade-calendar-day" href={href} aria-label={`${dateLabel}, ${tileLabel}`}>
+      <Link className="archive-tile arcade-calendar-day" href={href} aria-label={`${dateLabel}, ${tileLabel}, ${result === true ? "solved" : result === false ? "failed" : "unplayed"}`}>
         <span className="arcade-day-number" aria-hidden="true">{dayNumber}</span>
         {completedBadge}
         {failedBadge}

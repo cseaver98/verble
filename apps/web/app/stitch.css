@@ -310,10 +310,12 @@ body {
 .verble-shell .archive-tile.arcade-calendar-day { display: block; width: 100%; aspect-ratio: auto; box-shadow: none; }
 .verble-shell .arcade-calendar-day .archive-tile-title { font-size: 1rem; }
 .verble-shell .arcade-calendar-day .archive-tile-date { display: none; }
-.arcade-calendar-day .archive-complete-badge, .arcade-calendar-day .archive-not-done-badge, .arcade-calendar-day .archive-failed-badge, .arcade-calendar-day .archive-lock-badge { top: -.1rem; left: auto; right: .15rem; transform: none; padding: .15rem; font-size: 0; min-width: .5rem; min-height: .5rem; }
-.arcade-calendar-day .archive-complete-check { width: .4rem; height: .26rem; border-width: .1rem; }
-.arcade-calendar-day .archive-not-done-badge { background: #fbbf24; }
-.arcade-calendar-day .archive-failed-badge { background: #ee8d82; }
+.arcade-calendar-day :is(.archive-complete-badge, .archive-not-done-badge, .archive-failed-badge) { top: auto; bottom: .35rem; left: auto; right: .35rem; transform: none; display: flex; align-items: center; justify-content: center; width: 1rem; height: 1rem; padding: 0; border-radius: 50%; font-size: 0; box-shadow: 0 0 0 2px #f6f2ff; }
+.arcade-calendar-day .archive-complete-badge { background: #079466; }
+.arcade-calendar-day .archive-complete-check { width: .52rem; height: .32rem; border-color: white; border-width: 0 0 .14rem .14rem; transform: translateY(-.08rem) rotate(-45deg); }
+.arcade-calendar-day .archive-not-done-badge { background: #f3a928; }
+.arcade-calendar-day .archive-failed-badge { background: #e85e58; }
+.arcade-calendar-day .archive-lock-badge { top: -.1rem; left: auto; right: .15rem; transform: none; padding: .15rem; font-size: 0; min-width: .5rem; min-height: .5rem; }
 .arcade-calendar-empty { margin: 0; color: #777587; font-size: .8rem; }
 .arcade-replay-card { display: flex; align-items: center; gap: .8rem; margin-top: 1rem; padding: .9rem 1rem; border-radius: 1rem; background: #efebff; color: #181445; text-decoration: none; }
 .arcade-replay-icon { width: 2.5rem; height: 2.5rem; display: grid; place-items: center; flex: none; border-radius: .75rem; background: #5a4ff3; color: white; }
