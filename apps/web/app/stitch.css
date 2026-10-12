@@ -298,7 +298,6 @@ body {
 .arcade-month-switcher h2 { min-width: 9rem; margin: 0; text-align: center; font-size: 1.1rem; font-weight: 800; }
 .arcade-month-switcher button { width: 2rem; height: 2rem; border: 0; border-radius: .65rem; background: white; color: #4030da; font-size: 1.4rem; line-height: 1; cursor: pointer; }
 .arcade-month-switcher button:disabled { opacity: .35; cursor: not-allowed; }
-.arcade-jump-button { border: 0; border-radius: .65rem; background: #4030da; color: white; padding: .55rem .8rem; font: 700 .75rem var(--font-outfit), sans-serif; cursor: pointer; }
 .arcade-archive-filters { display: flex; flex-wrap: wrap; gap: .35rem; padding: .25rem; border-radius: 1rem; background: #efebff; width: fit-content; max-width: 100%; }
 .arcade-archive-filters button { border: 0; border-radius: 999px; padding: .45rem .9rem; background: transparent; color: #464555; font: 700 .78rem var(--font-outfit), sans-serif; cursor: pointer; }
 .arcade-archive-filters button[aria-pressed="true"] { background: white; color: #4030da; box-shadow: 0 2px 6px rgb(24 20 69 / 9%); }
@@ -331,12 +330,11 @@ body {
 .arcade-calendar-day .archive-played-badge { position: absolute; top: .45rem; right: .4rem; width: .55rem; height: .55rem; border-radius: .12rem; background: #6b55e7; transform: rotate(45deg); box-shadow: 0 0 0 2px #f6f2ff; }
 .arcade-calendar-day .archive-lock-badge { top: -.1rem; left: auto; right: .15rem; transform: none; padding: .15rem; font-size: 0; min-width: .5rem; min-height: .5rem; }
 .arcade-calendar-empty { margin: 0; color: #777587; font-size: .8rem; }
-.arcade-replay-card { display: flex; align-items: center; gap: .8rem; margin-top: 1rem; padding: .9rem 1rem; border-radius: 1rem; background: #efebff; color: #181445; text-decoration: none; }
-.arcade-replay-icon { width: 2.5rem; height: 2.5rem; display: grid; place-items: center; flex: none; border-radius: .75rem; background: #5a4ff3; color: white; }
-.arcade-replay-icon svg { width: 1.2rem; height: 1.2rem; }
+.arcade-replay-card { display: flex; align-items: center; gap: .5rem; min-width: 0; padding: .35rem .6rem; border-radius: .65rem; background: #efebff; color: #181445; text-decoration: none; }
+.arcade-replay-card > svg { width: 1.1rem; height: 1.1rem; flex: none; color: #4030da; }
 .arcade-replay-card strong, .arcade-replay-card small { display: block; }
-.arcade-replay-card small { color: #464555; margin-top: .15rem; }
-.arcade-replay-card > span:last-child { margin-left: auto; font-size: 1.3rem; color: #4030da; }
+.arcade-replay-card strong { font-size: .72rem; line-height: 1.15; }
+.arcade-replay-card small { color: #464555; margin-top: .1rem; font-size: .65rem; }
 
 .arcade-stats-main { width: min(900px, calc(100% - 2rem)); margin: 0 auto; padding: 2rem 0 8rem; }
 .arcade-stats-intro { margin-bottom: 1.4rem; }
@@ -404,7 +402,6 @@ body {
   }
 
   .arcade-result-actions > .arcade-result-share:hover { box-shadow: 0 3px 0 #2d20b0; }
-  .arcade-jump-button:hover { background: #2d20b0; }
   .arcade-action-row .arcade-phrase-button:not(:disabled):hover { filter: brightness(1.06); }
   :is(.arcade-login-panel a[href="/"], .arcade-modal-panel a[href], .verble-shell .archive-card a.page-subtle):hover { color: var(--arcade-violet); }
   .tutorial-back-btn:hover { background: var(--arcade-hover-bg); color: var(--arcade-violet); }
@@ -431,6 +428,8 @@ body {
   .verble-shell .arcade-calendar-day .archive-tile-title { font-size: .72rem; }
   .verble-shell .arcade-calendar-day.is-today .archive-tile-title { font-size: .62rem; }
   .arcade-month-switcher h2 { min-width: 7.5rem; font-size: .93rem; }
+  .arcade-calendar-toolbar { flex-direction: column; align-items: stretch; }
+  .arcade-month-switcher { justify-content: center; }
   .verble-shell .result-modal-backdrop { padding: var(--arcade-modal-top-pad) 1rem calc(var(--arcade-mobile-nav-height) + 1rem); }
   .verble-shell .result-modal-panel { max-height: calc(100dvh - var(--arcade-mobile-nav-height) - var(--arcade-modal-top-pad) - 1rem); }
   /* Scale word gaps with the result tiles so they keep the board's proportions. */

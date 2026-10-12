@@ -8,6 +8,7 @@ import LoadingLabel from "./LoadingLabel";
 import { createSupabaseBrowserClient } from "@/lib/supabase-auth/client";
 import { clearLocalGameState } from "@/lib/local-game-state";
 import ArcadeIcon from "./ArcadeIcon";
+import { accountDisplayName } from "@/lib/account-display-name";
 
 type AccountUser = {
   id: string;
@@ -109,7 +110,7 @@ export default function AccountNav() {
     );
   }
 
-  const label = user.displayName || user.email || "Account";
+  const label = accountDisplayName(user.displayName, user.email);
 
   return (
     <div className="relative" ref={menuRef}>

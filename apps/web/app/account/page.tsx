@@ -6,6 +6,7 @@ import ProfileForm from "./ProfileForm";
 import EmailPreferencesForm from "./EmailPreferencesForm";
 import SignOutButton from "./SignOutButton";
 import { getProfile } from "@/lib/account-profile";
+import { accountDisplayName } from "@/lib/account-display-name";
 import { createSupabaseServerClient } from "@/lib/supabase-auth/server";
 
 export const metadata: Metadata = {
@@ -45,7 +46,7 @@ export default async function AccountPage() {
   }
 
   const profile = await getProfile(user.id);
-  const displayName = profile?.displayName ?? "Dabbler";
+  const displayName = accountDisplayName(profile?.displayName ?? null, user.email ?? null);
   const email = user.email ?? "Private email";
   const displayedEmail = isApplePrivateRelayEmail(email) ? "Private Apple relay email" : email;
   const createdAt = user.created_at ? new Intl.DateTimeFormat("en", { month: "long", day: "numeric", year: "numeric" }).format(new Date(user.created_at)) : "Unknown";
@@ -92,7 +93,7 @@ export default async function AccountPage() {
             <section className="rounded-[2rem] bg-white p-6 shadow-[0_18px_36px_rgba(44,47,49,0.05)]">
               <p className="font-headline text-2xl font-extrabold text-[#2c2f31]">Profile</p>
               <div className="mt-5 grid gap-3">
-                <ProfileForm initialDisplayName={displayName} />
+                <ProfileForm initialDisplayName={profile?.displayName ?? ""} suggestedDisplayName={displayName} />
                 <div className="rounded-2xl bg-[#f5f6f9] px-4 py-3">
                   <p className="text-xs font-extrabold uppercase tracking-[0.14em] text-[#75777a]">Email</p>
                   <p className="mt-1 break-words text-base font-extrabold text-[#2c2f31]">{displayedEmail}</p>

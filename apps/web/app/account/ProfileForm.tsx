@@ -4,9 +4,10 @@ import { FormEvent, useState } from "react";
 
 type ProfileFormProps = {
   initialDisplayName: string;
+  suggestedDisplayName: string;
 };
 
-export default function ProfileForm({ initialDisplayName }: ProfileFormProps) {
+export default function ProfileForm({ initialDisplayName, suggestedDisplayName }: ProfileFormProps) {
   const [displayName, setDisplayName] = useState(initialDisplayName);
   const [savedDisplayName, setSavedDisplayName] = useState(initialDisplayName);
   const [status, setStatus] = useState("");
@@ -56,6 +57,7 @@ export default function ProfileForm({ initialDisplayName }: ProfileFormProps) {
           id="displayName"
           type="text"
           value={displayName}
+          placeholder={suggestedDisplayName}
           onChange={(event) => {
             setDisplayName(event.target.value);
             setStatus("");
