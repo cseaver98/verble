@@ -15,7 +15,7 @@ export const games: Game[] = [
     name: "Verble",
     href: "/",
     description: "Guess the daily phrase one word at a time.",
-    iconSrc: "/verble-mark-v5.png",
+    iconSrc: "/verble-mark-v6.png",
     iconAlt: "Verble logo",
     iconBackground: "#ede9fe",
     availability: "daily",

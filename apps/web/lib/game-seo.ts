@@ -20,7 +20,7 @@ export const gameSeo = {
       "Use the letter feedback and revealed words to narrow down the phrase.",
       "Solve every word or risk a full-phrase guess before your six attempts run out.",
     ],
-    iconSrc: "/verble-mark-v5.png",
+    iconSrc: "/verble-mark-v6.png",
   },
 } as const;
 

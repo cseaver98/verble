@@ -5,7 +5,7 @@ export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
 export default async function OpenGraphImage() {
-  const icon = await readFile(new URL("../public/verble-mark-v5.png", import.meta.url));
+  const icon = await readFile(new URL("../public/verble-mark-v6.png", import.meta.url));
   const iconSrc = `data:image/png;base64,${icon.toString("base64")}`;
 
   return new ImageResponse(
