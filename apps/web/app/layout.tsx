@@ -76,9 +76,9 @@ export const generateMetadata = (): Metadata => {
       : undefined,
     icons: {
       icon: [
-        { url: "/apple-icon.png", type: "image/png", sizes: "512x512" },
+        { url: "/icon.png", type: "image/png", sizes: "64x64" },
       ],
-      shortcut: "/apple-icon.png",
+      shortcut: "/icon.png",
       apple: "/apple-icon.png",
     },
   };
