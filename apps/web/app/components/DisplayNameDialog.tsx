@@ -5,13 +5,13 @@ import { createPortal } from "react-dom";
 
 type DisplayNameDialogProps = {
   isOpen: boolean;
-  onComplete: () => void;
+  suggestedDisplayName: string | null;
+  onComplete: (displayName: string) => void;
 };
 
-export default function DisplayNameDialog({ isOpen, onComplete }: DisplayNameDialogProps) {
+export default function DisplayNameDialog({ isOpen, suggestedDisplayName, onComplete }: DisplayNameDialogProps) {
   const [portalRoot, setPortalRoot] = useState<HTMLElement | null>(null);
-  const [displayName, setDisplayName] = useState("");
-  const [marketingEmailOptIn, setMarketingEmailOptIn] = useState(false);
+  const [displayName, setDisplayName] = useState(suggestedDisplayName ?? "");
   const [error, setError] = useState("");
   const [saving, setSaving] = useState(false);
 
@@ -45,15 +45,16 @@ export default function DisplayNameDialog({ isOpen, onComplete }: DisplayNameDia
       const response = await fetch("/api/account/profile", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ displayName, marketingEmailOptIn }),
+        body: JSON.stringify({ displayName }),
       });
       const payload = await response.json().catch(() => ({}));
       if (!response.ok) {
         throw new Error(typeof payload.error === "string" ? payload.error : "Could not save display name.");
       }
 
+      const savedName = typeof payload.profile?.displayName === "string" ? payload.profile.displayName : displayName.trim();
+      onComplete(savedName);
       window.dispatchEvent(new Event("verble:profile-updated"));
-      onComplete();
     } catch (saveError) {
       setError(saveError instanceof Error ? saveError.message : "Could not save display name.");
     } finally {
@@ -78,42 +79,31 @@ export default function DisplayNameDialog({ isOpen, onComplete }: DisplayNameDia
             Choose your display name
           </h2>
           <p className="mt-4 text-base font-semibold leading-relaxed text-[#595c5e]">
-            Pick a display name before you keep playing.
+            This is how your name will appear in Verble. You can change it later.
           </p>
 
           <form className="mt-7 grid gap-4" onSubmit={handleSubmit}>
             <div>
-              <label className="text-xs font-extrabold uppercase tracking-[0.14em] text-[#75777a]" htmlFor="displayName">
+              <label className="text-xs font-extrabold uppercase tracking-[0.14em] text-[#75777a]" htmlFor="welcomeDisplayName">
                 Display name
               </label>
               <input
-                id="displayName"
+                id="welcomeDisplayName"
                 type="text"
                 value={displayName}
                 onChange={(event) => {
-                  setDisplayName(event.target.value.replace(/[^A-Za-z0-9]/g, ""));
+                  setDisplayName(event.target.value);
                   setError("");
                 }}
                 minLength={2}
                 maxLength={32}
-                pattern="[A-Za-z0-9]+"
                 autoComplete="nickname"
                 autoFocus
                 placeholder="Your display name"
                 className="mt-2 h-[3.25rem] w-full rounded-full border border-[#d8dce2] bg-[#f5f6f9] px-5 text-base font-extrabold text-[#2c2f31] outline-none transition focus:border-[#2f672d] focus:bg-white focus:ring-4 focus:ring-[#b6f6ab]/45"
               />
-              <p className="mt-2 text-xs font-semibold text-[#75777a]">2-32 characters. You can change it later.</p>
+              <p className="mt-2 text-xs font-semibold text-[#75777a]">2-32 characters. Letters, numbers, spaces, periods, apostrophes, or hyphens.</p>
             </div>
-
-            <label className="flex cursor-pointer items-start gap-3 rounded-2xl bg-[#f5f6f9] px-4 py-3 text-sm font-bold leading-snug text-[#4f5356]">
-              <input
-                type="checkbox"
-                checked={marketingEmailOptIn}
-                onChange={(event) => setMarketingEmailOptIn(event.target.checked)}
-                className="mt-0.5 h-4 w-4 cursor-pointer accent-[#2f672d]"
-              />
-              <span>Send me product updates and launch news</span>
-            </label>
 
             <button
               type="submit"

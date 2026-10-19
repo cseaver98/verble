@@ -9,11 +9,14 @@ import { createSupabaseBrowserClient } from "@/lib/supabase-auth/client";
 import { clearLocalGameState } from "@/lib/local-game-state";
 import ArcadeIcon from "./ArcadeIcon";
 import { accountDisplayName } from "@/lib/account-display-name";
+import DisplayNameDialog from "./DisplayNameDialog";
 
 type AccountUser = {
   id: string;
   email: string | null;
   displayName: string | null;
+  needsDisplayName: boolean;
+  suggestedDisplayName: string | null;
   avatarUrl: string | null;
 };
 
@@ -110,10 +113,19 @@ export default function AccountNav() {
     );
   }
 
-  const label = accountDisplayName(user.displayName, user.email);
+  const label = accountDisplayName(user.displayName);
 
   return (
     <div className="relative" ref={menuRef}>
+      <DisplayNameDialog
+        key={user.id}
+        isOpen={user.needsDisplayName}
+        suggestedDisplayName={user.suggestedDisplayName}
+        onComplete={(displayName) => {
+          setUser((current) => current?.id === user.id ? { ...current, displayName, needsDisplayName: false } : current);
+          router.refresh();
+        }}
+      />
       <button
         type="button"
         onClick={() => setIsMenuOpen((current) => !current)}

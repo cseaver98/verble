@@ -32,18 +32,15 @@ export async function GET(request: NextRequest) {
   const { data: { user } } = await supabase.auth.getUser();
   if (user) {
     const admin = getAccountSupabaseAdmin();
-    let needsDisplayName = false;
     const { data: existingProfile, error: readProfileError } = await admin
       .schema("core")
       .from("profiles")
-      .select("id,display_name")
+      .select("id")
       .eq("id", user.id)
-      .maybeSingle<{ id: string; display_name: string | null }>();
+      .maybeSingle<{ id: string }>();
 
     if (readProfileError) {
       redirectUrl.searchParams.set("auth_warning", "profile_sync_failed");
-    } else {
-      needsDisplayName = !existingProfile?.display_name;
     }
 
     const profileWrite = existingProfile
@@ -81,19 +78,6 @@ export async function GET(request: NextRequest) {
         console.warn(claimError instanceof Error ? claimError.message : "Failed to claim guest results");
         redirectUrl.searchParams.set("auth_warning", "guest_claim_failed");
       }
-    }
-
-    if (needsDisplayName) {
-      const welcomeUrl = new URL("/", requestUrl.origin);
-      welcomeUrl.searchParams.set("onboarding", "display-name");
-      welcomeUrl.searchParams.set("auth_success", "1");
-      welcomeUrl.searchParams.set("next", next);
-      for (const [key, value] of redirectUrl.searchParams) {
-        if (key.startsWith("auth_warning")) {
-          welcomeUrl.searchParams.set(key, value);
-        }
-      }
-      return NextResponse.redirect(welcomeUrl);
     }
 
     redirectUrl.searchParams.set("auth_success", "1");
