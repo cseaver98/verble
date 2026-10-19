@@ -17,7 +17,7 @@ type PlayedRow = {
 };
 
 const PAGE_SIZE = 200;
-const SEND_BATCH_SIZE = 25;
+const SEND_BATCH_SIZE = 8;
 
 const isAuthorized = (request: NextRequest) => {
   const cronSecret = process.env.CRON_SECRET;
@@ -68,9 +68,9 @@ const buildReminderEmail = (userId: string) => {
   const unsubscribeUrl = `${appUrl}/api/email/unsubscribe?token=${encodeURIComponent(createUnsubscribeToken(userId, "daily_reminder"))}`;
 
   return {
-    subject: "Today's Verble is live!",
+    subject: "Today's Verble is ready",
     text: [
-      "Today's Verble is live!",
+      "Today's Verble is ready.",
       "",
       "Play a quick round and keep your streak 🔥 going.",
       "",
@@ -87,10 +87,7 @@ const buildReminderEmail = (userId: string) => {
         <head>
           <meta charset="utf-8">
           <meta name="viewport" content="width=device-width, initial-scale=1">
-          <title>Today's Verble is live!</title>
-          <link rel="preconnect" href="https://fonts.googleapis.com">
-          <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-          <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;900&family=Plus+Jakarta+Sans:wght@900&display=swap" rel="stylesheet">
+          <title>Today's Verble is ready</title>
         </head>
         <body style="margin: 0; padding: 0; background: #f5f6f9; color: #2c2f31; font-family: Manrope, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;">
           <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width: 100%; border-collapse: collapse; background: #f5f6f9;">
@@ -99,9 +96,9 @@ const buildReminderEmail = (userId: string) => {
                 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="width: 100%; max-width: 520px; border-collapse: collapse;">
                   <tr>
                     <td style="border: 1px solid #d8dce2; border-radius: 20px; background: #ffffff; padding: 28px; box-shadow: 0 18px 44px rgba(44, 47, 49, 0.12);">
-                      <p style="margin: 0; color: #2f672d; font-size: 32px; font-weight: 800; letter-spacing: -1px;">Verble</p>
+                      <img src="${appUrl}/verble-email-wordmark.png" alt="Verble.fun" width="143" height="32" style="display:block;width:143px;height:32px;margin:0;border:0;">
                       <p style="margin: 16px 0 0; color: #595c5e; font-size: 15px; line-height: 1.6; font-weight: 600;">
-                        Today&apos;s Verble is live!
+                        Today&apos;s Verble is ready.
                       </p>
                       <p style="margin: 8px 0 0; color: #595c5e; font-size: 15px; line-height: 1.6; font-weight: 600;">
                         Play a quick round and keep your streak 🔥 going.
@@ -146,6 +143,13 @@ export async function GET(request: NextRequest) {
 
   // Materialize every daily puzzle even when nobody visits a game that day.
   const scheduling = await scheduleTodayGames();
+  const scheduledVerble = scheduling.find((game) => game.gameSlug === "verble");
+  if (scheduledVerble?.status === "error") {
+    return NextResponse.json({ error: "Failed to schedule today's Verble", scheduling }, { status: 500 });
+  }
+  if (scheduledVerble?.status !== "scheduled") {
+    return NextResponse.json({ ok: true, skipped: "no_daily_puzzle", scheduling });
+  }
   const timeZone = process.env.TIMEZONE || "America/New_York";
   const localHour = getHourInTimeZone(timeZone);
   const isForcedRun = request.nextUrl.searchParams.get("force") === "1";
@@ -157,22 +161,29 @@ export async function GET(request: NextRequest) {
   const today = getTodayPuzzleDate();
   const supabase = getSupabaseAdmin();
 
-  const { data: profiles, error: profileError } = await supabase
-    .schema("core")
-    .from("profiles")
-    .select("id")
-    .eq("daily_reminder_opt_in", true)
-    .or(`daily_reminder_last_sent_for.is.null,daily_reminder_last_sent_for.neq.${today}`)
-    .returns<ReminderProfileRow[]>();
+  const profileRows: ReminderProfileRow[] = [];
+  for (let offset = 0; ; offset += PAGE_SIZE) {
+    const { data: profiles, error: profileError } = await supabase
+      .schema("core")
+      .from("profiles")
+      .select("id")
+      .eq("daily_reminder_opt_in", true)
+      .or(`daily_reminder_last_sent_for.is.null,daily_reminder_last_sent_for.neq.${today}`)
+      .order("id", { ascending: true })
+      .range(offset, offset + PAGE_SIZE - 1)
+      .returns<ReminderProfileRow[]>();
 
-  if (profileError) {
-    return NextResponse.json(
-      { error: "Failed to load reminder profiles", details: profileError.message, scheduling },
-      { status: 500 },
-    );
+    if (profileError) {
+      return NextResponse.json(
+        { error: "Failed to load reminder profiles", details: profileError.message, scheduling },
+        { status: 500 },
+      );
+    }
+
+    const page = profiles ?? [];
+    profileRows.push(...page);
+    if (page.length < PAGE_SIZE) break;
   }
-
-  const profileRows = profiles ?? [];
   if (!profileRows.length) {
     return NextResponse.json({
       ok: true,
@@ -251,7 +262,8 @@ export async function GET(request: NextRequest) {
   const sentUserIds: string[] = [];
   const failures: Array<{ userId: string; error: string }> = [];
 
-  for (const batch of chunk(sendableProfiles, SEND_BATCH_SIZE)) {
+  const sendBatches = chunk(sendableProfiles, SEND_BATCH_SIZE);
+  for (const [batchIndex, batch] of sendBatches.entries()) {
     await Promise.all(
       batch.map(async (profile) => {
         const { data: userData, error: userError } = await supabase.auth.admin.getUserById(profile.id);
@@ -262,27 +274,34 @@ export async function GET(request: NextRequest) {
           return;
         }
 
-        const email = buildReminderEmail(profile.id);
-        const { error: sendError } = await resend.emails.send({
-          from,
-          to: emailAddress,
-          subject: email.subject,
-          text: email.text,
-          html: email.html,
-          tags: [
-            { name: "type", value: "daily-reminder" },
-            { name: "date", value: today },
-          ],
-        });
+        try {
+          const email = buildReminderEmail(profile.id);
+          const { error: sendError } = await resend.emails.send({
+            from,
+            to: emailAddress,
+            subject: email.subject,
+            text: email.text,
+            html: email.html,
+            tags: [
+              { name: "type", value: "daily-reminder" },
+              { name: "date", value: today },
+            ],
+          }, { idempotencyKey: `daily-reminder/${today}/${profile.id}` });
 
-        if (sendError) {
-          failures.push({ userId: profile.id, error: sendError.message });
-          return;
+          if (sendError) {
+            failures.push({ userId: profile.id, error: sendError.message });
+            return;
+          }
+
+          sentUserIds.push(profile.id);
+        } catch (error) {
+          failures.push({ userId: profile.id, error: error instanceof Error ? error.message : "Send failed" });
         }
-
-        sentUserIds.push(profile.id);
       }),
     );
+    if (batchIndex < sendBatches.length - 1) {
+      await new Promise((resolve) => setTimeout(resolve, 1_100));
+    }
   }
 
   for (const ids of chunk(sentUserIds, PAGE_SIZE)) {
