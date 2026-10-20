@@ -17,6 +17,7 @@ import { fetchStoredGameResult, getResultPayloadAnswer, getResultPayloadAttempts
 import { useNextGameCountdown } from "../../../lib/use-next-game-countdown";
 import LoadingLabel from "../../components/LoadingLabel";
 import GuessProgressChip from "../../components/GuessProgressChip";
+import SpeechBubbleOutline from "../../components/SpeechBubbleOutline";
 import useHowToPlayDialog from "../../components/useHowToPlayDialog";
 import useArchiveCompletionStatus from "../../components/useArchiveCompletionStatus";
 import { trackGameStarted } from "../../../lib/analytics-client";
@@ -1494,6 +1495,7 @@ export default function VerbleGameClient({
           </div> : null}
 
           <div className="arcade-board">
+          <SpeechBubbleOutline />
           <div className={`phrase-layout ${selectedSlot !== null && gameState === "playing" ? "has-selected-word" : ""}`}>
             {puzzle.slots.map((slot) => {
               const solved = solvedWords[slot.index];

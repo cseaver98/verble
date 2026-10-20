@@ -108,7 +108,7 @@ export default function DisplayNameDialog({ isOpen, suggestedDisplayName, onComp
             <button
               type="submit"
               disabled={saving || displayName.trim().length < 2}
-              className="font-headline h-[3.25rem] rounded-full bg-[#2f672d] px-6 text-sm font-extrabold text-[#d1ffc7] transition hover:bg-[#225b22] disabled:cursor-not-allowed disabled:bg-[#abadb0] disabled:text-white"
+              className="font-headline h-[3.25rem] rounded-full bg-[#5a4ff3] px-6 text-sm font-extrabold text-white shadow-[0_3px_0_#4030da] transition hover:bg-[#4030da] hover:shadow-[0_3px_0_#2d20b0] disabled:cursor-not-allowed disabled:bg-[#abadb0] disabled:text-white disabled:shadow-none"
             >
               {saving ? "Saving..." : "Continue"}
             </button>

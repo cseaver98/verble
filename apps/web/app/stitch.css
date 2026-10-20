@@ -93,10 +93,14 @@ body {
 .arcade-nav-icon { width: 2.65rem; height: 2.65rem; display: grid; place-items: center; color: #464555; border-radius: .75rem; }
 .arcade-nav-icon:hover, .arcade-nav-icon:focus-visible { background: #efebff; color: var(--arcade-violet); }
 .arcade-nav-icon svg { width: 1.45rem; height: 1.45rem; }
+.arcade-nav-logo img { display: block; width: 2.4rem; height: 2.4rem; object-fit: contain; }
 .arcade-account-trigger { display: inline-flex; align-items: center; justify-content: center; width: 2.45rem; height: 2.45rem; border: 0; border-radius: 50%; background: #4030da; color: #fff; box-shadow: 0 3px 8px rgb(64 48 218 / 20%); cursor: pointer; }
 .arcade-account-trigger svg { width: 1.35rem; height: 1.35rem; }
 .arcade-account-loading { width: 2.45rem; overflow: hidden; color: #777587; background: #efebff; font-size: 0; }
 .arcade-account-trigger:hover { background: #5a4ff3; }
+.arcade-login-trigger { display: inline-flex; align-items: center; justify-content: center; min-height: 2.45rem; padding: 0 .7rem; border: 0; border-radius: 999px; background: #5a4ff3; color: #fff; box-shadow: 0 3px 0 #4030da; font-family: var(--font-outfit), sans-serif; font-size: .78rem; font-weight: 800; white-space: nowrap; cursor: pointer; transition: background-color 160ms ease, box-shadow 160ms ease; }
+.arcade-login-trigger:hover, .arcade-login-trigger:focus-visible { background: #4030da; box-shadow: 0 3px 0 #2d20b0; }
+@media (max-width: 380px) { .arcade-nav-stats { display: none; } }
 
 .arcade-site-footer {
   display: flex;
@@ -159,7 +163,11 @@ body {
 .verble-shell .guess-progress-bars > span { height: .45rem; background: #e9e5ff; }
 .verble-shell .guess-progress-bars > span.is-remaining { background: #5a4ff3; box-shadow: 0 2px 5px rgb(90 79 243 / 25%); }
 
-.arcade-board { position: relative; min-height: 12.25rem; display: flex; flex-direction: column; justify-content: space-between; background: #fff; border-radius: 1.5rem; padding: 1.15rem 1rem .8rem; box-shadow: 0 4px 20px rgb(24 20 69 / 4%); }
+.arcade-board, .arcade-calendar-bubble { isolation: isolate; }
+.arcade-speech-outline { position: absolute; top: 0; left: 0; z-index: 0; overflow: visible; pointer-events: none; filter: drop-shadow(0 0 3px rgb(90 79 243 / 14%)) drop-shadow(0 10px 12px rgb(64 48 218 / 14%)); }
+.arcade-speech-outline path { fill: #efebff; stroke: var(--arcade-violet-bright); stroke-width: 3; stroke-linejoin: round; }
+.arcade-board > :not(.arcade-speech-outline), .arcade-calendar-bubble > :not(.arcade-speech-outline) { position: relative; z-index: 1; }
+.arcade-board { position: relative; min-height: 12.25rem; display: flex; flex-direction: column; justify-content: space-between; border-radius: 2rem; margin-bottom: 1.25rem; padding: 1.15rem 1rem .8rem; }
 .verble-shell .phrase-layout { justify-content: center; align-content: center; align-items: flex-end; gap: 1rem .56rem; margin: .1rem 0 .65rem; min-height: 6.9rem; }
 .verble-shell .slot-word-button { padding: .16rem; border-radius: .9rem; }
 .verble-shell .slot-word-button.selected { background: transparent; box-shadow: none; }
@@ -197,7 +205,7 @@ body {
 .verble-shell .slot-word-button .slot-tile.reveal:not(.fixed) { border-color: transparent; }
 .verble-shell .phrase-layout.has-selected-word .slot-word-button.selected .slot-tile.reveal:not(.fixed) { box-shadow: 0 5px 0 #c9c3ff, 0 10px 18px rgb(64 48 218 / 13%); }
 .verble-shell .slot-inline-fixed, .verble-shell .slot-sep { color: #464555; }
-.arcade-word-status { display: flex; align-items: center; gap: .45rem; flex-wrap: wrap; min-height: 2.65rem; border-radius: .9rem; padding: .6rem .7rem; background: #f8f5ff; color: #464555; font-size: .75rem; font-weight: 600; }
+.arcade-word-status { display: flex; align-items: center; gap: .45rem; flex-wrap: wrap; min-height: 2.65rem; border-radius: .9rem; padding: .6rem .7rem; background: #fff; color: #464555; font-size: .75rem; font-weight: 600; }
 .arcade-word-status strong { color: var(--arcade-violet); font-size: .82rem; }
 .arcade-status-dot { width: .5rem; height: .5rem; flex: none; border-radius: 50%; background: #8e80ef; }
 .arcade-status-hint { margin-left: auto; }
@@ -308,12 +316,13 @@ body {
 .arcade-calendar-legend .legend-loss { background: #e85e58; }
 .arcade-calendar-legend .legend-missed { background: #f3a928; }
 .arcade-calendar-legend .legend-archive { width: .55rem; height: .55rem; margin: 0 .1rem; border-radius: .12rem; background: #6b55e7; transform: rotate(45deg); }
+.arcade-calendar-bubble { position: relative; display: grid; gap: .7rem; padding: .9rem .65rem 1rem; margin-bottom: 1.25rem; border-radius: 2rem; }
 .arcade-play-history { display: flex; flex-wrap: wrap; align-items: center; gap: .3rem .65rem; margin: .25rem 0 .75rem; padding: .65rem .8rem; border-radius: .85rem; background: #f3efff; color: #464555; font: 700 .75rem var(--font-outfit), sans-serif; }
 .arcade-play-history strong { color: #4030da; }
 .arcade-play-history small { flex-basis: 100%; color: #777587; font-size: .68rem; font-weight: 600; }
 .arcade-weekdays { display: grid; grid-template-columns: repeat(7, 1fr); gap: .4rem; text-align: center; color: #777587; text-transform: uppercase; font-size: .68rem; font-weight: 800; }
 .verble-shell .arcade-calendar-grid { grid-template-columns: repeat(7, minmax(0, 1fr)); gap: .4rem; }
-.arcade-calendar-day { position: relative; min-height: 5.5rem; border: 1px solid #efebff; border-radius: .8rem; background: #fcfaff; padding: .3rem; }
+.arcade-calendar-day { position: relative; min-height: 5.5rem; border: 1px solid #ded7fa; border-radius: .8rem; background: #fff; padding: .3rem; }
 .arcade-calendar-blank { min-height: 5.5rem; }
 .arcade-day-number { position: absolute; z-index: 1; top: .4rem; left: .55rem; color: #777587; font-size: .75rem; font-weight: 700; }
 .verble-shell .archive-tile.arcade-calendar-day { display: block; width: 100%; aspect-ratio: auto; box-shadow: none; }
@@ -422,11 +431,16 @@ body {
   .arcade-archive-filters { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); width: 100%; }
   .arcade-archive-filters button { padding: .45rem .35rem; }
   .arcade-calendar-legend { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .arcade-calendar-day, .arcade-calendar-blank { min-height: 4.4rem; }
-  .arcade-calendar-day { padding: .15rem; }
-  .arcade-day-number { font-size: .65rem; }
-  .verble-shell .arcade-calendar-day .archive-tile-title { font-size: .72rem; }
-  .verble-shell .arcade-calendar-day.is-today .archive-tile-title { font-size: .62rem; }
+  .arcade-calendar-bubble { gap: .5rem; margin-inline: -.875rem; padding: .7rem .5rem .85rem; }
+  .arcade-weekdays, .verble-shell .arcade-calendar-grid { gap: .28rem; }
+  .arcade-calendar-day, .arcade-calendar-blank { min-height: 0; aspect-ratio: 1; }
+  .arcade-calendar-day { padding: .1rem; border-radius: .55rem; }
+  .arcade-day-number { top: .18rem; left: .22rem; font-size: .53rem; }
+  .verble-shell .arcade-calendar-day .archive-tile-title { top: 51%; left: 38%; font-size: .6rem; }
+  .verble-shell .arcade-calendar-day.is-today .archive-tile-title { left: 50%; font-size: .58rem; }
+  .arcade-calendar-day :is(.archive-complete-badge, .archive-not-done-badge, .archive-failed-badge) { right: .18rem; bottom: .18rem; width: .68rem; height: .68rem; box-shadow: none; }
+  .arcade-calendar-day .archive-complete-check { width: .36rem; height: .22rem; border-width: 0 0 .11rem .11rem; transform: translateY(-.04rem) rotate(-45deg); }
+  .arcade-calendar-day .archive-played-badge { top: .25rem; right: .24rem; width: .38rem; height: .38rem; box-shadow: none; }
   .arcade-month-switcher h2 { min-width: 7.5rem; font-size: .93rem; }
   .arcade-calendar-toolbar { flex-direction: column; align-items: stretch; }
   .arcade-month-switcher { justify-content: center; }
@@ -441,6 +455,11 @@ body {
   .arcade-stats-main { padding-top: 1.25rem; }
 }
 
+@media (max-width: 360px) {
+  .arcade-calendar-day :is(.archive-complete-badge, .archive-not-done-badge, .archive-failed-badge) { width: .55rem; height: .55rem; }
+  .arcade-calendar-day .archive-complete-check { width: .3rem; height: .18rem; }
+}
+
 @media (max-width: 430px) {
   .dd-brand-word { font-size: 1.45rem; }
   .verble-shell .arcade-result-heading { gap: .35rem; }
@@ -448,6 +467,7 @@ body {
   .verble-shell .result-outcome-panel[data-outcome="win"] .arcade-result-heading .result-modal-title { font-size: clamp(1.4rem, 7.2vw, 2.1rem); }
   .verble-shell .arcade-result-heading .arcade-result-emblem { width: 2.15rem; height: 2.15rem; border-radius: .72rem; font-size: 1.35rem; }
   .verble-shell .arcade-nav-icon { width: 2.35rem; height: 2.35rem; }
+  .verble-shell .arcade-nav-logo { width: 2.45rem; height: 2.45rem; }
   .verble-shell .dd-nav-left-content { gap: 0; }
   .verble-shell .game-meta-row { grid-template-columns: minmax(0, 1fr) auto auto; gap: .25rem; }
   .verble-shell .arcade-game-chip { min-width: 0; overflow: hidden; padding-inline: .45rem; letter-spacing: .01em; }

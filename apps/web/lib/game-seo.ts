@@ -42,7 +42,6 @@ export const buildGameMetadata = (slug: GameSeoSlug): Metadata => {
       card: "summary_large_image",
       title: game.title,
       description: game.description,
-      images: ["/opengraph-image"],
     },
   };
 };

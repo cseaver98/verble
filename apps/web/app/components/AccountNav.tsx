@@ -103,10 +103,9 @@ export default function AccountNav() {
         <button
           type="button"
           onClick={() => setIsAuthOpen(true)}
-          className="arcade-account-trigger"
-          aria-label="Log in"
+          className="arcade-login-trigger"
         >
-          <ArcadeIcon name="profile" /><span className="sr-only">Log in</span>
+          Log in
         </button>
         <AuthDialog isOpen={isAuthOpen} onClose={() => setIsAuthOpen(false)} />
       </>

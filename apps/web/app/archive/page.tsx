@@ -7,6 +7,7 @@ import LockedArchiveTile from "../components/LockedArchiveTile";
 import useArchiveCompletionStatus from "../components/useArchiveCompletionStatus";
 import LoadingLabel from "../components/LoadingLabel";
 import MainNav from "../verble/components/MainNav";
+import SpeechBubbleOutline from "../components/SpeechBubbleOutline";
 
 type ArchiveItem = { puzzleDate: string };
 type ArchiveFilter = "all" | "missed" | "solved" | "failed";
@@ -118,11 +119,14 @@ export default function ArchivePage() {
                   {(["all", "missed", "solved", "failed"] as ArchiveFilter[]).map((value) => <button type="button" key={value} onClick={() => setFilter(value)} aria-pressed={filter === value}>{value === "all" ? "All" : value === "missed" ? "Missed daily" : value === "solved" ? "Won daily" : "Lost daily"}</button>)}
                 </div>
                 <div className="arcade-calendar-legend" aria-label="Calendar key"><span><i className="legend-win">✓</i> Daily win</span><span><i className="legend-loss" /> Daily loss</span><span><i className="legend-missed" /> Missed daily</span><span><i className="legend-archive" /> Archive played</span></div>
-                <div className="arcade-weekdays" aria-hidden="true">{["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => <span key={day}>{day}</span>)}</div>
-                <div className="archive-grid arcade-calendar-grid">
-                  {monthItems.map((day, index) => day ? day.isToday ? <LockedArchiveTile key={day.day} href="/" tileLabel="Today" dateLabel="Today's daily game" isLocked={false} dailyResult={resultsLoaded ? results.get(today)?.daily ?? null : undefined} dayNumber={day.day} isToday /> : day.item ? <LockedArchiveTile key={day.day} href={`/archive/${day.item.puzzleDate}`} tileLabel={day.item.tileLabel} dateLabel={day.item.dateLabel} isLocked={day.item.isLocked} dailyResult={day.item.dailyResult} archiveResult={day.item.archiveResult} hideDate={day.item.hideDate} dayNumber={day.day} /> : <div className="arcade-calendar-day" key={day.day}><span className="arcade-day-number">{day.day}</span></div> : <div key={`blank-${index}`} className="arcade-calendar-blank" />)}
+                <div className="arcade-calendar-bubble">
+                  <SpeechBubbleOutline />
+                  <div className="arcade-weekdays" aria-hidden="true">{["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => <span key={day}>{day}</span>)}</div>
+                  <div className="archive-grid arcade-calendar-grid">
+                    {monthItems.map((day, index) => day ? day.isToday ? <LockedArchiveTile key={day.day} href="/" tileLabel="Today" dateLabel="Today's daily game" isLocked={false} dailyResult={resultsLoaded ? results.get(today)?.daily ?? null : undefined} dayNumber={day.day} isToday /> : day.item ? <LockedArchiveTile key={day.day} href={`/archive/${day.item.puzzleDate}`} tileLabel={day.item.tileLabel} dateLabel={day.item.dateLabel} isLocked={day.item.isLocked} dailyResult={day.item.dailyResult} archiveResult={day.item.archiveResult} hideDate={day.item.hideDate} dayNumber={day.day} /> : <div className="arcade-calendar-day" key={day.day}><span className="arcade-day-number">{day.day}</span></div> : <div key={`blank-${index}`} className="arcade-calendar-blank" />)}
+                  </div>
+                  {monthRows.length === 0 && !(showToday && today.startsWith(displayMonth)) ? <p className="arcade-calendar-empty">No {filter === "all" ? "Verble puzzles" : filter === "solved" ? "daily wins" : filter === "failed" ? "daily losses" : "missed daily puzzles"} in this month.</p> : null}
                 </div>
-                {monthRows.length === 0 && !(showToday && today.startsWith(displayMonth)) ? <p className="arcade-calendar-empty">No {filter === "all" ? "Verble puzzles" : filter === "solved" ? "daily wins" : filter === "failed" ? "daily losses" : "missed daily puzzles"} in this month.</p> : null}
               </>}
             </>
           ) : null}

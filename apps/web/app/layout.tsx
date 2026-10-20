@@ -27,7 +27,6 @@ const manrope = Manrope({
 });
 
 const isStagingEnvironment = (): boolean => process.env.NEXT_PUBLIC_APP_ENV === "staging";
-const twitterImageUrl = "/opengraph-image";
 const siteUrl = "https://verble.fun";
 const siteName = "Verble.fun";
 const siteTitle = "Verble.fun: The Daily Phrase Game";
@@ -62,7 +61,6 @@ export const generateMetadata = (): Metadata => {
       card: "summary_large_image",
       title,
       description,
-      images: [twitterImageUrl],
     },
     robots: isStagingEnvironment()
       ? {
@@ -76,9 +74,9 @@ export const generateMetadata = (): Metadata => {
       : undefined,
     icons: {
       icon: [
-        { url: "/icon.png", type: "image/png", sizes: "64x64" },
+        { url: "/icon.png?v=transparent", type: "image/png", sizes: "64x64" },
       ],
-      shortcut: "/icon.png",
+      shortcut: "/icon.png?v=transparent",
       apple: "/apple-icon.png",
     },
   };
