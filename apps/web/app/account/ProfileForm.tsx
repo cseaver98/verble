@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 
 type ProfileFormProps = {
@@ -8,6 +9,7 @@ type ProfileFormProps = {
 };
 
 export default function ProfileForm({ initialDisplayName, suggestedDisplayName }: ProfileFormProps) {
+  const router = useRouter();
   const [displayName, setDisplayName] = useState(initialDisplayName);
   const [savedDisplayName, setSavedDisplayName] = useState(initialDisplayName);
   const [status, setStatus] = useState("");
@@ -40,6 +42,7 @@ export default function ProfileForm({ initialDisplayName, suggestedDisplayName }
       setSavedDisplayName(nextDisplayName);
       setStatus("Display name saved.");
       window.dispatchEvent(new Event("verble:profile-updated"));
+      router.refresh();
     } catch (profileError) {
       setError(profileError instanceof Error ? profileError.message : "Could not update display name.");
     } finally {
