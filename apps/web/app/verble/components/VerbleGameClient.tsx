@@ -635,6 +635,24 @@ export default function VerbleGameClient({
   const selectedSlotMeta = puzzle?.slots.find((slot) => slot.index === selectedSlot);
   const selectedSlotDraft = selectedSlotMeta ? slotDrafts[selectedSlotMeta.index] || Array.from({ length: selectedSlotMeta.length }, () => "") : [];
   const selectedSlotLockState = selectedSlotMeta ? slotLocks[selectedSlotMeta.index] || Array.from({ length: selectedSlotMeta.length }, () => false) : [];
+  const selectedSlotHasRoom = selectedSlotDraft.some((letter, index) => !selectedSlotLockState[index] && !letter);
+  const selectedSlotHasEditableLetter = selectedSlotDraft.some((letter, index) => !selectedSlotLockState[index] && Boolean(letter));
+  const nextTypingSlot = selectedSlotMeta && !selectedSlotHasRoom
+    ? puzzle?.slots.find((slot) => {
+        if (slot.index <= selectedSlotMeta.index || solvedWords[slot.index]) return false;
+        const draft = slotDrafts[slot.index] || Array.from({ length: slot.length }, () => "");
+        const locks = slotLocks[slot.index] || Array.from({ length: slot.length }, () => false);
+        return draft.some((letter, index) => !locks[index] && !letter);
+      })
+    : undefined;
+  const previousDeletingSlot = selectedSlotMeta && !selectedSlotHasEditableLetter
+    ? puzzle?.slots.findLast((slot) => {
+        if (slot.index >= selectedSlotMeta.index || solvedWords[slot.index]) return false;
+        const draft = slotDrafts[slot.index] || [];
+        const locks = slotLocks[slot.index] || [];
+        return draft.some((letter, index) => !locks[index] && Boolean(letter));
+      })
+    : undefined;
   const buildCurrentPhraseGuess = () => {
     if (!puzzle) return "";
     return puzzle.slots.map((slot) => {
@@ -718,31 +736,52 @@ export default function VerbleGameClient({
   };
 
   const appendWordGuessChar = (char: string) => {
-    if (selectedSlotMeta && gameState === "playing" && timingEligibleRef.current && startedAtRef.current === null) {
+    if (!selectedSlotMeta || gameState !== "playing" || isResolvingGuess) return;
+
+    const targetSlot = selectedSlotHasRoom ? selectedSlotMeta : nextTypingSlot;
+    if (!targetSlot) return;
+
+    if (timingEligibleRef.current && startedAtRef.current === null) {
       startedAtRef.current = Date.now();
     }
-    updateSelectedDraft((current, locks) => {
-      const next = [...current];
-      const openIndex = next.findIndex((letter, index) => !locks[index] && !letter);
-      if (openIndex === -1) {
-        return next;
-      }
-      next[openIndex] = char;
-      return next;
+
+    setSlotDrafts((current) => {
+      const draft = [...(current[targetSlot.index] || Array.from({ length: targetSlot.length }, () => ""))];
+      const locks = slotLocks[targetSlot.index] || Array.from({ length: targetSlot.length }, () => false);
+      const openIndex = draft.findIndex((letter, index) => !locks[index] && !letter);
+      if (openIndex === -1) return current;
+      draft[openIndex] = char;
+      return { ...current, [targetSlot.index]: draft };
     });
+    if (targetSlot.index !== selectedSlotMeta.index) {
+      setInvalidGuessFeedback(null);
+      setSelectedSlot(targetSlot.index);
+      setMessage("");
+    }
   };
 
   const removeWordGuessChar = () => {
-    updateSelectedDraft((current, locks) => {
-      const next = [...current];
-      for (let index = next.length - 1; index >= 0; index -= 1) {
-        if (!locks[index] && next[index]) {
-          next[index] = "";
+    if (!selectedSlotMeta || gameState !== "playing" || isResolvingGuess) return;
+
+    const targetSlot = selectedSlotHasEditableLetter ? selectedSlotMeta : previousDeletingSlot;
+    if (!targetSlot) return;
+
+    setSlotDrafts((current) => {
+      const draft = [...(current[targetSlot.index] || Array.from({ length: targetSlot.length }, () => ""))];
+      const locks = slotLocks[targetSlot.index] || Array.from({ length: targetSlot.length }, () => false);
+      for (let index = draft.length - 1; index >= 0; index -= 1) {
+        if (!locks[index] && draft[index]) {
+          draft[index] = "";
           break;
         }
       }
-      return next;
+      return { ...current, [targetSlot.index]: draft };
     });
+    if (targetSlot.index !== selectedSlotMeta.index) {
+      setInvalidGuessFeedback(null);
+      setSelectedSlot(targetSlot.index);
+      setMessage("");
+    }
   };
 
   const clearWordGuess = () => {
@@ -1420,7 +1459,7 @@ export default function VerbleGameClient({
 
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [canOpenFullPhraseConfirm, canSubmitWordGuess, gameState, isResolvingGuess, selectedSlotMeta, solvedWords]);
+  }, [canOpenFullPhraseConfirm, canSubmitWordGuess, gameState, isResolvingGuess, selectedSlotMeta, slotDrafts, slotLocks, solvedWords]);
  
   const latestAttempt = wordAttempts.length > 0 ? wordAttempts[wordAttempts.length - 1] : null;
   const earlierAttempts = wordAttempts.slice(0, -1).reverse();
@@ -1715,7 +1754,7 @@ export default function VerbleGameClient({
                   const isDisabled = gameState !== "playing"
                     || isResolvingGuess
                     || !selectedSlotMeta
-                    || selectedSlotDraft.every((letter, index) => selectedSlotLockState[index] || Boolean(letter));
+                    || (!selectedSlotHasRoom && !nextTypingSlot);
                   return (
                     <button
                       type="button"
@@ -1732,7 +1771,7 @@ export default function VerbleGameClient({
                     </button>
                   );
                 })}
-                {rowIndex === 2 ? <button type="button" className="key backspace-key" onClick={removeWordGuessChar} disabled={gameState !== "playing" || isResolvingGuess || !selectedSlotDraft.some((letter, index) => !selectedSlotLockState[index] && Boolean(letter))} aria-label="Backspace"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" className="verble-backspace-icon"><path d="M20 5H9L3 12l6 7h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2Z" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /><path d="m10 9 6 6m0-6-6 6" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg></button> : null}
+                {rowIndex === 2 ? <button type="button" className="key backspace-key" onClick={removeWordGuessChar} disabled={gameState !== "playing" || isResolvingGuess || (!selectedSlotHasEditableLetter && !previousDeletingSlot)} aria-label="Backspace"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" className="verble-backspace-icon"><path d="M20 5H9L3 12l6 7h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2Z" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /><path d="m10 9 6 6m0-6-6 6" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg></button> : null}
               </div>
             ))}
           </div>
