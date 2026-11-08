@@ -1402,7 +1402,7 @@ export default function VerbleGameClient({
       guessesUsed,
       maxGuesses,
       visualRows: shareBlocks ? [shareBlocks] : [],
-      url: toPublicAppUrl("/"),
+      url: toPublicAppUrl(isArchiveView ? `/archive/${puzzle.puzzleDate}` : "/"),
     });
   };
 
