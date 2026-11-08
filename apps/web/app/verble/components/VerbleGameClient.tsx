@@ -1723,7 +1723,7 @@ export default function VerbleGameClient({
               <span aria-hidden="true">↻</span> Clear
             </button>
             <button type="button" className="arcade-phrase-button" onClick={() => setIsPhraseConfirmOpen(true)} disabled={!canOpenFullPhraseConfirm}>
-              <span aria-hidden="true">ϟ</span> Solve Full Phrase <small>High Stakes</small>
+              <span aria-hidden="true">ϟ</span> Guess Full Phrase <small>High Stakes</small>
             </button>
           </div> : null}
 

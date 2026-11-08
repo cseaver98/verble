@@ -154,6 +154,26 @@ function VerbleGuessFlow() {
   );
 }
 
+const keyboardClues = [
+  { letter: "R", state: "resolved", label: "Green", meaning: "All copies revealed" },
+  { letter: "A", state: "present", label: "Yellow", meaning: "At least one still hidden" },
+  { letter: "Q", state: "absent", label: "Gray", meaning: "Not in the phrase" },
+  { letter: "H", state: "unknown", label: "Uncolored", meaning: "No clue yet" },
+] as const;
+
+function VerbleKeyboardClues() {
+  return (
+    <div className="tutorial-keyboard-clues" role="list" aria-label="Keyboard letter clues">
+      {keyboardClues.map(({ letter, state, label, meaning }) => (
+        <div className="tutorial-keyboard-clue" role="listitem" key={state}>
+          <span className="key tutorial-keyboard-key" data-state={state} aria-hidden="true">{letter}</span>
+          <span className="tutorial-keyboard-clue-copy"><strong>{label}</strong><span>{meaning}</span></span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 function VerbleFullPhraseBoard({ reveal = false }: { reveal?: boolean }) {
   return (
     <div className="phrase-layout tutorial-verble-phrase">
@@ -169,12 +189,16 @@ function VerbleFullPhraseBoard({ reveal = false }: { reveal?: boolean }) {
 
 function VerbleFullPhraseFlow() {
   return (
-    <div className="tutorial-verble-full-flow tutorial-game-preview" role="img" aria-label="The remaining letters complete ROME WASN'T BUILT IN A DAY. Enter opens a confirmation, then submitting flips the remaining tiles green.">
+    <div className="tutorial-verble-full-flow tutorial-game-preview" role="img" aria-label="Fill the remaining tiles to complete ROME WASN'T BUILT IN A DAY. The Guess Full Phrase button becomes available, opens a confirmation, and submitting flips the remaining tiles green.">
       <div className="tutorial-verble-full-stage">
         <div className="tutorial-verble-full-board">
           <span className="tutorial-verble-step-label">Complete the phrase</span>
           <VerbleFullPhraseBoard />
-          <span className="tutorial-verble-full-submit"><kbd>Enter</kbd><em>Submit full phrase</em></span>
+          <div className="arcade-action-row tutorial-verble-action-row">
+            <button className="arcade-phrase-button tutorial-verble-full-submit" type="button" tabIndex={-1}>
+              <span aria-hidden="true">ϟ</span> Guess Full Phrase <small>High Stakes</small>
+            </button>
+          </div>
         </div>
         <div className="tutorial-verble-full-result">
           <span className="tutorial-verble-step-label">Phrase solved</span>
@@ -210,9 +234,15 @@ const pages = [
     visual: <VerbleGuessFlow />,
   },
   {
+    eyebrow: "Keyboard clues",
+    heading: "Use your keyboard clues",
+    copy: "The keyboard tracks the whole phrase. Tile colors describe the word you guessed.",
+    visual: <VerbleKeyboardClues />,
+  },
+  {
     eyebrow: "Finish the phrase",
-    heading: "Submit the full phrase",
-    copy: "Fill the remaining tiles, then press Enter to review your phrase. A wrong full phrase ends the game, even with guesses left.",
+    heading: "Think you know the phrase?",
+    copy: "Fill every empty tile on the board, then tap Guess Full Phrase to review your answer. Get it right and you win; get it wrong and the game ends.",
     visual: <VerbleFullPhraseFlow />,
   },
 ];
@@ -245,7 +275,7 @@ export default function HowToPlayDialog({ game, onClose }: HowToPlayDialogProps)
       <section className={`result-modal-panel how-to-play-modal-panel tutorial-${game}`} role="dialog" aria-modal="true" aria-labelledby="how-to-play-title" aria-describedby="how-to-play-subtitle" onClick={(event) => event.stopPropagation()}>
         <button className="arcade-dialog-close" type="button" onClick={onClose} aria-label="Close how to play dialog">×</button>
         <header className="tutorial-header">
-          <h2 className="result-modal-title how-to-play-title" id="how-to-play-title">How to play Verble</h2>
+          <h2 className="result-modal-title how-to-play-title" id="how-to-play-title">How to play</h2>
           <p className="how-to-play-subtitle" id="how-to-play-subtitle">Solve the daily phrase one word at a time.</p>
         </header>
         <div className="tutorial-page" key={`${pageIndex}-${cycle}`}>
