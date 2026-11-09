@@ -257,14 +257,14 @@ body {
 .verble-shell .arcade-result-heading .result-modal-title { padding-right: 0; font-size: clamp(.98rem, 4.4vw, 2.1rem); line-height: 1.1; white-space: nowrap; text-align: left; }
 .verble-shell .result-modal-summary { justify-content: center; text-align: center; }
 .verble-shell .result-modal-answer { color: var(--arcade-violet); }
-.verble-shell .result-modal-phrase { padding: .7rem; border-radius: 1.2rem; background: #f6f2ff; }
+.verble-shell .result-phrase-board { padding: .7rem; border-radius: 1.2rem; background: #f6f2ff; }
 .verble-shell .result-modal-actions { border-top: 0; }
 .arcade-result-emblem { width: 3rem; height: 3rem; flex: none; display: grid; place-items: center; margin: 0; border-radius: 1rem; background: #a9f3d6; color: #006c49; font-size: 1.8rem; box-shadow: 0 4px 0 #059669; }
 .result-outcome-panel[data-outcome="loss"] .arcade-result-emblem { background: #ffdad6; color: #93000a; box-shadow: 0 4px 0 #d5817a; }
 .arcade-result-phrase-label { margin: .3rem 0 -.6rem; color: #464555; font-size: .72rem; font-weight: 800; text-align: center; text-transform: uppercase; letter-spacing: .08em; }
 .verble-shell .result-modal-timer { display: flex; align-items: center; justify-content: space-between; gap: .5rem; border-radius: .9rem; padding: .75rem .9rem; background: #efebff; color: #464555; font-size: .76rem; text-transform: uppercase; }
 .verble-shell .result-modal-timer strong { font-size: 1.05rem; color: #4030da; font-variant-numeric: tabular-nums; }
-.verble-shell .result-modal-source-note { margin: -.45rem 0 0; padding: 0; text-align: center; font-size: .77rem; color: #777587; }
+.verble-shell .result-modal-source-note { margin: .65rem 0 0; padding: 0; text-align: right; font-size: .77rem; color: #777587; }
 .arcade-result-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .5rem; }
 .arcade-result-metrics { display: flex; justify-content: center; flex-wrap: wrap; gap: .4rem; }
 .arcade-result-metrics > span { display: inline-flex; align-items: center; gap: .3rem; border-radius: 999px; padding: .35rem .65rem; background: #efebff; color: #181445; font-size: .78rem; font-weight: 800; }
@@ -502,3 +502,22 @@ body {
   line-height: 1.5;
   text-align: center;
 }
+
+.verble-shell .result-modal-meaning {
+  display: flex;
+  align-items: flex-start;
+  gap: .5rem;
+  text-align: left;
+}
+.verble-shell .result-meaning-icon {
+  width: 1.75rem;
+  height: 1.75rem;
+  padding: .3rem;
+  border-radius: 50%;
+  background: #efebff;
+  margin-top: -.125rem;
+  flex: none;
+  color: var(--arcade-violet);
+  stroke-width: 1.7;
+}
+.verble-shell .result-modal-meaning > p { margin: 0; }

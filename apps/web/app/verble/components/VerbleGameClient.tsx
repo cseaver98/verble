@@ -8,6 +8,7 @@ import HowToPlayDialog from "../../components/HowToPlayDialog";
 import ResultDialogActions from "../../components/ResultDialogActions";
 import ResultOutcomeEffects from "../../components/ResultOutcomeEffects";
 import MainNav from "./MainNav";
+import ArcadeIcon from "../../components/ArcadeIcon";
 import { normalizePhraseWithPunctuation } from "../../../lib/verble/puzzle-repository";
 import { toPublicAppUrl } from "../../../lib/app-url";
 import { recordGameCompletion, type RecordGameCompletionInput } from "../../../lib/record-game-completion";
@@ -1461,7 +1462,7 @@ export default function VerbleGameClient({
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [canOpenFullPhraseConfirm, canSubmitWordGuess, gameState, isResolvingGuess, selectedSlotMeta, slotDrafts, slotLocks, solvedWords]);
- 
+
   const latestAttempt = wordAttempts.length > 0 ? wordAttempts[wordAttempts.length - 1] : null;
   const earlierAttempts = wordAttempts.slice(0, -1).reverse();
 
@@ -1925,43 +1926,48 @@ export default function VerbleGameClient({
               <p className="result-modal-copy result-modal-subtitle">{isArchiveView ? "Archive" : "Daily"} Verble #{puzzle.archiveGameNumber ?? "—"} · <strong>{guessesUsed}/{maxGuesses} attempts</strong></p>
             </div>
             <p className="arcade-result-phrase-label">{gameState === "won" ? (isArchiveView ? "Solved phrase" : "Today's solved phrase") : "The phrase was"}</p>
-            <div className="result-modal-phrase phrase-layout" aria-label="Final phrase board">
-              {puzzle.slots.map((slot) => {
-                const letters = (puzzle.answerWords[slot.index] || "").split("");
-                const displayChars = buildDisplayedWordChars(slot, letters);
+            <div className="result-phrase-board">
+              <div className="result-modal-phrase phrase-layout" aria-label="Final phrase board">
+                {puzzle.slots.map((slot) => {
+                  const letters = (puzzle.answerWords[slot.index] || "").split("");
+                  const displayChars = buildDisplayedWordChars(slot, letters);
 
-                return (
-                  <div key={`result-${slot.index}`} className="slot-cluster result-slot-cluster">
-                    <span className="slot-tiles">
-                      {displayChars.map((item, index) => {
-                        return (
-                          <span key={`result-${slot.index}-${index}`} className="slot-char-group">
-                            <span
-                              className={`slot-tile ${item.kind === "fixed" ? "fixed" : ""} ${item.kind === "letter" && item.value ? "filled correct locked" : ""}`}
-                            >
-                              {item.value || ""}
-                            </span>
-                            {item.kind === "letter" && item.trailingFixed ? (
+                  return (
+                    <div key={`result-${slot.index}`} className="slot-cluster result-slot-cluster">
+                      <span className="slot-tiles">
+                        {displayChars.map((item, index) => {
+                          return (
+                            <span key={`result-${slot.index}-${index}`} className="slot-char-group">
                               <span
-                                className={`slot-inline-fixed ${item.trailingFixed.includes("'") ? "apostrophe" : ""} ${item.trailingFixed.includes("-") ? "hyphen" : ""} ${item.trailingFixed.includes(",") ? "comma" : ""} ${item.trailingFixed.includes(";") ? "semicolon" : ""}`}
-                                aria-hidden="true"
+                                className={`slot-tile ${item.kind === "fixed" ? "fixed" : ""} ${item.kind === "letter" && item.value ? "filled correct locked" : ""}`}
                               >
-                                {item.trailingFixed}
+                                {item.value || ""}
                               </span>
-                            ) : null}
-                          </span>
-                        );
-                      })}
-                    </span>
-                  </div>
-                );
-              })}
+                              {item.kind === "letter" && item.trailingFixed ? (
+                                <span
+                                  className={`slot-inline-fixed ${item.trailingFixed.includes("'") ? "apostrophe" : ""} ${item.trailingFixed.includes("-") ? "hyphen" : ""} ${item.trailingFixed.includes(",") ? "comma" : ""} ${item.trailingFixed.includes(";") ? "semicolon" : ""}`}
+                                  aria-hidden="true"
+                                >
+                                  {item.trailingFixed}
+                                </span>
+                              ) : null}
+                            </span>
+                          );
+                        })}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+              {puzzle.sourceNote ? (
+                <p className="verble-source-note result-modal-source-note">- {puzzle.sourceNote}</p>
+              ) : null}
             </div>
             {puzzle.meaning ? (
-              <p className="result-modal-meaning">{puzzle.meaning}</p>
-            ) : null}
-            {puzzle.sourceNote ? (
-              <p className="verble-source-note result-modal-source-note">- {puzzle.sourceNote}</p>
+              <section className="result-modal-meaning" aria-label="Phrase meaning">
+                <ArcadeIcon name="definition" className="result-meaning-icon" />
+                <p>{puzzle.meaning}</p>
+              </section>
             ) : null}
             <div className="arcade-result-metrics"><span>⏱ {solveDurationSeconds === null ? "Time not recorded" : formatSolveTime(solveDurationSeconds)}{solveDurationSeconds !== null ? <small>from first letter</small> : null}</span>{!isArchiveView && gameState === "won" && resultPerformance?.topPercent ? <span>🏅 Top {resultPerformance.topPercent}% <small>of {resultPerformance.cohortSize} timed wins</small></span> : null}</div>
             {resultAccountStats ? <div className="arcade-result-stats account"><div><strong>{resultAccountStats.overall.played}</strong><span>Played</span></div><div><strong>{resultAccountStats.overall.winRate === null ? "—" : `${Math.round(resultAccountStats.overall.winRate * 100)}%`}</strong><span>Win rate</span></div><div><strong>{resultAccountStats.overall.currentVerbleStreak}</strong><span>Streak</span></div><div><strong>{resultAccountStats.overall.bestVerbleStreak}</strong><span>Best</span></div></div> : <div className="arcade-result-stats"><div><strong>{guessesUsed}</strong><span>Attempts</span></div><div><strong>{Math.max(0, maxGuesses - guessesUsed)}</strong><span>Remaining</span></div><div><strong>{Object.keys(solvedWords).length}</strong><span>Words solved</span></div></div>}

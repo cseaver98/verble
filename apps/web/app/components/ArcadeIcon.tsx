@@ -1,6 +1,6 @@
 import type { SVGProps } from "react";
 
-export type ArcadeIconName = "menu" | "calendar" | "stats" | "profile" | "ticket" | "help" | "sparkle" | "refresh" | "bolt" | "backspace" | "share" | "copy" | "clock" | "check" | "lock";
+export type ArcadeIconName = "menu" | "calendar" | "stats" | "profile" | "ticket" | "help" | "sparkle" | "refresh" | "bolt" | "backspace" | "share" | "copy" | "clock" | "check" | "lock" | "definition";
 
 const paths: Record<ArcadeIconName, React.ReactNode> = {
   menu: <><path d="M4 6h16M4 12h16M4 18h16" /></>,
@@ -32,6 +32,7 @@ const paths: Record<ArcadeIconName, React.ReactNode> = {
   copy: <><rect x="8" y="7" width="12" height="14" rx="2" /><path d="M16 7V5a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h2" /></>,
   clock: <><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></>,
   check: <><circle cx="12" cy="12" r="9" /><path d="m8 12 2.5 2.5L16 9" /></>,
+  definition: <><path d="M11 5C8.5 3.5 5.5 3.5 2 4v14c3.5-.5 6.5-.5 9 1V5ZM11 5c2.5-1.5 5.5-1.5 9-1v5M5 8h3M5 11h3M5 14h3M14 7h3" /><circle cx="16.5" cy="14.5" r="4" /><path d="m19.5 17.5 3 3" /></>,
   lock: <><rect x="5" y="10" width="14" height="11" rx="2" /><path d="M8 10V7a4 4 0 0 1 8 0v3" /></>,
 };
 
