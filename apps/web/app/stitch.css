@@ -431,7 +431,8 @@ body {
   .arcade-calendar-legend { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .arcade-calendar-bubble { gap: .5rem; margin-inline: -.875rem; padding: .7rem .5rem .85rem; }
   .arcade-weekdays, .verble-shell .arcade-calendar-grid { gap: .28rem; }
-  .arcade-calendar-day, .arcade-calendar-blank { min-height: 0; aspect-ratio: 1; }
+  .arcade-calendar-day, .arcade-calendar-blank,
+  .verble-shell .archive-tile.arcade-calendar-day { min-height: 0; aspect-ratio: 1; }
   .arcade-calendar-day { padding: .1rem; border-radius: .55rem; }
   .arcade-day-number { top: .18rem; left: .22rem; font-size: .53rem; }
   .verble-shell .arcade-calendar-day .archive-tile-title { top: 51%; left: 38%; font-size: .6rem; }
