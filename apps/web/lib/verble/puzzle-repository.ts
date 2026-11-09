@@ -15,6 +15,7 @@ type PhraseRow = {
   phrase_text: string;
   normalized_phrase: string;
   source_note?: string | null;
+  meaning?: string | null;
   status: "pending_review" | "approved";
   created_at?: string | null;
 };
@@ -25,6 +26,7 @@ export type VerblePuzzle = {
   archiveGameNumber: number;
   phraseTemplate: string;
   sourceNote: string | null;
+  meaning: string | null;
   slots: Slot[];
   maxGuesses: number;
   answerWords: string[];
@@ -126,6 +128,7 @@ const mapPuzzle = async (scheduleRow: ScheduleRow, phraseRow: PhraseRow): Promis
     archiveGameNumber,
     phraseTemplate: parsed.template,
     sourceNote: phraseRow.source_note?.trim() || null,
+    meaning: phraseRow.meaning?.trim() || null,
     slots: parsed.slots,
     maxGuesses: 6,
     answerWords: parsed.answerWords,
@@ -150,7 +153,7 @@ const getPuzzleByScheduleDate = async (date: string): Promise<VerblePuzzle | nul
 
   const { data: phraseRow, error: phraseError } = await supabase
     .from("phrases")
-    .select("id,phrase_text,normalized_phrase,source_note,status,created_at")
+    .select("id,phrase_text,normalized_phrase,source_note,meaning,status,created_at")
     .eq("id", scheduleRow.phrase_id)
     .maybeSingle<PhraseRow>();
 
@@ -169,7 +172,7 @@ const autoScheduleApprovedPhraseForDate = async (date: string): Promise<VerblePu
 
   const { data: approvedRows, error: approvedError } = await supabase
     .from("phrases")
-    .select("id,phrase_text,normalized_phrase,source_note,status,created_at")
+    .select("id,phrase_text,normalized_phrase,source_note,meaning,status,created_at")
     .eq("status", "approved")
     .order("reviewed_at", { ascending: true })
     .order("created_at", { ascending: true })

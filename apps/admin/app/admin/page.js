@@ -19,6 +19,8 @@ export default function VerbleAdminTab() {
   const [totalCandidates, setTotalCandidates] = useState(0);
   const [manualPhrase, setManualPhrase] = useState("");
   const [manualSource, setManualSource] = useState("");
+  const [manualMeaning, setManualMeaning] = useState("");
+  const [editingMeaning, setEditingMeaning] = useState("");
   const [creating, setCreating] = useState(false);
   const [editingId, setEditingId] = useState("");
   const [editingPhrase, setEditingPhrase] = useState("");
@@ -63,7 +65,7 @@ export default function VerbleAdminTab() {
       const response = await fetch("/api/admin/verble", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ phrase: manualPhrase, sourceNote: manualSource }),
+        body: JSON.stringify({ phrase: manualPhrase, sourceNote: manualSource, meaning: manualMeaning }),
       });
       const payload = await response.json().catch(() => ({}));
       if (!response.ok) {
@@ -75,6 +77,7 @@ export default function VerbleAdminTab() {
       }
       setManualPhrase("");
       setManualSource("");
+      setManualMeaning("");
       setMessage("Added Verble candidate.");
       await load({ page: 1, status: "pending_review" });
       setStatusFilter("pending_review");
@@ -113,12 +116,14 @@ export default function VerbleAdminTab() {
     setEditingId(item.id);
     setEditingPhrase(item.phrase || "");
     setEditingSource(item.sourceNote || "");
+    setEditingMeaning(item.meaning || "");
   };
 
   const cancelEdit = () => {
     setEditingId("");
     setEditingPhrase("");
     setEditingSource("");
+    setEditingMeaning("");
   };
 
   const saveEdit = async (id) => {
@@ -126,7 +131,7 @@ export default function VerbleAdminTab() {
     const response = await fetch("/api/admin/verble", {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id, phrase: editingPhrase, sourceNote: editingSource }),
+      body: JSON.stringify({ id, phrase: editingPhrase, sourceNote: editingSource, meaning: editingMeaning }),
     });
     const payload = await response.json().catch(() => ({}));
     if (!response.ok) {
@@ -180,7 +185,16 @@ export default function VerbleAdminTab() {
               type="text"
               value={manualSource}
               onChange={(event) => setManualSource(event.target.value)}
-              placeholder="Source note (optional)"
+              aria-label="Attribution"
+              placeholder="Attribution (optional)"
+              style={{ width: "100%", padding: ".6rem .75rem", borderRadius: 12, border: "1px solid #d8dce2" }}
+            />
+            <textarea
+              aria-label="Phrase meaning"
+              value={manualMeaning}
+              onChange={(event) => setManualMeaning(event.target.value)}
+              placeholder="Brief meaning (optional)"
+              rows={2}
               style={{ width: "100%", padding: ".6rem .75rem", borderRadius: 12, border: "1px solid #d8dce2" }}
             />
             <div style={{ display: "flex", gap: ".5rem", flexWrap: "wrap" }}>
@@ -241,6 +255,7 @@ export default function VerbleAdminTab() {
                   Status: <b>{isToday ? "today" : statusLabel(item.status)}</b>
                   {item.sourceNote ? <> | Source: {item.sourceNote}</> : null}
                 </p>
+                {item.meaning ? <p style={{ margin: ".45rem 0 0", lineHeight: 1.5 }}>{item.meaning}</p> : null}
                 {item.nextScheduledDate ? (
                   <p style={{ margin: ".2rem 0 0", color: "#5b6168", fontSize: ".88rem" }}>
                     Scheduled: <b>{item.nextScheduledDate}</b>
@@ -258,7 +273,16 @@ export default function VerbleAdminTab() {
                     <input
                       value={editingSource}
                       onChange={(event) => setEditingSource(event.target.value)}
-                      placeholder="Source note"
+                      aria-label="Attribution"
+                      placeholder="Attribution (e.g. Proverb or author and work)"
+                      style={{ width: "100%", padding: ".6rem .75rem", borderRadius: 12, border: "1px solid #d8dce2" }}
+                    />
+                    <textarea
+                      aria-label="Phrase meaning"
+                      value={editingMeaning}
+                      onChange={(event) => setEditingMeaning(event.target.value)}
+                      placeholder="Brief meaning (optional)"
+                      rows={2}
                       style={{ width: "100%", padding: ".6rem .75rem", borderRadius: 12, border: "1px solid #d8dce2" }}
                     />
                   </div>

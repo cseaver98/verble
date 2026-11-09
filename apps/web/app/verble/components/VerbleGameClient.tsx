@@ -49,6 +49,7 @@ type VerblePuzzle = {
   archiveGameNumber?: number;
   phraseTemplate: string;
   sourceNote: string | null;
+  meaning: string | null;
   slots: Slot[];
   maxGuesses: number;
   answerWords: string[];
@@ -1956,6 +1957,9 @@ export default function VerbleGameClient({
                 );
               })}
             </div>
+            {puzzle.meaning ? (
+              <p className="result-modal-meaning">{puzzle.meaning}</p>
+            ) : null}
             {puzzle.sourceNote ? (
               <p className="verble-source-note result-modal-source-note">- {puzzle.sourceNote}</p>
             ) : null}

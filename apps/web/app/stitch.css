@@ -491,3 +491,13 @@ body {
   .verble-shell .phrase-layout.has-selected-word .slot-word-button.selected { animation: none; }
   .arcade-action-row button:active:not(:disabled), .verble-shell .key:active:not(:disabled), .verble-shell .archive-tile:hover { transform: none; }
 }
+
+/* Meaning is explanatory copy, separate from the smaller attribution. */
+.verble-shell .result-modal-meaning {
+  margin: .3rem auto .4rem;
+  max-width: 48ch;
+  color: var(--arcade-ink);
+  font-size: 1rem;
+  line-height: 1.5;
+  text-align: center;
+}

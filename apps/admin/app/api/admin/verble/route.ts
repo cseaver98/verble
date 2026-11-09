@@ -12,6 +12,7 @@ type PhraseRow = {
   phrase_text: string;
   normalized_phrase: string;
   source_note: string | null;
+  meaning: string | null;
   status: CandidateStatus;
   reviewed_at: string | null;
   created_at: string;
@@ -135,7 +136,7 @@ export async function GET(request: Request) {
     const supabase = getVerbleSupabaseAdmin();
     const { data: phraseRows, error: phrasesError } = await supabase
       .from("phrases")
-      .select("id,phrase_text,normalized_phrase,source_note,status,reviewed_at,created_at,updated_at")
+      .select("id,phrase_text,normalized_phrase,source_note,meaning,status,reviewed_at,created_at,updated_at")
       .order("created_at", { ascending: false })
       .limit(5000);
 
@@ -177,6 +178,7 @@ export async function GET(request: Request) {
         phrase: row.phrase_text,
         normalizedPhrase: row.normalized_phrase,
         sourceNote: row.source_note,
+        meaning: row.meaning,
         status: row.status,
         createdAt: row.created_at,
         updatedAt: row.updated_at,
@@ -270,6 +272,7 @@ export async function POST(request: Request) {
       phrase_text: phraseText,
       normalized_phrase: normalizedPhrase,
       source_note: sourceNote || null,
+      meaning: String(payload.meaning || "").trim() || null,
       status: "pending_review",
       reviewed_at: null,
     };
@@ -277,7 +280,7 @@ export async function POST(request: Request) {
     const { data, error } = await supabase
       .from("phrases")
       .insert(insertPayload)
-      .select("id,phrase_text,normalized_phrase,source_note,status,reviewed_at,created_at,updated_at")
+      .select("id,phrase_text,normalized_phrase,source_note,meaning,status,reviewed_at,created_at,updated_at")
       .single<PhraseRow>();
 
     if (error) {
@@ -298,6 +301,7 @@ export async function PATCH(request: Request) {
     const nextStatus = String(payload.status || "").trim() as CandidateStatus | "";
     const phraseTextRaw = payload.phrase;
     const sourceNoteRaw = payload.sourceNote;
+    const meaningRaw = payload.meaning;
 
     if (!id) {
       return NextResponse.json({ error: "Candidate id is required" }, { status: 400 });
@@ -321,6 +325,10 @@ export async function PATCH(request: Request) {
       }
       patch.phrase_text = phraseText;
       patch.normalized_phrase = normalizedPhrase;
+    }
+
+    if (meaningRaw !== undefined) {
+      patch.meaning = String(meaningRaw || "").trim() || null;
     }
 
     if (sourceNoteRaw !== undefined) {
@@ -357,7 +365,7 @@ export async function PATCH(request: Request) {
       .from("phrases")
       .update(patch)
       .eq("id", id)
-      .select("id,phrase_text,normalized_phrase,source_note,status,reviewed_at,created_at,updated_at")
+      .select("id,phrase_text,normalized_phrase,source_note,meaning,status,reviewed_at,created_at,updated_at")
       .maybeSingle<PhraseRow>();
 
     if (error) {

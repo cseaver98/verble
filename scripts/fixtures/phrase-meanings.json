@@ -1,0 +1,343 @@
+{
+  "scope": "Local editorial preview only. Not automatically imported or deployed.",
+  "reviewStatus": "AI-drafted meanings for human review. Selected ambiguities and named attributions checked against linked references; other proverb/saying labels are classifications, not verified historical origins.",
+  "phrases": [
+    {
+      "phrase": "A penny saved is a penny earned",
+      "meaning": "Keeping money you already have can help you just as much as earning more.",
+      "sourceNote": "Proverb",
+      "references": [],
+      "reviewNote": "Plain-language editorial draft; historical origin not researched."
+    },
+    {
+      "phrase": "A picture is worth a thousand words",
+      "meaning": "An image can communicate an idea or situation more clearly and quickly than a long description.",
+      "sourceNote": "Common saying",
+      "references": [
+        "https://quoteinvestigator.com/2022/07/22/picture-words/"
+      ],
+      "reviewNote": "No Confucius or ancient Chinese origin claim; exact authorship is not asserted."
+    },
+    {
+      "phrase": "A rolling stone gathers no moss",
+      "meaning": "Someone who keeps moving avoids lasting ties and responsibilities, but may also miss the benefits of settling down.",
+      "sourceNote": "Proverb",
+      "references": [
+        "https://dictionary.cambridge.org/dictionary/english/rolling-stone-gathers-no-moss",
+        "https://www.dictionary.com/browse/a-rolling-stone-gathers-no-moss"
+      ],
+      "reviewNote": "Two common readings; explanation retains both freedom from obligations and the cost of lacking roots."
+    },
+    {
+      "phrase": "Absence makes the heart grow fonder",
+      "meaning": "Being apart from someone can make you appreciate and miss them more.",
+      "sourceNote": "Proverb",
+      "references": [],
+      "reviewNote": "Plain-language editorial draft; historical origin not researched."
+    },
+    {
+      "phrase": "Actions speak louder than words",
+      "meaning": "What people do reveals their intentions more clearly than what they say or promise.",
+      "sourceNote": "Proverb",
+      "references": [],
+      "reviewNote": "Plain-language editorial draft; historical origin not researched."
+    },
+    {
+      "phrase": "All good things must come to an end",
+      "meaning": "Even enjoyable experiences eventually finish, so appreciate them while they last.",
+      "sourceNote": "Proverb",
+      "references": [],
+      "reviewNote": "Plain-language editorial draft; historical origin not researched."
+    },
+    {
+      "phrase": "All roads lead to Rome",
+      "meaning": "Different methods or choices can lead to the same result.",
+      "sourceNote": "Proverb",
+      "references": [],
+      "reviewNote": "Plain-language editorial draft; historical origin not researched."
+    },
+    {
+      "phrase": "An apple a day keeps the doctor away",
+      "meaning": "Healthy everyday habits can help you stay well; the saying is not a literal promise about apples.",
+      "sourceNote": "Proverb",
+      "references": [],
+      "reviewNote": "Plain-language editorial draft; historical origin not researched."
+    },
+    {
+      "phrase": "Any port in a storm",
+      "meaning": "When you are in trouble, even an imperfect source of help or safety can be welcome.",
+      "sourceNote": "Proverb",
+      "references": [],
+      "reviewNote": "Plain-language editorial draft; historical origin not researched."
+    },
+    {
+      "phrase": "Beauty is only skin deep",
+      "meaning": "Physical attractiveness says little about a person's character or deeper qualities.",
+      "sourceNote": "Proverb",
+      "references": [],
+      "reviewNote": "Plain-language editorial draft; historical origin not researched."
+    },
+    {
+      "phrase": "Beggars cannot be choosers",
+      "meaning": "When you depend on help or have few options, you may have to accept what is available.",
+      "sourceNote": "Proverb",
+      "references": [],
+      "reviewNote": "Plain-language editorial draft; historical origin not researched."
+    },
+    {
+      "phrase": "Birds of a feather flock together",
+      "meaning": "People with similar interests, qualities, or habits tend to spend time together.",
+      "sourceNote": "Proverb",
+      "references": [
+        "https://dictionary.cambridge.org/dictionary/english/birds-of-a-feather-flock-together"
+      ],
+      "reviewNote": "Plain-language editorial draft; historical origin not researched."
+    },
+    {
+      "phrase": "Blood is thicker than water",
+      "meaning": "The saying expresses the belief that family bonds are stronger than other relationships.",
+      "sourceNote": "Proverb",
+      "references": [
+        "https://dictionary.cambridge.org/dictionary/english/blood-is-thicker-than-water"
+      ],
+      "reviewNote": "Uses the conventional family-bond meaning; does not present the modern covenant expansion as an original version."
+    },
+    {
+      "phrase": "Do not bite the hand that feeds you",
+      "meaning": "Avoid harming or insulting someone who supports or helps you.",
+      "sourceNote": "Proverb",
+      "references": [],
+      "reviewNote": "Plain-language editorial draft; historical origin not researched."
+    },
+    {
+      "phrase": "Do not count your chickens before they hatch",
+      "meaning": "Do not make plans that depend on a good outcome before that outcome is certain.",
+      "sourceNote": "Proverb",
+      "references": [],
+      "reviewNote": "Plain-language editorial draft; historical origin not researched."
+    },
+    {
+      "phrase": "Do not judge a book by its cover",
+      "meaning": "Do not decide what someone or something is like based only on appearance.",
+      "sourceNote": "Proverb",
+      "references": [],
+      "reviewNote": "Plain-language editorial draft; historical origin not researched."
+    },
+    {
+      "phrase": "Easier said than done",
+      "meaning": "Something may sound simple when described but be difficult to put into practice.",
+      "sourceNote": "Proverb",
+      "references": [],
+      "reviewNote": "Plain-language editorial draft; historical origin not researched."
+    },
+    {
+      "phrase": "Every cloud has a silver lining",
+      "meaning": "Even a difficult situation may have a positive aspect or offer some hope.",
+      "sourceNote": "Proverb",
+      "references": [],
+      "reviewNote": "Plain-language editorial draft; historical origin not researched."
+    },
+    {
+      "phrase": "Failing to plan is planning to fail",
+      "meaning": "Neglecting to prepare makes failure more likely.",
+      "sourceNote": "Common saying",
+      "references": [
+        "https://quoteinvestigator.com/2018/07/08/plan/"
+      ],
+      "reviewNote": "No named attribution: Benjamin Franklin attribution is unsupported by the cited research."
+    },
+    {
+      "phrase": "Fight fire with fire",
+      "meaning": "Respond to an opponent or problem using similarly forceful methods, which may also escalate the conflict.",
+      "sourceNote": "Proverb",
+      "references": [],
+      "reviewNote": "Plain-language editorial draft; historical origin not researched."
+    },
+    {
+      "phrase": "First come, first served",
+      "meaning": "People receive service or opportunities in the order they arrive or apply.",
+      "sourceNote": "Proverb",
+      "references": [],
+      "reviewNote": "Plain-language editorial draft; historical origin not researched."
+    },
+    {
+      "phrase": "Give credit where credit is due",
+      "meaning": "Recognize someone's contribution or achievement when they deserve it, even if you otherwise disagree with them.",
+      "sourceNote": "Proverb",
+      "references": [],
+      "reviewNote": "Plain-language editorial draft; historical origin not researched."
+    },
+    {
+      "phrase": "Haste makes waste",
+      "meaning": "Rushing can cause mistakes that waste time, effort, or resources.",
+      "sourceNote": "Proverb",
+      "references": [],
+      "reviewNote": "Plain-language editorial draft; historical origin not researched."
+    },
+    {
+      "phrase": "He who hesitates is lost",
+      "meaning": "Waiting too long to act can cause you to miss an opportunity.",
+      "sourceNote": "Proverb",
+      "references": [],
+      "reviewNote": "Plain-language editorial draft; historical origin not researched."
+    },
+    {
+      "phrase": "If at first you do not succeed, try again",
+      "meaning": "An unsuccessful first attempt is a reason to keep trying rather than give up.",
+      "sourceNote": "Proverb",
+      "references": [],
+      "reviewNote": "Plain-language editorial draft; historical origin not researched."
+    },
+    {
+      "phrase": "If it ain't broke, don't fix it",
+      "meaning": "Avoid changing something that already works well without a good reason.",
+      "sourceNote": "Common saying",
+      "references": [],
+      "reviewNote": "Plain-language editorial draft; historical origin not researched."
+    },
+    {
+      "phrase": "If the shoe fits, wear it",
+      "meaning": "If a description or criticism accurately applies to you, accept that it does.",
+      "sourceNote": "Proverb",
+      "references": [],
+      "reviewNote": "Plain-language editorial draft; historical origin not researched."
+    },
+    {
+      "phrase": "Laughter is the best medicine",
+      "meaning": "Humor and laughter can lift your mood and help you cope with difficulties.",
+      "sourceNote": "Proverb",
+      "references": [],
+      "reviewNote": "Plain-language editorial draft; historical origin not researched."
+    },
+    {
+      "phrase": "Let sleeping dogs lie",
+      "meaning": "Avoid bringing up an old problem when doing so could cause fresh trouble.",
+      "sourceNote": "Proverb",
+      "references": [],
+      "reviewNote": "Plain-language editorial draft; historical origin not researched."
+    },
+    {
+      "phrase": "Look before you leap",
+      "meaning": "Consider the risks and consequences before taking action.",
+      "sourceNote": "Proverb",
+      "references": [],
+      "reviewNote": "Plain-language editorial draft; historical origin not researched."
+    },
+    {
+      "phrase": "Make hay while the sun shines",
+      "meaning": "Take advantage of a favorable opportunity while it is available.",
+      "sourceNote": "Proverb",
+      "references": [],
+      "reviewNote": "Plain-language editorial draft; historical origin not researched."
+    },
+    {
+      "phrase": "Many hands make light work",
+      "meaning": "A task becomes easier when several people share the effort.",
+      "sourceNote": "Proverb",
+      "references": [],
+      "reviewNote": "Plain-language editorial draft; historical origin not researched."
+    },
+    {
+      "phrase": "No man is an island",
+      "meaning": "People are connected to one another and cannot live entirely independently of others.",
+      "sourceNote": "John Donne, Meditation XVII",
+      "references": [
+        "https://www.brinkerhoffpoetry.org/poems/no-man-is-an-island-from-meditation-xvii"
+      ],
+      "reviewNote": "Modernized excerpt from Donne; attribution identifies the work, not a proverb origin."
+    },
+    {
+      "phrase": "No news is good news",
+      "meaning": "When you expect to hear about problems, a lack of news can be taken as a reassuring sign.",
+      "sourceNote": "Proverb",
+      "references": [],
+      "reviewNote": "Plain-language editorial draft; historical origin not researched."
+    },
+    {
+      "phrase": "Nothing ventured, nothing gained",
+      "meaning": "You may need to take a risk or make an attempt to achieve something worthwhile.",
+      "sourceNote": "Proverb",
+      "references": [],
+      "reviewNote": "Plain-language editorial draft; historical origin not researched."
+    },
+    {
+      "phrase": "Out of sight, out of mind",
+      "meaning": "People or things you no longer see regularly can become easier to forget.",
+      "sourceNote": "Proverb",
+      "references": [],
+      "reviewNote": "Plain-language editorial draft; historical origin not researched."
+    },
+    {
+      "phrase": "Practice makes perfect",
+      "meaning": "Repeated practice helps you improve a skill, even though it does not guarantee perfection.",
+      "sourceNote": "Proverb",
+      "references": [],
+      "reviewNote": "Plain-language editorial draft; historical origin not researched."
+    },
+    {
+      "phrase": "Rome wasn't built in a day",
+      "meaning": "Important or complex achievements take time and patience.",
+      "sourceNote": "Proverb",
+      "references": [],
+      "reviewNote": "Plain-language editorial draft; historical origin not researched."
+    },
+    {
+      "phrase": "Still waters run deep",
+      "meaning": "Someone who seems quiet or reserved may have deep thoughts, strong feelings, or unexpected abilities.",
+      "sourceNote": "Proverb",
+      "references": [],
+      "reviewNote": "Plain-language editorial draft; historical origin not researched."
+    },
+    {
+      "phrase": "Strike while the iron is hot",
+      "meaning": "Act while conditions are favorable rather than letting the opportunity pass.",
+      "sourceNote": "Proverb",
+      "references": [],
+      "reviewNote": "Plain-language editorial draft; historical origin not researched."
+    },
+    {
+      "phrase": "The pen is mightier than the sword",
+      "meaning": "Writing and ideas can influence people and events more powerfully than violence or military force.",
+      "sourceNote": "Edward Bulwer-Lytton, Richelieu (1839)",
+      "references": [
+        "https://librarycompany.org/2022/05/10/getting-even/"
+      ],
+      "reviewNote": "Named attribution supported for this wording in Richelieu."
+    },
+    {
+      "phrase": "The squeaky wheel gets the grease",
+      "meaning": "People who make their needs or complaints known are more likely to receive attention.",
+      "sourceNote": "Proverb",
+      "references": [],
+      "reviewNote": "Plain-language editorial draft; historical origin not researched."
+    },
+    {
+      "phrase": "Time and tide wait for no man",
+      "meaning": "Time keeps moving regardless of your wishes, so do not assume an opportunity will wait.",
+      "sourceNote": "Proverb",
+      "references": [],
+      "reviewNote": "Plain-language editorial draft; historical origin not researched."
+    },
+    {
+      "phrase": "Too many cooks spoil the broth",
+      "meaning": "Too many people directing the same task can create confusion and make the result worse.",
+      "sourceNote": "Proverb",
+      "references": [],
+      "reviewNote": "Plain-language editorial draft; historical origin not researched."
+    },
+    {
+      "phrase": "Two heads are better than one",
+      "meaning": "Two people working together may solve a problem better than either could alone.",
+      "sourceNote": "Proverb",
+      "references": [],
+      "reviewNote": "Plain-language editorial draft; historical origin not researched."
+    },
+    {
+      "phrase": "When life gives you lemons, make lemonade",
+      "meaning": "Try to turn an unwanted situation into something useful or positive.",
+      "sourceNote": "Common saying",
+      "references": [],
+      "reviewNote": "No named author asserted for this variant."
+    }
+  ]
+}
