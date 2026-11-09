@@ -208,6 +208,8 @@ body {
 .arcade-word-status { display: flex; align-items: center; gap: .45rem; flex-wrap: wrap; min-height: 2.65rem; border-radius: .9rem; padding: .6rem .7rem; background: #fff; color: #464555; font-size: .75rem; font-weight: 600; }
 .arcade-word-status strong { color: var(--arcade-violet); font-size: .82rem; }
 .arcade-status-dot { width: .5rem; height: .5rem; flex: none; border-radius: 50%; background: #8e80ef; }
+.arcade-status-dot[data-state="won"] { background: #10b981; }
+.arcade-status-dot[data-state="lost"] { background: #e85e58; }
 .arcade-status-hint { margin-left: auto; }
 .arcade-action-row { display: grid; grid-template-columns: minmax(5rem, .38fr) 1fr; gap: .55rem; }
 .arcade-action-row button { min-height: 2.7rem; border: 0; border-radius: .8rem; font-family: var(--font-outfit), sans-serif; font-size: .9rem; font-weight: 800; cursor: pointer; }

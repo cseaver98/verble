@@ -1713,10 +1713,16 @@ export default function VerbleGameClient({
             })}
           </div>
           <div className="arcade-word-status">
-            <span className="arcade-status-dot" />
-            <strong>{selectedSlotMeta ? `Solving Word #${selectedSlotMeta.index + 1}:` : "Pick a word"}</strong>
-            <span>{selectedSlotMeta ? `${selectedSlotMeta.length} letters` : "Tap any word to start"}</span>
-            <span className="arcade-status-hint">Tap any word to switch</span>
+            <span className="arcade-status-dot" data-state={gameState} aria-hidden="true" />
+            {gameState === "playing" ? (
+              <>
+                <strong>{selectedSlotMeta ? `Solving Word #${selectedSlotMeta.index + 1}:` : "Pick a word"}</strong>
+                <span>{selectedSlotMeta ? `${selectedSlotMeta.length} letters` : "Tap any word to start"}</span>
+                <span className="arcade-status-hint">Tap any word to switch</span>
+              </>
+            ) : (
+              <strong>{gameState === "won" ? "Phrase solved!" : "Better luck next time."}</strong>
+            )}
           </div>
           </div>
 
