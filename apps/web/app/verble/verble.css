@@ -573,38 +573,7 @@
 }
 
 .verble-shell .result-modal-phrase {
-  justify-content: flex-start;
   margin: 0.15rem 0 0.35rem;
-  gap: 0.8rem 0.65rem;
-}
-
-.verble-shell .result-modal-phrase .result-slot-cluster {
-  gap: 0.16rem;
-}
-
-.verble-shell .result-modal-phrase .slot-tile {
-  width: clamp(1.65rem, 6.5vw, 2.5rem);
-  height: clamp(2.05rem, 7.6vw, 2.95rem);
-  font-size: clamp(0.82rem, 2.8vw, 1.1rem);
-}
-
-.verble-shell .result-modal-phrase .slot-tile.fixed {
-  font-size: clamp(0.82rem, 2.35vw, 0.96rem);
-}
-
-.verble-shell .result-modal-phrase .slot-inline-fixed {
-  top: -0.92rem;
-  font-size: clamp(0.82rem, 2.35vw, 0.96rem);
-}
-
-.verble-shell .result-modal-phrase .slot-inline-fixed.apostrophe {
-  top: -1.28rem;
-  font-size: clamp(1rem, 2.9vw, 1.18rem);
-}
-
-.verble-shell .result-modal-phrase .slot-inline-fixed.comma,
-.verble-shell .result-modal-phrase .slot-inline-fixed.semicolon {
-  top: -0.16rem;
 }
 
 .verble-shell .verble-source-note {
