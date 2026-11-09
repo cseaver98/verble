@@ -30,3 +30,7 @@ Before copying behavior, consult `docs/dailydabble-migration-map.md`. Port only 
 - Keep public and admin deployments independent.
 - Add database changes only through root `supabase/migrations`.
 - Never commit environment files, Supabase secrets, or Vercel project state.
+
+## Phrase meanings and attribution
+
+Before drafting or importing phrase meanings or attributions, read docs/phrase-editorial-standards.md and use docs/production-phrase-meanings-review.md as the approved style reference. New production copy requires user review and approval before applying it.

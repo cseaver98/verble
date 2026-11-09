@@ -1,0 +1,722 @@
+[
+  {
+    "id": "b2daf57d-b886-4476-aaa2-273b26f76014",
+    "phrase_text": "A penny saved is a penny earned",
+    "normalized_phrase": "a penny saved is a penny earned",
+    "source_note": "Proverb",
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "7c8f8452-8bb1-4b1e-acc7-0e84e0f74348",
+    "phrase_text": "A perfect storm",
+    "normalized_phrase": "a perfect storm",
+    "source_note": null,
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "7d767ec5-6b8a-40be-9699-6861af35c0e6",
+    "phrase_text": "A picture is worth a thousand words",
+    "normalized_phrase": "a picture is worth a thousand words",
+    "source_note": "Proverb",
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "9c815315-37cf-4a79-8002-c267c87b6663",
+    "phrase_text": "A rolling stone gathers no moss",
+    "normalized_phrase": "a rolling stone gathers no moss",
+    "source_note": "Proverb",
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "86ca82ac-cc82-4cb0-b2a1-3e083828e840",
+    "phrase_text": "A stitch in time saves nine",
+    "normalized_phrase": "a stitch in time saves nine",
+    "source_note": null,
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "eee73e74-4526-463b-aa80-2b312d05164f",
+    "phrase_text": "Absence makes the heart grow fonder",
+    "normalized_phrase": "absence makes the heart grow fonder",
+    "source_note": "Proverb",
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "3d22eb70-db11-41ac-bf9a-3cc44f041d93",
+    "phrase_text": "Actions speak louder than words",
+    "normalized_phrase": "actions speak louder than words",
+    "source_note": null,
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "5ed04345-25fd-47b4-bfaa-eb54306ffb7f",
+    "phrase_text": "Add insult to injury",
+    "normalized_phrase": "add insult to injury",
+    "source_note": null,
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "61c6ffea-8441-439a-a0cb-b662f0732122",
+    "phrase_text": "All good things must come to an end",
+    "normalized_phrase": "all good things must come to an end",
+    "source_note": "Proverb",
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "5794af70-ce9a-4593-a748-0aea6bbf962d",
+    "phrase_text": "All roads lead to Rome",
+    "normalized_phrase": "all roads lead to rome",
+    "source_note": "Proverb",
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "9d78e4e6-a43e-45ac-b7d6-6b60c1e1a891",
+    "phrase_text": "All that glitters is not gold",
+    "normalized_phrase": "all that glitters is not gold",
+    "source_note": "William Shakespeare",
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "df40caaa-6fdc-4079-8c32-326891220016",
+    "phrase_text": "All you need is love",
+    "normalized_phrase": "all you need is love",
+    "source_note": null,
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "e8e8a9aa-97f5-4c31-8158-247928fc108a",
+    "phrase_text": "An apple a day keeps the doctor away",
+    "normalized_phrase": "an apple a day keeps the doctor away",
+    "source_note": "Proverb",
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "fcdb8667-0198-4dc7-8772-0e970734ef18",
+    "phrase_text": "Any port in a storm",
+    "normalized_phrase": "any port in a storm",
+    "source_note": "Proverb",
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "6c173bb6-a1f5-4231-8823-3512911f72e7",
+    "phrase_text": "Barking up the wrong tree",
+    "normalized_phrase": "barking up the wrong tree",
+    "source_note": null,
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "1ef8bfec-8214-49ec-9ecf-eaec2f86ef80",
+    "phrase_text": "Beauty is in the eye of the beholder",
+    "normalized_phrase": "beauty is in the eye of the beholder",
+    "source_note": null,
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "9da90a95-74cc-4d21-877f-fb39cfea06f5",
+    "phrase_text": "Beauty is only skin deep",
+    "normalized_phrase": "beauty is only skin deep",
+    "source_note": "Proverb",
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "2a85c74b-8c6f-4672-82d9-0abeea164378",
+    "phrase_text": "Beggars cannot be choosers",
+    "normalized_phrase": "beggars cannot be choosers",
+    "source_note": "Proverb",
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "a771a143-ce7e-489d-a847-d87d0637233d",
+    "phrase_text": "Better late than never",
+    "normalized_phrase": "better late than never",
+    "source_note": null,
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "c0cfe8a4-9ff5-461c-96e0-857ba09c88d2",
+    "phrase_text": "Birds of a feather flock together",
+    "normalized_phrase": "birds of a feather flock together",
+    "source_note": "Proverb",
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "49587eac-5fda-4942-b594-d9fd0ba18b1c",
+    "phrase_text": "Bite the bullet",
+    "normalized_phrase": "bite the bullet",
+    "source_note": null,
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "adfbd0b4-4069-425a-9e03-af99d2d95d6e",
+    "phrase_text": "Blood is thicker than water",
+    "normalized_phrase": "blood is thicker than water",
+    "source_note": "Proverb",
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "622d2e5c-4baf-4c5b-8021-e4eef00ebb42",
+    "phrase_text": "Curiosity killed the cat",
+    "normalized_phrase": "curiosity killed the cat",
+    "source_note": null,
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "3f7fa5be-f54d-442d-8ef4-e5df257eb5e7",
+    "phrase_text": "Dead men tell no tales",
+    "normalized_phrase": "dead men tell no tales",
+    "source_note": null,
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "38114566-9f27-405a-ad88-c25ba513d41a",
+    "phrase_text": "Do not bite the hand that feeds you",
+    "normalized_phrase": "do not bite the hand that feeds you",
+    "source_note": "Proverb",
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "8d064508-611e-4b39-988a-12e359ae1b40",
+    "phrase_text": "Do not count your chickens before they hatch",
+    "normalized_phrase": "do not count your chickens before they hatch",
+    "source_note": "Proverb",
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "0211e4d0-2647-41b6-b410-8c6f6cc83abc",
+    "phrase_text": "Do not judge a book by its cover",
+    "normalized_phrase": "do not judge a book by its cover",
+    "source_note": "Proverb",
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "f6bd0720-f7ac-4faf-a8b4-b1d42b8bb09a",
+    "phrase_text": "Easier said than done",
+    "normalized_phrase": "easier said than done",
+    "source_note": "Proverb",
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "ec1422d3-54d8-40ba-ac8e-11bddfefbe25",
+    "phrase_text": "Easy come, easy go",
+    "normalized_phrase": "easy come easy go",
+    "source_note": null,
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "18242e40-7e46-41d0-8c01-b0d27078c76d",
+    "phrase_text": "Every cloud has a silver lining",
+    "normalized_phrase": "every cloud has a silver lining",
+    "source_note": "Proverb",
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "8414447c-709e-46f6-8e60-c8b42caeb49c",
+    "phrase_text": "Every dog has his day",
+    "normalized_phrase": "every dog has his day",
+    "source_note": null,
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "b4a3e9db-5537-4b04-8f45-ef11d5797169",
+    "phrase_text": "Every picture tells a story",
+    "normalized_phrase": "every picture tells a story",
+    "source_note": null,
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "81f5002f-c2b4-4928-afa9-c241f7cb8967",
+    "phrase_text": "Failing to plan is planning to fail",
+    "normalized_phrase": "failing to plan is planning to fail",
+    "source_note": "Proverb",
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "acc5361b-582d-49ab-bda9-7be791d1ed37",
+    "phrase_text": "Fake it till you make it",
+    "normalized_phrase": "fake it till you make it",
+    "source_note": null,
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "ccab5184-05c2-4161-b076-80c0e39c39da",
+    "phrase_text": "Fight fire with fire",
+    "normalized_phrase": "fight fire with fire",
+    "source_note": "Proverb",
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "ef9d9529-978e-4ab0-bed6-4d378754db4a",
+    "phrase_text": "First come, first served",
+    "normalized_phrase": "first come first served",
+    "source_note": "Proverb",
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "f67c3547-23c2-4d5a-aab1-7858a0e7657b",
+    "phrase_text": "Fortune favors the bold",
+    "normalized_phrase": "fortune favors the bold",
+    "source_note": null,
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "5b724d15-a9df-45d8-8661-03214719845e",
+    "phrase_text": "Give credit where credit is due",
+    "normalized_phrase": "give credit where credit is due",
+    "source_note": "Proverb",
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "6efc128a-c883-4d02-8f92-a20d7b6e1996",
+    "phrase_text": "Good things come to those who wait",
+    "normalized_phrase": "good things come to those who wait",
+    "source_note": null,
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "432de08d-e737-47d6-a91a-c177a657931a",
+    "phrase_text": "Haste makes waste",
+    "normalized_phrase": "haste makes waste",
+    "source_note": "Proverb",
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "4579e8d5-b9bd-497d-88ff-0403e620494d",
+    "phrase_text": "He who hesitates is lost",
+    "normalized_phrase": "he who hesitates is lost",
+    "source_note": "Proverb",
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "ebc869db-76f2-4ba0-b058-1a78e759ecde",
+    "phrase_text": "hit the nail on the head",
+    "normalized_phrase": "hit the nail on the head",
+    "source_note": null,
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "3dca99ad-fd74-460a-8f9f-c5fb95df5b00",
+    "phrase_text": "Home is where the heart is",
+    "normalized_phrase": "home is where the heart is",
+    "source_note": null,
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "ddb8aab1-0f45-46f7-942c-8c75ed1dacf7",
+    "phrase_text": "Honesty is the best policy",
+    "normalized_phrase": "honesty is the best policy",
+    "source_note": null,
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "281a5d38-734c-4018-aa6d-a980abc3d7f7",
+    "phrase_text": "I have a dream",
+    "normalized_phrase": "i have a dream",
+    "source_note": "Martin Luther King Jr.",
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "a5046d61-69b2-4948-a22d-31bfa7de9afd",
+    "phrase_text": "If at first you do not succeed, try again",
+    "normalized_phrase": "if at first you do not succeed try again",
+    "source_note": "Proverb",
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "e7073912-084d-4975-a1f7-f7e576d0f151",
+    "phrase_text": "If it ain't broke, don't fix it",
+    "normalized_phrase": "if it aint broke dont fix it",
+    "source_note": "Proverb",
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "852e7811-7488-4bcb-95c1-0cf66bbe5f5e",
+    "phrase_text": "If the shoe fits, wear it",
+    "normalized_phrase": "if the shoe fits wear it",
+    "source_note": "Proverb",
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "e7fb0eb8-c09b-405b-80fc-48ebcfe57e93",
+    "phrase_text": "If you play with fire, you will get burned",
+    "normalized_phrase": "if you play with fire you will get burned",
+    "source_note": null,
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "ae4f5217-1f0a-4ce2-b709-c716c1b38404",
+    "phrase_text": "Ignorance is bliss",
+    "normalized_phrase": "ignorance is bliss",
+    "source_note": null,
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "53174cc6-4392-4541-a208-b731fa44505f",
+    "phrase_text": "It takes two to tango",
+    "normalized_phrase": "it takes two to tango",
+    "source_note": null,
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "dd2cb66a-d05b-4725-ade1-84f6044f765e",
+    "phrase_text": "Kill two birds with one stone",
+    "normalized_phrase": "kill two birds with one stone",
+    "source_note": null,
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "a07b3862-3a28-4754-969d-e3ed988072a8",
+    "phrase_text": "Knowledge is power",
+    "normalized_phrase": "knowledge is power",
+    "source_note": "Sir Francis Bacon",
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "582b7f1b-de68-4a28-911f-cd87130ec57d",
+    "phrase_text": "Laughter is the best medicine",
+    "normalized_phrase": "laughter is the best medicine",
+    "source_note": "Proverb",
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "2ab4c597-d067-46a1-93b7-3bec6c22c373",
+    "phrase_text": "Let sleeping dogs lie",
+    "normalized_phrase": "let sleeping dogs lie",
+    "source_note": "Proverb",
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "c9dc7d12-e579-4409-8d12-08a45f10ce72",
+    "phrase_text": "Life is what you make it",
+    "normalized_phrase": "life is what you make it",
+    "source_note": null,
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "5f23a86b-afff-4b34-8b22-2345b5fb2e46",
+    "phrase_text": "Live, laugh, love",
+    "normalized_phrase": "live laugh love",
+    "source_note": null,
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "a98c7eb6-2e0a-494b-973d-bcf4cd1fc5c6",
+    "phrase_text": "Look before you leap",
+    "normalized_phrase": "look before you leap",
+    "source_note": "Proverb",
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "591e0519-d4b8-41bb-beed-f272124a5610",
+    "phrase_text": "Make hay while the sun shines",
+    "normalized_phrase": "make hay while the sun shines",
+    "source_note": "Proverb",
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "415e4bb3-4172-426c-84b1-6ad58e01b08e",
+    "phrase_text": "Many hands make light work",
+    "normalized_phrase": "many hands make light work",
+    "source_note": "Proverb",
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "b7589757-45ee-4fc2-b95d-ee7be7bb5653",
+    "phrase_text": "May the Force be with you",
+    "normalized_phrase": "may the force be with you",
+    "source_note": "Star Wars",
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "339bf718-1147-4062-93e2-178590520d4a",
+    "phrase_text": "No guts, no glory",
+    "normalized_phrase": "no guts no glory",
+    "source_note": null,
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "00faf7fb-5850-4727-a67b-ee94337ef499",
+    "phrase_text": "No man is an island",
+    "normalized_phrase": "no man is an island",
+    "source_note": "Proverb",
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "fae62cfe-19cb-4a39-b78f-2a7fc2b02a6b",
+    "phrase_text": "No news is good news",
+    "normalized_phrase": "no news is good news",
+    "source_note": "Proverb",
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "83ae7a3e-a56f-46a4-b399-d4354c4b8461",
+    "phrase_text": "Nothing ventured, nothing gained",
+    "normalized_phrase": "nothing ventured nothing gained",
+    "source_note": "Proverb",
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "eb91f595-c97c-4c0e-a68d-b2d742209a0a",
+    "phrase_text": "Once in a blue moon",
+    "normalized_phrase": "once in a blue moon",
+    "source_note": null,
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "fd834a80-f202-484e-ac15-9c32a053edbc",
+    "phrase_text": "Out of sight, out of mind",
+    "normalized_phrase": "out of sight out of mind",
+    "source_note": "Proverb",
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "f950f96f-2125-4ecd-8960-9999071b6032",
+    "phrase_text": "Patience is a virtue",
+    "normalized_phrase": "patience is a virtue",
+    "source_note": null,
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "7b73a581-9769-421d-a79e-1affca592301",
+    "phrase_text": "Practice makes perfect",
+    "normalized_phrase": "practice makes perfect",
+    "source_note": "Proverb",
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "5c826f04-5e7f-4957-a073-a659912126a8",
+    "phrase_text": "Rome wasn't built in a day",
+    "normalized_phrase": "rome wasnt built in a day",
+    "source_note": "Proverb",
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "b999476d-3408-4bf8-b5d5-1e02b4f445df",
+    "phrase_text": "Slow and steady wins the race",
+    "normalized_phrase": "slow and steady wins the race",
+    "source_note": null,
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "2b4ef690-afdd-489f-9b2e-d8020eeb2495",
+    "phrase_text": "Still waters run deep",
+    "normalized_phrase": "still waters run deep",
+    "source_note": "Proverb",
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "ee9b3c54-6986-4457-a245-85b7207e02c4",
+    "phrase_text": "Strike while the iron is hot",
+    "normalized_phrase": "strike while the iron is hot",
+    "source_note": "Proverb",
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "0cbbaf22-fd6a-42da-9ca6-85abf04c6b9b",
+    "phrase_text": "Take it with a grain of salt",
+    "normalized_phrase": "take it with a grain of salt",
+    "source_note": null,
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "27d1a5eb-582d-499f-916c-b3aa286d7965",
+    "phrase_text": "The early bird gets the worm",
+    "normalized_phrase": "the early bird gets the worm",
+    "source_note": null,
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "bd1b9b41-5de2-4106-ad55-c5b9c9cbdfd6",
+    "phrase_text": "The more the merrier",
+    "normalized_phrase": "the more the merrier",
+    "source_note": null,
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "74157677-cf13-49cf-846a-63650bbad063",
+    "phrase_text": "The pen is mightier than the sword",
+    "normalized_phrase": "the pen is mightier than the sword",
+    "source_note": "Proverb",
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "fba9a59c-cdee-4cf8-b009-074b5296b52e",
+    "phrase_text": "The secret of getting ahead is getting started",
+    "normalized_phrase": "the secret of getting ahead is getting started",
+    "source_note": "Mark Twain",
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "929f9020-2b6e-44ca-b55d-ac1791ca635a",
+    "phrase_text": "The squeaky wheel gets the grease",
+    "normalized_phrase": "the squeaky wheel gets the grease",
+    "source_note": "Proverb",
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "7fdecaa0-ecc9-4439-8552-4669378f0568",
+    "phrase_text": "This too shall pass",
+    "normalized_phrase": "this too shall pass",
+    "source_note": null,
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "553c695c-2e00-467a-bb91-b330fd9ac305",
+    "phrase_text": "Time and tide wait for no man",
+    "normalized_phrase": "time and tide wait for no man",
+    "source_note": "Proverb",
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "449d2061-e1a0-428d-90e7-d84f6a3322c8",
+    "phrase_text": "Time is money",
+    "normalized_phrase": "time is money",
+    "source_note": null,
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "6e634fea-61a6-48c2-a40e-6392181e934c",
+    "phrase_text": "To be, or not to be, that is the question",
+    "normalized_phrase": "to be or not to be that is the question",
+    "source_note": "Shakespeare (Hamlet)",
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "d27a6fd2-2218-4574-8661-4bb986c09e89",
+    "phrase_text": "Too many cooks spoil the broth",
+    "normalized_phrase": "too many cooks spoil the broth",
+    "source_note": "Proverb",
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "60812a11-9539-4cd6-a948-ce369f3a1834",
+    "phrase_text": "Two heads are better than one",
+    "normalized_phrase": "two heads are better than one",
+    "source_note": "Proverb",
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "435efa63-3674-48f9-9b3e-cddc9da2b104",
+    "phrase_text": "What doesn't kill you makes you stronger",
+    "normalized_phrase": "what doesnt kill you makes you stronger",
+    "source_note": null,
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "8cebf630-7770-42b2-a8f8-f269b8fccd86",
+    "phrase_text": "What goes up must come down",
+    "normalized_phrase": "what goes up must come down",
+    "source_note": null,
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "05b1319f-190c-4f11-ace0-5a4b6af09ac6",
+    "phrase_text": "When life gives you lemons, make lemonade",
+    "normalized_phrase": "when life gives you lemons make lemonade",
+    "source_note": "Proverb",
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "4c205146-620a-46fb-811c-7d2cfa54a453",
+    "phrase_text": "Where there's a will, there's a way",
+    "normalized_phrase": "where theres a will theres a way",
+    "source_note": null,
+    "meaning": null,
+    "status": "approved"
+  },
+  {
+    "id": "e0b40db6-c3c9-4da8-9a18-97022faabcf7",
+    "phrase_text": "You only live once",
+    "normalized_phrase": "you only live once",
+    "source_note": null,
+    "meaning": null,
+    "status": "approved"
+  }
+]
