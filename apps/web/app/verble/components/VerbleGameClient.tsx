@@ -1537,7 +1537,10 @@ export default function VerbleGameClient({
 
           <div className="arcade-board">
           <SpeechBubbleOutline />
-          <div className={`phrase-layout ${selectedSlot !== null && gameState === "playing" ? "has-selected-word" : ""}`}>
+          <div
+            className={`phrase-layout ${selectedSlot !== null && gameState === "playing" ? "has-selected-word" : ""}`}
+            style={{ "--pick-word-cycle": `${Math.max(1500, puzzle.slots.length * 160 + 500)}ms` } as CSSProperties}
+          >
             {puzzle.slots.map((slot) => {
               const solved = solvedWords[slot.index];
               const isSelected = selectedSlot === slot.index;
@@ -1594,7 +1597,7 @@ export default function VerbleGameClient({
                     }}
                     disabled={!isPlayable}
                   >
-                    <span className="slot-tiles" key={invalidGuessFeedback?.slotIndex === slot.index ? invalidGuessFeedback.sequence : "ready"} style={shouldShowPickWordLift && isPlayable ? { animationDelay: `${slot.index * 160}ms` } : undefined}>
+                    <span className="slot-tiles" key={invalidGuessFeedback?.slotIndex === slot.index ? invalidGuessFeedback.sequence : "ready"} style={shouldShowPickWordLift && isPlayable ? { "--pick-word-delay": `${slot.index * 160}ms` } as CSSProperties : undefined}>
                       {displayChars.map((item, index) => (
                         (() => {
                           const letterIndex = item.letterIndex ?? -1;

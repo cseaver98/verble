@@ -44,7 +44,7 @@ function VerbleTileRow({
   return (
     <div className={`slot-cluster tutorial-verble-word${selected ? " selected" : ""}${animateReveals ? " tutorial-verble-animate-reveals" : ""}${animateTyping ? " tutorial-verble-typing-word" : ""}`} aria-hidden="true">
       <span className={`slot-word-button${selected ? " selected" : ""}${pickWordLiftIndex !== undefined ? " pick-word-lift" : ""}`}>
-        <span className="slot-tiles" style={pickWordLiftIndex !== undefined ? { animationDelay: `${pickWordLiftIndex * 160}ms` } : undefined}>
+        <span className="slot-tiles" style={pickWordLiftIndex !== undefined ? { "--pick-word-delay": `${pickWordLiftIndex * 160}ms` } as CSSProperties : undefined}>
           {values.map((value, index) => {
             const state = states[index];
             const shouldFlip = flipAtMs !== undefined && (flipIndices ? flipIndices.includes(index) : state === "correct" || state === "present" || state === "absent");
