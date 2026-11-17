@@ -1,42 +1,6 @@
 import { trackEvent } from "@/lib/analytics-client";
 
-type BuildShareTextOptions = {
-  gameName: string;
-  isArchiveView: boolean;
-  puzzleDate?: string;
-  didWin: boolean;
-  guessesUsed: number;
-  maxGuesses: number;
-  visualRows?: string[];
-  url: string;
-};
-
 type ShareResult = "shared" | "copied" | "failed" | "aborted";
-
-export const buildGameShareText = ({
-  isArchiveView,
-  puzzleDate,
-  didWin,
-  guessesUsed,
-  maxGuesses,
-  visualRows = [],
-  url,
-}: BuildShareTextOptions) => {
-  const title = `Verble${isArchiveView ? " Archive" : ""}`;
-  const safeGuessesUsed = didWin ? guessesUsed : maxGuesses;
-  const resultLine = didWin
-    ? `Solved in ${safeGuessesUsed}/${maxGuesses} guesses`
-    : `Missed in ${maxGuesses}/${maxGuesses} guesses`;
-
-  return [
-    title,
-    puzzleDate || "",
-    resultLine,
-    ...visualRows.filter(Boolean),
-    "",
-    url,
-  ].join("\n");
-};
 
 const trackSuccessfulShare = (method: "native" | "clipboard", text: string) => {
   const urlMatch = text.match(/https?:\/\/[^\s]+/g)?.at(-1);

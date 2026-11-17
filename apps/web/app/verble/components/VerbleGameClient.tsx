@@ -13,7 +13,8 @@ import { normalizePhraseWithPunctuation } from "../../../lib/verble/puzzle-repos
 import { toPublicAppUrl } from "../../../lib/app-url";
 import { recordGameCompletion, type RecordGameCompletionInput } from "../../../lib/record-game-completion";
 import { buildResultPayload } from "../../../lib/result-payload";
-import { buildGameShareText, shareResultText } from "../../../lib/share-results";
+import { shareResultText } from "../../../lib/share-results";
+import { buildVerbleShareText } from "../../../lib/verble/share-format";
 import { fetchStoredGameResult, getResultPayloadAnswer, getResultPayloadAttempts } from "../../../lib/stored-game-result";
 import { useNextGameCountdown } from "../../../lib/use-next-game-countdown";
 import LoadingLabel from "../../components/LoadingLabel";
@@ -68,26 +69,6 @@ type WordAttempt = {
   feedback: LetterFeedback[];
 };
 
-const toShareFeedbackBlock = (feedback: LetterFeedback | "empty") => {
-  if (feedback === "correct") return "🟩";
-  if (feedback === "present") return "🟨";
-  return "🟥";
-};
-
-const buildVerbleShareRow = ({
-  slots,
-  slotMarks,
-  didWin,
-}: {
-  slots: Slot[];
-  slotMarks: SlotMarks;
-  didWin: boolean;
-}) => slots
-  .map((slot) => Array.from({ length: slot.length }, (_, index) => (
-    toShareFeedbackBlock(didWin ? "correct" : slotMarks[slot.index]?.[index] || "empty")
-  )).join("\u2060"))
-  .join(" ");
-
 type SlotDrafts = Record<number, string[]>;
 type SlotLocks = Record<number, boolean[]>;
 type SlotMarks = Record<number, Array<LetterFeedback | "empty">>;
@@ -109,6 +90,7 @@ type RestoredVerbleState = {
   slotLocks: SlotLocks;
   slotMarks: SlotMarks;
   guessesUsed: number;
+  usedFullPhraseGuess: boolean;
   startedAt?: number | null;
   solveDurationSeconds?: number | null;
 };
@@ -123,6 +105,7 @@ type VerbleCompletionSnapshot = {
   slotLocks: SlotLocks;
   slotMarks: SlotMarks;
   guessesUsed: number;
+  usedFullPhraseGuess?: boolean;
   startedAt?: number | null;
   solveDurationSeconds?: number | null;
 };
@@ -146,6 +129,7 @@ const buildVerbleCompletionSnapshot = ({
   slotLocks,
   slotMarks,
   guessesUsed,
+  usedFullPhraseGuess = false,
   startedAt = null,
   solveDurationSeconds = null,
 }: VerbleCompletionSnapshot): VerbleCompletionSnapshot => ({
@@ -158,6 +142,7 @@ const buildVerbleCompletionSnapshot = ({
   slotLocks,
   slotMarks,
   guessesUsed,
+  usedFullPhraseGuess,
   startedAt,
   solveDurationSeconds,
 });
@@ -243,6 +228,7 @@ export default function VerbleGameClient({
   const [slotLocks, setSlotLocks] = useState<SlotLocks>({});
   const [slotMarks, setSlotMarks] = useState<SlotMarks>({});
   const [guessesUsed, setGuessesUsed] = useState(0);
+  const [usedFullPhraseGuess, setUsedFullPhraseGuess] = useState(false);
   const [copyStatus, setCopyStatus] = useState("");
   const [isResultOpen, setIsResultOpen] = useState(false);
   const [resultAccountStats, setResultAccountStats] = useState<ResultAccountStats | null>(null);
@@ -363,6 +349,7 @@ export default function VerbleGameClient({
     slotLocks: createInitialSlotLocks(targetPuzzle.slots || []),
     slotMarks: createInitialSlotMarks(targetPuzzle.slots || []),
     guessesUsed: 0,
+    usedFullPhraseGuess: false,
     startedAt: null,
     solveDurationSeconds: null,
   });
@@ -400,11 +387,17 @@ export default function VerbleGameClient({
           fallbackSlotMarks[slot.index] = Array.from({ length: slot.length }, () => "correct");
         });
 
+        const wordAttempts = Array.isArray(parsed.wordAttempts) ? parsed.wordAttempts : [];
+        const usedFullPhraseGuess = typeof parsed.usedFullPhraseGuess === "boolean"
+          ? parsed.usedFullPhraseGuess
+          : (parsedState === "won" && parsed.guessesUsed === wordAttempts.length + 1)
+            || (parsedState === "lost" && wordAttempts.length < targetPuzzle.maxGuesses);
+
         return {
           gameState: parsedState === "won" || parsedState === "lost" ? parsedState : "playing",
           message: typeof parsed.message === "string" ? parsed.message : "",
           selectedSlot: includeDraftState && typeof parsed.selectedSlot === "number" ? parsed.selectedSlot : null,
-          wordAttempts: Array.isArray(parsed.wordAttempts) ? parsed.wordAttempts : [],
+          wordAttempts,
           solvedWords,
           slotDrafts:
             includeDraftState && parsed.slotDrafts && typeof parsed.slotDrafts === "object"
@@ -419,6 +412,7 @@ export default function VerbleGameClient({
               ? parsed.slotMarks
               : fallbackSlotMarks,
           guessesUsed: Number.isFinite(parsed.guessesUsed) ? Number(parsed.guessesUsed) : 0,
+          usedFullPhraseGuess,
           startedAt: typeof parsed.startedAt === "number" && Number.isFinite(parsed.startedAt) ? parsed.startedAt : null,
           solveDurationSeconds: typeof parsed.solveDurationSeconds === "number" ? parsed.solveDurationSeconds : null,
         } satisfies RestoredVerbleState;
@@ -506,22 +500,27 @@ export default function VerbleGameClient({
           const completedMarks = Object.fromEntries(
             payload.slots.map((slot: Slot) => [slot.index, Array.from({ length: slot.length }, () => storedResult.isWin ? "correct" : "absent")]),
           );
+          const storedFinal = storedResult.resultPayload.final;
+          const storedFinalType = storedFinal && typeof storedFinal === "object" && !Array.isArray(storedFinal)
+            ? (storedFinal as { type?: unknown }).type
+            : null;
+          const completionState = localState ?? {
+            puzzleId: payload.puzzleId,
+            gameState: storedResult.isWin ? "won" : "lost",
+            message: "",
+            wordAttempts: getResultPayloadAttempts(storedResult),
+            solvedWords: storedResult.isWin ? words : {},
+            slotDrafts: completedDrafts,
+            slotLocks: completedLocks,
+            slotMarks: completedMarks,
+            guessesUsed: storedResult.guessesUsed,
+            solveDurationSeconds: storedResult.solveDurationSeconds,
+          };
           window.localStorage.setItem(
             completionKey,
-            JSON.stringify(
-              localState ?? {
-                puzzleId: payload.puzzleId,
-                gameState: storedResult.isWin ? "won" : "lost",
-                message: "",
-                wordAttempts: getResultPayloadAttempts(storedResult),
-                solvedWords: storedResult.isWin ? words : {},
-                slotDrafts: completedDrafts,
-                slotLocks: completedLocks,
-                slotMarks: completedMarks,
-                guessesUsed: storedResult.guessesUsed,
-                solveDurationSeconds: storedResult.solveDurationSeconds,
-              },
-            ),
+            JSON.stringify(storedFinalType === "phrase" || storedFinalType === "word"
+              ? { ...completionState, usedFullPhraseGuess: storedFinalType === "phrase" }
+              : completionState),
           );
         }
 
@@ -541,6 +540,7 @@ export default function VerbleGameClient({
         setSlotLocks(restoredState.slotLocks);
         setSlotMarks(restoredState.slotMarks);
         setGuessesUsed(restoredState.guessesUsed);
+        setUsedFullPhraseGuess(restoredState.usedFullPhraseGuess);
         startedAtRef.current = restoredState.startedAt ?? null;
         timingEligibleRef.current = restoredState.startedAt != null || (restoredState.wordAttempts.length === 0 && Object.values(restoredState.slotDrafts).every((letters) => letters.every((letter) => !letter)));
         setSolveDurationSeconds(storedResult?.solveDurationSeconds ?? restoredState.solveDurationSeconds ?? null);
@@ -595,11 +595,12 @@ export default function VerbleGameClient({
         slotLocks,
         slotMarks,
         guessesUsed,
+        usedFullPhraseGuess,
         startedAt: startedAtRef.current,
         solveDurationSeconds,
       }),
     );
-  }, [gameState, message, selectedSlot, wordAttempts, solvedWords, slotDrafts, slotLocks, slotMarks, guessesUsed, solveDurationSeconds, progressKey, puzzle]);
+  }, [gameState, message, selectedSlot, wordAttempts, solvedWords, slotDrafts, slotLocks, slotMarks, guessesUsed, usedFullPhraseGuess, solveDurationSeconds, progressKey, puzzle]);
 
   useEffect(() => {
     if (!completionKey || !lockDailyCompletion || gameState === "playing" || !puzzle) return;
@@ -615,11 +616,12 @@ export default function VerbleGameClient({
         slotLocks,
         slotMarks,
         guessesUsed,
+        usedFullPhraseGuess,
         startedAt: startedAtRef.current,
         solveDurationSeconds,
       })),
     );
-  }, [completionKey, gameState, guessesUsed, lockDailyCompletion, message, puzzle, slotDrafts, slotLocks, slotMarks, solvedWords, wordAttempts, solveDurationSeconds]);
+  }, [completionKey, gameState, guessesUsed, usedFullPhraseGuess, lockDailyCompletion, message, puzzle, slotDrafts, slotLocks, slotMarks, solvedWords, wordAttempts, solveDurationSeconds]);
 
 
   useEffect(() => {
@@ -1062,6 +1064,7 @@ export default function VerbleGameClient({
         if (solvedAll) {
           const duration = timingEligibleRef.current ? getSolveDurationSeconds(startedAtRef.current, submittedAt) : null;
           setSolveDurationSeconds(duration);
+          setUsedFullPhraseGuess(false);
           setGameState("won");
           setIsResolvingGuess(false);
           setIsResultOpen(true);
@@ -1104,6 +1107,7 @@ export default function VerbleGameClient({
         if (nextGuessesUsed >= maxGuesses) {
           const duration = timingEligibleRef.current ? getSolveDurationSeconds(startedAtRef.current, submittedAt) : null;
           setSolveDurationSeconds(duration);
+          setUsedFullPhraseGuess(false);
           setGameState("lost");
           setIsResolvingGuess(false);
           setIsResultOpen(true);
@@ -1250,6 +1254,7 @@ export default function VerbleGameClient({
       window.setTimeout(() => {
         const duration = timingEligibleRef.current ? getSolveDurationSeconds(startedAtRef.current, submittedAt) : null;
         setSolveDurationSeconds(duration);
+        setUsedFullPhraseGuess(true);
         setPhraseRevealState(null);
         setSolvedWords(allSolvedWords);
         setSlotDrafts(solvedDrafts);
@@ -1289,6 +1294,7 @@ export default function VerbleGameClient({
               slotLocks: solvedLocks,
               slotMarks: solvedMarks,
               guessesUsed: nextGuessesUsed,
+              usedFullPhraseGuess: true,
               startedAt: startedAtRef.current,
               solveDurationSeconds: duration,
             }),
@@ -1341,6 +1347,7 @@ export default function VerbleGameClient({
     window.setTimeout(() => {
       const duration = timingEligibleRef.current ? getSolveDurationSeconds(startedAtRef.current, submittedAt) : null;
       setSolveDurationSeconds(duration);
+      setUsedFullPhraseGuess(true);
       setPhraseRevealState(null);
       setSolvedWords({});
       setSlotDrafts(revealedDrafts);
@@ -1380,6 +1387,7 @@ export default function VerbleGameClient({
             slotLocks: revealedLocks,
             slotMarks: revealedMarks,
             guessesUsed: maxGuesses,
+            usedFullPhraseGuess: true,
             startedAt: startedAtRef.current,
             solveDurationSeconds: duration,
           }),
@@ -1391,19 +1399,14 @@ export default function VerbleGameClient({
 
   const getShareText = () => {
     if (!puzzle || gameState === "playing") return "";
-    const shareBlocks = buildVerbleShareRow({
-      slots: puzzle.slots,
-      slotMarks,
-      didWin: gameState === "won",
-    });
-    return buildGameShareText({
-      gameName: "Verble",
+    return buildVerbleShareText({
       isArchiveView,
       puzzleDate: puzzle.puzzleDate,
       didWin: gameState === "won",
       guessesUsed,
       maxGuesses,
-      visualRows: shareBlocks ? [shareBlocks] : [],
+      wordAttempts,
+      usedFullPhraseGuess,
       url: toPublicAppUrl(isArchiveView ? `/archive/${puzzle.puzzleDate}` : "/"),
     });
   };
